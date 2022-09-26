@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "yzhang.markdown-all-in-one",
+        "jeff-hykin.better-cpp-syntax",
+        "ms-vscode.cpptools-extension-pack",
+        "cschlosser.doxdocgen",
+        "betwo.vscode-doxygen-runner",
+        "usernamehw.errorlens"
+    ]
+}
