@@ -11,10 +11,12 @@
 #include <SDL2/SDL.h>
 
 #ifdef PLATFORM_PSP
-#define MUS_PATH "Roland-GR-1-Trumpet-C5.wav"
+#define MUS_PATH "sound.wav"
 #else
-#define MUS_PATH "/home/korigamik/Dev/projects/PSP/game/untitled/res/Roland-GR-1-Trumpet-C5.wav"
+#define MUS_PATH "/home/korigamik/Dev/projects/PSP/game/untitled/res/sound.wav"
 #endif
+
+#include "game/player.hpp"
 
 // variable declarations
 static Uint8 *audio_pos; // global pointer to the audio buffer to be played
@@ -134,6 +136,8 @@ int main(int argc, char *argv[])
   /* Start playing */
   SDL_PauseAudio(0);
 
+  Player player;
+
   while (!done)
   {
     while (SDL_PollEvent(&event))
@@ -170,22 +174,24 @@ int main(int argc, char *argv[])
         }
         break;
 
+      case SDL_KEYDOWN:
+        player.update(event);
+        break;
       default:
         break;
       }
     }
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    // fill window bounds
+    SDL_SetRenderDrawColor(renderer, 41, 41, 41, 255);
     SDL_RenderClear(renderer);
 
-    // fill window bounds
-    SDL_SetRenderDrawColor(renderer, 111, 111, 111, 255);
     SDL_GetWindowSize(window, &w, &h);
-    SDL_Rect f = {0, 0, w, h};
-    SDL_RenderFillRect(renderer, &f);
 
-    draw_rects(renderer, x, 0);
-    draw_rects(renderer, x, h - 64);
+    // draw_rects(renderer, x, 0);
+    // draw_rects(renderer, x, h - 64);
+
+    player.draw(renderer);
 
     SDL_RenderPresent(renderer);
 

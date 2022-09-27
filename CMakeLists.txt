@@ -22,11 +22,15 @@ target_compile_features(untitled_exe PRIVATE cxx_std_17)
 # Header files (relative to "include" directory)
 set(HEADERS
     header.hpp
+    game/entity.hpp
+    game/player.hpp
 )
 
 # Source files (relative to "src" directory)
 set(SOURCES
     main.cpp
+    game/entity.cpp
+    game/player.cpp
 )
 
 list(TRANSFORM HEADERS PREPEND "include/")
