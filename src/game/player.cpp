@@ -32,7 +32,7 @@ void Player::update(SDL_Event &event)
 
 void Player::draw(SDL_Renderer *renderer)
 {
-    SDL_Rect r = {x, y, 64, 64};
+    SDL_Rect r = {x, y, 4, 4};
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderFillRect(renderer, &r);
 }
@@ -43,6 +43,13 @@ Player::Player() : Entity()
     name = "Player";
 }
 
+Player::Player(int x, int y) : Entity(), x(x), y(y)
+{
+    SDL_Log("Player created");
+    name = "Player";
+}
+
 Player::~Player()
 {
+    SDL_Log("Player destroyed");
 }

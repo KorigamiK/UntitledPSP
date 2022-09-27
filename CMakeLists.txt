@@ -21,7 +21,7 @@ target_compile_features(untitled_exe PRIVATE cxx_std_17)
 
 # Header files (relative to "include" directory)
 set(HEADERS
-    header.hpp
+    app.hpp
     game/entity.hpp
     game/player.hpp
 )
@@ -29,6 +29,7 @@ set(HEADERS
 # Source files (relative to "src" directory)
 set(SOURCES
     main.cpp
+    app.cpp
     game/entity.cpp
     game/player.cpp
 )
@@ -58,6 +59,7 @@ if (PLATFORM_PSP)
 		psphprm
 		pspctrl
 		pspaudio
+        jsoncpp
     )
 
     create_pbp_file(
@@ -67,8 +69,13 @@ if (PLATFORM_PSP)
         BUILD_PRX
     )
 
+    file(COPY "${CMAKE_SOURCE_DIR}/res/map.json" DESTINATION ${CMAKE_BINARY_DIR})
+
 else()
     find_package(SDL2 REQUIRED)
     target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC)
-    target_link_libraries(untitled_exe PRIVATE SDL2::SDL2 SDL2::SDL2main)
+    target_link_libraries(untitled_exe PRIVATE SDL2::SDL2 SDL2::SDL2main jsoncpp)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
+                                                               ${CMAKE_BINARY_DIR}/res)
 endif()
+
