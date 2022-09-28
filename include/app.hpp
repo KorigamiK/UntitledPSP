@@ -13,19 +13,14 @@
 class App
 {
 private:
-    App() = default;
+    App(){};
 
+    std::shared_ptr<Player> player;
     Map map;
 
     SDL_Window *window = nullptr;
     SDL_Joystick *joystick = nullptr;
     SDL_Renderer *renderer = nullptr;
-
-#ifdef PLATFORM_PSP
-    const char *mapFile = "map.json";
-#else
-    const char *mapFile = "res/map.json";
-#endif
 
     static App _instance;
     void loadMap();
@@ -40,7 +35,7 @@ public:
 
     static App &get() { return _instance; };
 
-    void init();
+    void init(std::shared_ptr<Player> player);
 
     void draw();
 

@@ -24,7 +24,7 @@ void App::rerender()
     SDL_RenderPresent(renderer);
 }
 
-void App::init()
+void App::init(std::shared_ptr<Player> p)
 {
     SDL_Log("App::init");
 
@@ -67,7 +67,8 @@ void App::init()
     else
         SDL_Log("Joystick found: %s\n", SDL_JoystickName(joystick));
 
-    map = Map();
+    player = p;
+    map = Map(player);
     map.loadMap();
 }
 

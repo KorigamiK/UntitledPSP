@@ -20,6 +20,12 @@ void Player::update(SDL_Event &event)
         case SDLK_DOWN:
             y += moveStep;
             break;
+        case SDLK_q:
+            angle -= angleStep;
+            break;
+        case SDLK_e:
+            angle += angleStep;
+            break;
         default:
             break;
         }
@@ -32,9 +38,10 @@ void Player::update(SDL_Event &event)
 
 void Player::draw(SDL_Renderer *renderer)
 {
-    SDL_Rect r = {x, y, 4, 4};
+    SDL_Rect r = {x - PLAYER_SIZE / 2, y - PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE};
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderFillRect(renderer, &r);
+    SDL_RenderDrawLine(renderer, x, y, x + PLAYER_DRECTION_SIZE * cos(angle), y + PLAYER_DRECTION_SIZE * sin(angle));
 }
 
 Player::Player() : Entity()

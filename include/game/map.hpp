@@ -1,15 +1,17 @@
 #pragma once
 
 #include <string>
-#include "game/object.hpp"
 #include <SDL2/SDL.h>
 #include <json/json.h>
 #include <fstream>
+#include "game/object.hpp"
+#include "game/player.hpp"
 
 class Map
 {
 private:
     friend class App;
+    std::shared_ptr<Player> player;
 
 #ifdef PLATFORM_PSP
     const char *mapFile = "map.json";
@@ -21,8 +23,8 @@ private:
 
 public:
     Map(const char *mapFile);
-    Map() = default;
-
+    Map(std::shared_ptr<Player> p) : player(p){};
+    Map(){};
     void loadMap();
 
     ~Map();

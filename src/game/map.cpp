@@ -2,11 +2,11 @@
 
 Map::Map(const char *mapFileName) : mapFile(mapFileName){};
 
-Map::~Map() {}
+Map::~Map() { SDL_Log("Map Destroyed"); }
 
 void Map::loadMap()
 {
-    SDL_Log("App::loadMap");
+    SDL_Log("Map::loadMap");
     Json::Value root;
     Json::Reader reader;
     std::ifstream file(mapFile);
