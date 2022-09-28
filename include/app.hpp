@@ -1,11 +1,9 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-#include <json/json.h>
-#include <fstream>
 #include <vector>
 
-#include "map.hpp"
+#include "game/map.hpp"
 
 #define COLOR_WHITE(x) SDL_SetRenderDrawColor(x, 255, 255, 255, 255);
 #define WINDOW_WIDTH 480
@@ -16,6 +14,8 @@ class App
 {
 private:
     App() = default;
+
+    Map map;
 
     SDL_Window *window = nullptr;
     SDL_Joystick *joystick = nullptr;
@@ -37,7 +37,6 @@ public:
     int width = WINDOW_WIDTH, height = WINDOW_HEIGHT;
 
     App(const App &) = delete;
-    std::vector<Wall> walls;
 
     static App &get() { return _instance; };
 

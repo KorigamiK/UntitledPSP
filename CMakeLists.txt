@@ -22,6 +22,8 @@ target_compile_features(untitled_exe PRIVATE cxx_std_17)
 # Header files (relative to "include" directory)
 set(HEADERS
     app.hpp
+    game/object.hpp
+    game/map.hpp
     game/entity.hpp
     game/player.hpp
 )
@@ -30,6 +32,7 @@ set(HEADERS
 set(SOURCES
     main.cpp
     app.cpp
+    game/map.cpp
     game/entity.cpp
     game/player.cpp
 )
