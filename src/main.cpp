@@ -19,8 +19,6 @@
 #define MUS_PATH "/home/korigamik/Dev/projects/PSP/game/untitled/res/sound.wav"
 #endif
 
-#include "game/player.hpp"
-
 #define FRAME_RENDER_DELAY 25
 
 static Uint8 *audio_pos; // global pointer to the audio buffer to be played
@@ -102,27 +100,23 @@ int main(int argc, char *argv[])
         break;
 
       case SDL_JOYBUTTONDOWN:
+      case SDL_KEYDOWN:
+
         SDL_Log("Joystick %d button %d down\n",
                 event.jbutton.which, event.jbutton.button);
-        // seek for joystick #0
-        if (event.jbutton.which == 0)
+        if (event.jbutton.which == 0) // seek for joystick #0
         {
           if (event.jbutton.button == 2)
           {
             audio_pos = wav_buffer; // copy sound buffer
             audio_len = wav_length;
           }
-          else if (event.jbutton.button == 11)
-          {
-            // (Start) button down
+          else if (event.jbutton.button == 11) // (Start) button down
             done = 1;
-          }
         }
-        break;
-
-      case SDL_KEYDOWN:
         app.player->update(event);
         break;
+
       default:
         break;
       }

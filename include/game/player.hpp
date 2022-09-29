@@ -3,6 +3,7 @@
 #include <memory>
 #include "game/entity.hpp"
 #include "game/map.hpp"
+#include "controls_psp.hpp"
 
 #define PLAYER_DRECTION_SIZE 20
 #define PLAYER_SIZE 10

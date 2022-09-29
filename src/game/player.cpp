@@ -35,6 +35,32 @@ void Player::update(SDL_Event &event)
         }
         break;
 
+    case SDL_JOYBUTTONDOWN:
+        switch (event.jbutton.button)
+        {
+        case PSP::Controls::Left:
+            position.x -= moveStep;
+            break;
+        case PSP::Controls::Right:
+            position.x += moveStep;
+            break;
+        case PSP::Controls::Up:
+            position.y -= moveStep;
+            break;
+        case PSP::Controls::Down:
+            position.y += moveStep;
+            break;
+        case PSP::Controls::LeftTrigger:
+            angle -= angleStep;
+            break;
+        case PSP::Controls::RightTrigger:
+            angle += angleStep;
+            break;
+        default:
+            break;
+        }
+        break;
+
     default:
         break;
     }
