@@ -4,7 +4,7 @@ Map::Map(const char *mapFileName) : mapFile(mapFileName){};
 
 Map::~Map() { SDL_Log("Map Destroyed"); }
 
-void Map::init(std::shared_ptr<Player> p)
+void Map::init(Player *p)
 {
     player = p;
     loadMap();

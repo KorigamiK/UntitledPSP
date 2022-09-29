@@ -4,8 +4,8 @@
 #include <SDL2/SDL.h>
 #include <json/json.h>
 #include <fstream>
+#include "game/entity.hpp"
 #include "game/object.hpp"
-#include "game/player.hpp"
 
 #define COLOR_WHITE(x) SDL_SetRenderDrawColor(x, 255, 255, 255, 255);
 
@@ -17,7 +17,7 @@ private:
     friend class App;
     friend class Player;
 
-    std::shared_ptr<Player> player;
+    Player *player;
     SDL_Rect mapRect = {0, 0, 100, 100}; // x, y, w, h
 
 #ifdef PLATFORM_PSP
@@ -40,7 +40,7 @@ public:
     Map(SDL_Rect mapRectAndPosition, int padding = 10) : mapRect(Map::getPaddedRect(mapRectAndPosition, padding)){};
     Map(){};
 
-    void init(std::shared_ptr<Player> p);
+    void init(Player *p);
     void loadMap();
     void setMapRect(SDL_Rect mapRectAndPosition, int padding = 10);
 

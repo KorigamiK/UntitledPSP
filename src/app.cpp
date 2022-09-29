@@ -63,7 +63,7 @@ void App::init()
         SDL_Log("Joystick found: %s\n", SDL_JoystickName(joystick));
 
     map = std::make_shared<Map>(SDL_Rect{width / 2, 0, width / 2, height});
-    player = std::make_shared<Player>(map->mapRect.w / 2, map->mapRect.h / 2);
+    player = new Player(map->mapRect.w / 2, map->mapRect.h / 2);
     player->init(map);
     map->init(player);
 }
@@ -75,4 +75,5 @@ App::~App()
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+    delete player;
 }

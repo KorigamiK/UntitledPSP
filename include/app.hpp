@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "game/map.hpp"
+#include "game/player.hpp"
 
 #define COLOR_WHITE(x) SDL_SetRenderDrawColor(x, 255, 255, 255, 255);
 #define WINDOW_WIDTH 480
@@ -16,7 +17,7 @@ class App
 private:
     App(){};
 
-    std::shared_ptr<Player> player;
+    Player *player;
     std::shared_ptr<Map> map;
 
     SDL_Window *window = nullptr;
