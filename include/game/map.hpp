@@ -30,10 +30,9 @@ private:
 
     SDL_Point getAbsoluteCoOrdinates(SDL_Point point);
 
-    static SDL_Rect getPaddedRect(SDL_Rect rect, int padding)
-    {
-        return SDL_Rect{rect.x + padding, rect.y + padding, rect.w - padding * 2, rect.h - padding * 2};
-    }
+    static SDL_Rect getPaddedRect(SDL_Rect rect, int padding);
+
+    void generateRandomWalls(unsigned int number = 3);
 
 public:
     Map(const char *mapFile);

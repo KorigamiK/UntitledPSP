@@ -7,12 +7,30 @@ Map::~Map() { SDL_Log("Map Destroyed"); }
 void Map::init(Player *p)
 {
     player = p;
+#ifdef PLATFORM_PSP
+    generateRandomWalls();
+#else
     loadMap();
+#endif
 }
 
 void Map::setMapRect(SDL_Rect mapRectAndPosition, int padding)
 {
     mapRect = Map::getPaddedRect(mapRectAndPosition, padding);
+}
+
+SDL_Rect Map::getPaddedRect(SDL_Rect rect, int padding)
+{
+    rect.x += padding;
+    rect.y += padding;
+    rect.w -= padding * 2;
+    rect.h -= padding * 2;
+    return rect;
+}
+
+SDL_Point Map::getAbsoluteCoOrdinates(SDL_Point point)
+{
+    return SDL_Point{point.x + mapRect.x, point.y + mapRect.y};
 }
 
 void Map::drawWalls(SDL_Renderer *renderer)
@@ -26,6 +44,16 @@ void Map::drawWalls(SDL_Renderer *renderer)
     }
 }
 
+void Map::generateRandomWalls(unsigned int number)
+{
+    for (int i = 0; i < number; i++)
+    {
+        SDL_Point p1 = {rand() % mapRect.w, rand() % mapRect.h};
+        SDL_Point p2 = {rand() % mapRect.w, rand() % mapRect.h};
+        walls.push_back(Wall{"blue", "random", p1, p2});
+    }
+}
+
 void Map::draw(SDL_Renderer *renderer)
 {
     COLOR_WHITE(renderer);
@@ -33,6 +61,8 @@ void Map::draw(SDL_Renderer *renderer)
     drawWalls(renderer);
 }
 
+/* TODO: Json doesn't work with the PSP */
+#ifndef PLATFORM_PSP
 void Map::loadMap()
 {
     SDL_Log("Map::loadMap");
@@ -65,8 +95,4 @@ void Map::loadMap()
         SDL_Log("Wall %d Color: %s", index, walls.at(index).color.c_str());
     }
 }
-
-SDL_Point Map::getAbsoluteCoOrdinates(SDL_Point point)
-{
-    return SDL_Point{point.x + mapRect.x, point.y + mapRect.y};
-}
+#endif
