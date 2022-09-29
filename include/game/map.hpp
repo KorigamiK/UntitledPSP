@@ -28,7 +28,7 @@ private:
 
     std::vector<Wall> walls;
 
-    SDL_Point getRelativeCoOrdinates(SDL_Point point);
+    SDL_Point getAbsoluteCoOrdinates(SDL_Point point);
 
     static SDL_Rect getPaddedRect(SDL_Rect rect, int padding)
     {

@@ -44,7 +44,7 @@ void Player::draw(SDL_Renderer *renderer)
 {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
-    SDL_Point relativePos = map->getRelativeCoOrdinates(position);
+    SDL_Point relativePos = map->getAbsoluteCoOrdinates(position);
     SDL_Rect r = {relativePos.x - PLAYER_SIZE / 2, relativePos.y - PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE};
     SDL_RenderFillRect(renderer, &r);
     SDL_RenderDrawLine(renderer, relativePos.x, relativePos.y, relativePos.x + PLAYER_DRECTION_SIZE * cos(angle), relativePos.y + PLAYER_DRECTION_SIZE * sin(angle));

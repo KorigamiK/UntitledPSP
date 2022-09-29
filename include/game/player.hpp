@@ -19,7 +19,7 @@ private:
     SDL_Point position{0, 0};
 
     int moveStep = 5;
-    float angleStep = 0.1;
+    float angleStep = 0.3;
     float angle = 0;
 
 public:

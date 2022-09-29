@@ -20,8 +20,8 @@ void Map::drawWalls(SDL_Renderer *renderer)
     COLOR_WHITE(renderer);
     for (auto &wall : walls)
     {
-        auto p1 = getRelativeCoOrdinates(wall.p1);
-        auto p2 = getRelativeCoOrdinates(wall.p2);
+        auto p1 = getAbsoluteCoOrdinates(wall.p1);
+        auto p2 = getAbsoluteCoOrdinates(wall.p2);
         SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
     }
 }
@@ -66,7 +66,7 @@ void Map::loadMap()
     }
 }
 
-SDL_Point Map::getRelativeCoOrdinates(SDL_Point point)
+SDL_Point Map::getAbsoluteCoOrdinates(SDL_Point point)
 {
     return SDL_Point{point.x + mapRect.x, point.y + mapRect.y};
 }
