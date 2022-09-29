@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <vector>
+#include <memory>
 
 #include "game/map.hpp"
 
@@ -16,7 +17,7 @@ private:
     App(){};
 
     std::shared_ptr<Player> player;
-    Map map;
+    std::shared_ptr<Map> map;
 
     SDL_Window *window = nullptr;
     SDL_Joystick *joystick = nullptr;
@@ -35,13 +36,11 @@ public:
 
     static App &get() { return _instance; };
 
-    void init(std::shared_ptr<Player> player);
+    void init();
 
     void draw();
 
     void rerender();
-
-    void drawWalls();
 
     ~App();
 };

@@ -2,21 +2,16 @@
 
 App App::_instance;
 
-void App::drawWalls()
-{
-    for (auto &wall : map.walls)
-    {
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_RenderDrawLine(renderer, wall.p1.x, wall.p1.y, wall.p2.x, wall.p2.y);
-    }
-}
-
 void App::draw()
 {
     SDL_SetRenderDrawColor(renderer, 41, 41, 41, 255);
     SDL_RenderClear(renderer);
 
     SDL_GetWindowSize(window, &width, &height);
+
+    map->setMapRect(SDL_Rect{width / 2, 0, width / 2, height}, 10);
+    player->draw(renderer);
+    map->draw(renderer);
 }
 
 void App::rerender()
@@ -24,7 +19,7 @@ void App::rerender()
     SDL_RenderPresent(renderer);
 }
 
-void App::init(std::shared_ptr<Player> p)
+void App::init()
 {
     SDL_Log("App::init");
 
@@ -67,9 +62,10 @@ void App::init(std::shared_ptr<Player> p)
     else
         SDL_Log("Joystick found: %s\n", SDL_JoystickName(joystick));
 
-    player = p;
-    map = Map(player);
-    map.loadMap();
+    map = std::make_shared<Map>(SDL_Rect{width / 2, 0, width / 2, height});
+    player = std::make_shared<Player>(map->mapRect.w / 2, map->mapRect.h / 2);
+    player->init(map);
+    map->init(player);
 }
 
 App::~App()

@@ -42,11 +42,10 @@ void my_audio_callback(void *userdata, Uint8 *stream, int len)
 int main(int argc, char *argv[])
 {
   App &app = App::get();
-  std::shared_ptr<Player> player = std::make_shared<Player>(app.width / 2, app.height / 2);
 
   try
   {
-    app.init(player);
+    app.init();
   }
   catch (const std::exception &e)
   {
@@ -122,7 +121,7 @@ int main(int argc, char *argv[])
         break;
 
       case SDL_KEYDOWN:
-        player->update(event);
+        app.player->update(event);
         break;
       default:
         break;
@@ -130,10 +129,6 @@ int main(int argc, char *argv[])
     }
 
     app.draw();
-
-    app.drawWalls();
-
-    player->draw(app.renderer);
 
     app.rerender();
 

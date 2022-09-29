@@ -9,16 +9,20 @@ void Player::update(SDL_Event &event)
         switch (event.key.keysym.sym)
         {
         case SDLK_LEFT:
-            x -= moveStep;
+        case SDLK_a:
+            position.x -= moveStep;
             break;
         case SDLK_RIGHT:
-            x += moveStep;
+        case SDLK_d:
+            position.x += moveStep;
             break;
         case SDLK_UP:
-            y -= moveStep;
+        case SDLK_w:
+            position.y -= moveStep;
             break;
         case SDLK_DOWN:
-            y += moveStep;
+        case SDLK_s:
+            position.y += moveStep;
             break;
         case SDLK_q:
             angle -= angleStep;
@@ -38,10 +42,17 @@ void Player::update(SDL_Event &event)
 
 void Player::draw(SDL_Renderer *renderer)
 {
-    SDL_Rect r = {x - PLAYER_SIZE / 2, y - PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE};
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
+    SDL_Point relativePos = map->getRelativeCoOrdinates(position);
+    SDL_Rect r = {relativePos.x - PLAYER_SIZE / 2, relativePos.y - PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE};
     SDL_RenderFillRect(renderer, &r);
-    SDL_RenderDrawLine(renderer, x, y, x + PLAYER_DRECTION_SIZE * cos(angle), y + PLAYER_DRECTION_SIZE * sin(angle));
+    SDL_RenderDrawLine(renderer, relativePos.x, relativePos.y, relativePos.x + PLAYER_DRECTION_SIZE * cos(angle), relativePos.y + PLAYER_DRECTION_SIZE * sin(angle));
+}
+
+void Player::init(std::shared_ptr<Map> map)
+{
+    this->map = map;
 }
 
 Player::Player() : Entity()
@@ -50,7 +61,7 @@ Player::Player() : Entity()
     name = "Player";
 }
 
-Player::Player(int x, int y) : Entity(), x(x), y(y)
+Player::Player(int x, int y) : Entity(), position{x, y}
 {
     SDL_Log("Player created");
     name = "Player";

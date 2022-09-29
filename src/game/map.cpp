@@ -4,6 +4,35 @@ Map::Map(const char *mapFileName) : mapFile(mapFileName){};
 
 Map::~Map() { SDL_Log("Map Destroyed"); }
 
+void Map::init(std::shared_ptr<Player> p)
+{
+    player = p;
+    loadMap();
+}
+
+void Map::setMapRect(SDL_Rect mapRectAndPosition, int padding)
+{
+    mapRect = Map::getPaddedRect(mapRectAndPosition, padding);
+}
+
+void Map::drawWalls(SDL_Renderer *renderer)
+{
+    COLOR_WHITE(renderer);
+    for (auto &wall : walls)
+    {
+        auto p1 = getRelativeCoOrdinates(wall.p1);
+        auto p2 = getRelativeCoOrdinates(wall.p2);
+        SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
+    }
+}
+
+void Map::draw(SDL_Renderer *renderer)
+{
+    COLOR_WHITE(renderer);
+    SDL_RenderDrawRect(renderer, &mapRect);
+    drawWalls(renderer);
+}
+
 void Map::loadMap()
 {
     SDL_Log("Map::loadMap");
@@ -35,4 +64,9 @@ void Map::loadMap()
 
         SDL_Log("Wall %d Color: %s", index, walls.at(index).color.c_str());
     }
+}
+
+SDL_Point Map::getRelativeCoOrdinates(SDL_Point point)
+{
+    return SDL_Point{point.x + mapRect.x, point.y + mapRect.y};
 }
