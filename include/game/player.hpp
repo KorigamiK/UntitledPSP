@@ -3,7 +3,6 @@
 #include <memory>
 #include "game/entity.hpp"
 #include "game/map.hpp"
-#include "controls_psp.hpp"
 
 #define PLAYER_DRECTION_SIZE 20
 #define PLAYER_SIZE 10
@@ -24,7 +23,7 @@ private:
     float angle = 0;
 
 public:
-    void update(SDL_Event &event) override;
+    void update(Event &event) override;
     void draw(SDL_Renderer *renderer) override;
     Player();
     Player(int x, int y);

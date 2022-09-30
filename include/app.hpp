@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 
+#include "utils/eventController.hpp"
+#include "utils/audioController.hpp"
 #include "game/map.hpp"
 #include "game/player.hpp"
 
@@ -17,18 +19,23 @@ class App
 private:
     App(){};
 
+    bool running = true;
+
     Player *player;
     std::shared_ptr<Map> map;
+    EventController eventController;
 
     SDL_Window *window = nullptr;
     SDL_Joystick *joystick = nullptr;
     SDL_Renderer *renderer = nullptr;
 
     static App _instance;
-    void loadMap();
 
     friend class Player;
     friend int main(int argc, char *argv[]);
+
+    void loadMap();
+    void handleBaseEvents(Event &event);
 
 public:
     int width = WINDOW_WIDTH, height = WINDOW_HEIGHT;
@@ -38,6 +45,8 @@ public:
     static App &get() { return _instance; };
 
     void init();
+
+    void handleEvents();
 
     void draw();
 

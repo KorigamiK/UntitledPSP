@@ -2,7 +2,7 @@
 
 Map::Map(const char *mapFileName) : mapFile(mapFileName){};
 
-Map::~Map() { SDL_Log("Map Destroyed"); }
+Map::~Map() { SDL_Log("Map Destructor"); }
 
 void Map::init(Player *p)
 {

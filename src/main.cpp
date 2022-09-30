@@ -13,12 +13,6 @@
 
 #include "app.hpp"
 
-#ifdef PLATFORM_PSP
-#define MUS_PATH "sound.wav"
-#else
-#define MUS_PATH "/home/korigamik/Dev/projects/PSP/game/untitled/res/sound.wav"
-#endif
-
 #define FRAME_RENDER_DELAY 25
 
 static Uint8 *audio_pos; // global pointer to the audio buffer to be played
@@ -50,77 +44,9 @@ int main(int argc, char *argv[])
     std::cerr << e.what() << '\n';
   }
 
-  bool done = false;
-
-  SDL_Event event;
-  // local variables
-  static Uint32 wav_length;      // length of our sample
-  static Uint8 *wav_buffer;      // buffer containing our audio file
-  static SDL_AudioSpec wav_spec; // the specs of our piece of music
-
-  /* Load the WAV */
-  // the specs, length and buffer of our wav are filled
-  if (SDL_LoadWAV(MUS_PATH, &wav_spec, &wav_buffer, &wav_length) == NULL)
+  while (app.running)
   {
-    SDL_Log("SDL_LoadWAV failed: %s\n", SDL_GetError());
-    return -1;
-  }
-
-  // set the callback function
-  wav_spec.callback = my_audio_callback;
-  wav_spec.userdata = NULL;
-  audio_pos = wav_buffer; // copy sound buffer
-  audio_len = wav_length; // copy file length
-
-  /* Open the audio device */
-  if (SDL_OpenAudio(&wav_spec, NULL) < 0)
-  {
-    SDL_Log("Couldn't open audio: %s\n", SDL_GetError());
-    return -1;
-  }
-
-  // Start playing
-  SDL_PauseAudio(0);
-
-  while (!done)
-  {
-    while (SDL_PollEvent(&event))
-    {
-      switch (event.type)
-      {
-      // close window if user clicks the X
-      case SDL_QUIT:
-        done = 1;
-        break;
-
-      case SDL_JOYAXISMOTION:
-        SDL_Log("Joystick %d axis %d value: %d\n",
-                event.jaxis.which,
-                event.jaxis.axis, event.jaxis.value);
-        break;
-
-      case SDL_JOYBUTTONDOWN:
-      case SDL_KEYDOWN:
-
-        SDL_Log("Joystick %d button %d down\n",
-                event.jbutton.which, event.jbutton.button);
-        if (event.jbutton.which == 0) // seek for joystick #0
-        {
-          if (event.jbutton.button == 2)
-          {
-            audio_pos = wav_buffer; // copy sound buffer
-            audio_len = wav_length;
-          }
-          else if (event.jbutton.button == 11) // (Start) button down
-            done = 1;
-        }
-        app.player->update(event);
-        break;
-
-      default:
-        break;
-      }
-    }
+    app.handleEvents();
 
     app.draw();
 
@@ -128,10 +54,6 @@ int main(int argc, char *argv[])
 
     SDL_Delay(FRAME_RENDER_DELAY);
   }
-
-  // shut everything down
-  SDL_CloseAudio();
-  SDL_FreeWAV(wav_buffer);
 
 #ifdef PLATFORM_PSP
   sceKernelExitGame();

@@ -14,6 +14,30 @@ void App::draw()
     map->draw(renderer);
 }
 
+void App::handleBaseEvents(Event &event)
+{
+    switch (event)
+    {
+    case Event::QUIT:
+        running = false;
+        break;
+    case Event::CONFIRM:
+        AudioController::audio_pos = AudioController::wav_buffer;
+        AudioController::audio_len = AudioController::wav_length;
+        break;
+    }
+}
+
+void App::handleEvents()
+{
+    std::vector<Event> events = eventController.getEvents();
+    for (auto &event : events)
+    {
+        handleBaseEvents(event);
+        player->update(event);
+    }
+}
+
 void App::rerender()
 {
     SDL_RenderPresent(renderer);
@@ -66,11 +90,14 @@ void App::init()
     player = new Player(map->mapRect.w / 2, map->mapRect.h / 2);
     player->init(map);
     map->init(player);
+
+    AudioController::init();
 }
 
 App::~App()
 {
     SDL_Log("App Destructor");
+    AudioController::close();
     SDL_JoystickClose(joystick);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

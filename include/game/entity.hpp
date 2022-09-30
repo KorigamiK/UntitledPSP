@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include "utils/events.hpp"
 
 class Entity
 {
@@ -9,7 +10,7 @@ private:
     const char *name = "Entity";
 
 public:
-    virtual void update(SDL_Event &event){};
+    virtual void update(Event &event){};
     virtual void draw(SDL_Renderer *renderer){};
 
     Entity();

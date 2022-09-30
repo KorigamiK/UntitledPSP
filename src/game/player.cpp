@@ -1,66 +1,28 @@
 #include "game/player.hpp"
 
-void Player::update(SDL_Event &event)
+void Player::update(Event &event)
 {
-    SDL_Log("Player::update %d", event.type);
-    switch (event.type)
+    SDL_Log("Player::update %d", event);
+    switch (event)
     {
-    case SDL_KEYDOWN:
-        switch (event.key.keysym.sym)
-        {
-        case SDLK_LEFT:
-        case SDLK_a:
-            position.x -= moveStep;
-            break;
-        case SDLK_RIGHT:
-        case SDLK_d:
-            position.x += moveStep;
-            break;
-        case SDLK_UP:
-        case SDLK_w:
-            position.y -= moveStep;
-            break;
-        case SDLK_DOWN:
-        case SDLK_s:
-            position.y += moveStep;
-            break;
-        case SDLK_q:
-            angle -= angleStep;
-            break;
-        case SDLK_e:
-            angle += angleStep;
-            break;
-        default:
-            break;
-        }
+    case Event::UP:
+        position.y -= moveStep;
         break;
-
-    case SDL_JOYBUTTONDOWN:
-        switch (event.jbutton.button)
-        {
-        case PSP::Controls::Left:
-            position.x -= moveStep;
-            break;
-        case PSP::Controls::Right:
-            position.x += moveStep;
-            break;
-        case PSP::Controls::Up:
-            position.y -= moveStep;
-            break;
-        case PSP::Controls::Down:
-            position.y += moveStep;
-            break;
-        case PSP::Controls::LeftTrigger:
-            angle -= angleStep;
-            break;
-        case PSP::Controls::RightTrigger:
-            angle += angleStep;
-            break;
-        default:
-            break;
-        }
+    case Event::DOWN:
+        position.y += moveStep;
         break;
-
+    case Event::LEFT:
+        position.x -= moveStep;
+        break;
+    case Event::RIGHT:
+        position.x += moveStep;
+        break;
+    case Event::ROTATE_LEFT:
+        angle -= angleStep;
+        break;
+    case Event::ROTATE_RIGHT:
+        angle += angleStep;
+        break;
     default:
         break;
     }
@@ -95,5 +57,5 @@ Player::Player(int x, int y) : Entity(), position{x, y}
 
 Player::~Player()
 {
-    SDL_Log("Player destroyed");
+    SDL_Log("Player Destructor");
 }

@@ -21,8 +21,10 @@ target_compile_features(untitled_exe PRIVATE cxx_std_17)
 
 # Header files (relative to "include" directory)
 set(HEADERS
-    controls_psp.hpp
     app.hpp
+    utils/eventController.hpp
+    utils/events.hpp
+    utils/audioController.hpp
     game/object.hpp
     game/map.hpp
     game/entity.hpp
@@ -33,6 +35,8 @@ set(HEADERS
 set(SOURCES
     main.cpp
     app.cpp
+    utils/eventController.cpp
+    utils/audioController.cpp
     game/map.cpp
     game/entity.cpp
     game/player.cpp
