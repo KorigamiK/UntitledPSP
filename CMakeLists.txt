@@ -25,6 +25,7 @@ set(HEADERS
     utils/eventController.hpp
     utils/events.hpp
     utils/audioController.hpp
+    utils/fontController.hpp
     game/object.hpp
     game/map.hpp
     game/entity.hpp
@@ -37,6 +38,7 @@ set(SOURCES
     app.cpp
     utils/eventController.cpp
     utils/audioController.cpp
+    utils/fontController.cpp
     game/map.cpp
     game/entity.cpp
     game/player.cpp
@@ -50,14 +52,14 @@ target_include_directories(untitled_exe PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/incl
 
 if (PLATFORM_PSP)
     set(PSP_LARGE_MEMORY ON)
-    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PSP)
+    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PSP PSP_LARGE_MEMORY DEBUG) 
     target_link_libraries(untitled_exe PRIVATE 
         stdc++
         SDL2main
-		SDL2
         SDL2_ttf
-        freetype
+		SDL2
 		GL
+        freetype
 		png
 		z
 		pspvram
@@ -70,6 +72,7 @@ if (PLATFORM_PSP)
 		pspctrl
 		pspaudio
         jsoncpp
+        bz2
     )
 
     create_pbp_file(
@@ -85,7 +88,7 @@ else()
     find_package(SDL2 REQUIRED)
     find_package(SDL2_ttf REQUIRED)
 
-    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC)
+    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC DEBUG)
     target_link_libraries(untitled_exe PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2_ttf freetype jsoncpp)
     execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
                                                                ${CMAKE_BINARY_DIR}/res)

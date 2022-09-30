@@ -9,9 +9,39 @@ void App::draw()
 
     SDL_GetWindowSize(window, &width, &height);
 
+    // write "Untitled" in the screen
+    SDL_Texture *textTexture = FontController::getTexture(renderer, "Debug", {255, 255, 255});
+    SDL_Rect textRect;
+    SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
+    textRect.x = textRect.w;
+    textRect.y = height - textRect.h;
+    SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+    SDL_DestroyTexture(textTexture);
+
+#ifdef DEBUG
+    renderDebugMessages();
+#endif
+
     map->setMapRect(SDL_Rect{width / 2, 0, width / 2, height}, 10);
     player->draw(renderer);
     map->draw(renderer);
+}
+
+void App::renderDebugMessages()
+{
+    SDL_Rect textRect;
+    SDL_Texture *textTexture;
+    int i = 0;
+    for (auto &message : debugMessages)
+    {
+        textTexture = FontController::getTexture(renderer, message, {255, 255, 255});
+        SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
+        textRect.x = 0;
+        textRect.y = i * textRect.h;
+        SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+        SDL_DestroyTexture(textTexture);
+        i++;
+    }
 }
 
 void App::handleBaseEvents(Event &event)
@@ -22,6 +52,7 @@ void App::handleBaseEvents(Event &event)
         running = false;
         break;
     case Event::CONFIRM:
+        addDebugMessage("Confirm");
         AudioController::audio_pos = AudioController::wav_buffer;
         AudioController::audio_len = AudioController::wav_length;
         break;
@@ -92,12 +123,19 @@ void App::init()
     map->init(player);
 
     AudioController::init();
+    FontController::LoadFont();
+
+#ifdef DEBUG
+    SDL_Log("DEBUG MODE");
+    addDebugMessage("Debug mode activated");
+#endif
 }
 
 App::~App()
 {
     SDL_Log("App Destructor");
     AudioController::close();
+    FontController::UnloadFont();
     SDL_JoystickClose(joystick);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
