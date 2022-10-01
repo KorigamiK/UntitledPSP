@@ -25,6 +25,7 @@ set(HEADERS
     utils/eventController.hpp
     utils/events.hpp
     utils/audioController.hpp
+    utils/sounds.hpp
     utils/fontController.hpp
     game/object.hpp
     game/map.hpp
@@ -57,6 +58,7 @@ if (PLATFORM_PSP)
         stdc++
         SDL2main
         SDL2_ttf
+        SDL2_mixer
 		SDL2
 		GL
         freetype
@@ -72,6 +74,9 @@ if (PLATFORM_PSP)
 		pspctrl
 		pspaudio
         jsoncpp
+        vorbis
+        vorbisfile
+        ogg
         bz2
     )
 
@@ -87,9 +92,10 @@ if (PLATFORM_PSP)
 else()
     find_package(SDL2 REQUIRED)
     find_package(SDL2_ttf REQUIRED)
+    find_package(SDL2_mixer CONFIG REQUIRED)
 
     target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC DEBUG)
-    target_link_libraries(untitled_exe PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2_ttf freetype jsoncpp)
+    target_link_libraries(untitled_exe PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2_mixer SDL2_ttf freetype jsoncpp)
     execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
                                                                ${CMAKE_BINARY_DIR}/res)
 endif()

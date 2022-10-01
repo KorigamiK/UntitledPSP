@@ -2,23 +2,23 @@
 
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
+
+#include "utils/sounds.hpp"
 
 #ifdef PLATFORM_PSP
-#define MUS_PATH "sound.wav"
+#define SOUND_CONFIRM_PATH "sound.wav"
 #else
-#define MUS_PATH "res/sound.wav"
+#define SOUND_CONFIRM_PATH "res/sound.wav"
 #endif
 
 namespace AudioController
 {
-    static Uint8 *audio_pos; // global pointer to the audio buffer to be played
-    static Uint32 audio_len; // remaining length of the sample we have to play
-
-    static Uint32 wav_length;      // length of our sample
-    static Uint8 *wav_buffer;      // buffer containing our audio file
-    static SDL_AudioSpec wav_spec; // the specs of our piece of music
-
-    static void audioCallback(void *userdata, Uint8 *stream, int len);
+    namespace
+    {
+        Mix_Chunk *sound_confirm = nullptr;
+    }
     void init();
+    void play(Sound sound);
     void close();
 }

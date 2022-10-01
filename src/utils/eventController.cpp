@@ -13,8 +13,6 @@ std::vector<Event> EventController::getEvents()
             break;
         case SDL_KEYDOWN:
             events.push_back(getEventFromKeyboard(event.key.keysym.sym));
-        case SDL_JOYBUTTONDOWN:
-            events.push_back(getEventFromJoystickButton(event.jbutton.button));
             break;
         // case SDL_MOUSEBUTTONDOWN:
         //     events.push_back(getEventFromMouseButton(event.button.button));
@@ -37,17 +35,6 @@ std::vector<Event> EventController::getEvents()
         }
     }
     return events;
-}
-
-Event EventController::getEventFromJoystickButton(Uint32 button)
-{
-    switch (button)
-    {
-    case 2:
-        return Event::CONFIRM;
-    default:
-        return Event::OTHER;
-    }
 }
 
 Event EventController::getEventFromKeyboard(SDL_Keycode key)

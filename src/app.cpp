@@ -53,8 +53,7 @@ void App::handleBaseEvents(Event &event)
         break;
     case Event::CONFIRM:
         addDebugMessage("Confirm");
-        AudioController::audio_pos = AudioController::wav_buffer;
-        AudioController::audio_len = AudioController::wav_length;
+        AudioController::play(Sound::CONFIRM);
         break;
     }
 }
@@ -80,7 +79,7 @@ void App::init()
 
     // SET THIS TO ACTIVATE joystick
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_AUDIO) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER) < 0)
     {
         SDL_Log("SDL_Init: %s\n", SDL_GetError());
         throw std::runtime_error("SDL_Init failed");

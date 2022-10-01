@@ -19,7 +19,6 @@ private:
     // Event getEventFromMouseButton(Uint8 button);
     // Event getEventFromMouseButtonUp(Uint8 button);
     Event getEventFromControllerButton(Uint32 button);
-    Event getEventFromJoystickButton(Uint32 button);
     Event getEventFromControllerAxis(Uint32 axis, Sint16 value);
 
     void openGameController(Sint32);
