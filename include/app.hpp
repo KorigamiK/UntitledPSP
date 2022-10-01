@@ -15,7 +15,7 @@
 #define COLOR_WHITE(x) SDL_SetRenderDrawColor(x, 255, 255, 255, 255);
 #define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 272
-#define DEBUG_MESSAGE_MAX 5
+#define DEBUG_MESSAGE_MAX 4
 
 // * Singleton Application class
 class App

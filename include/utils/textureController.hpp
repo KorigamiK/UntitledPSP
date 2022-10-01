@@ -7,10 +7,9 @@
 
 namespace TextureController
 {
-    namespace
-    {
-        std::map<const char *, SDL_Texture *> textures;
-    }
+
+    extern std::map<const char *, SDL_Texture *> textures;
+    extern SDL_Surface *iconSurface;
 
     SDL_Texture *load(SDL_Renderer *renderer, const char *file);
     void init(SDL_Renderer *renderer);

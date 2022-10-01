@@ -10,6 +10,7 @@ void App::draw()
     SDL_GetWindowSize(window, &width, &height);
 
     // write "Untitled" in the screen
+    /*
     SDL_Texture *textTexture = FontController::getTexture(renderer, "Debug", {255, 255, 255});
     SDL_Rect textRect;
     SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
@@ -17,6 +18,7 @@ void App::draw()
     textRect.y = height - textRect.h;
     SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
     SDL_DestroyTexture(textTexture);
+    */
 
 #ifdef DEBUG
     renderDebugMessages();
@@ -37,7 +39,7 @@ void App::renderDebugMessages()
         textTexture = FontController::getTexture(renderer, message, {255, 255, 255});
         SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
         textRect.x = 0;
-        textRect.y = i * textRect.h;
+        textRect.y = height - textRect.h * (i + 1);
         SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
         SDL_DestroyTexture(textTexture);
         i++;
@@ -101,7 +103,7 @@ void App::init()
     }
 
     // create a renderer (OpenGL ES2)
-    renderer = SDL_CreateRenderer(window, 0, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!renderer)
     {
         SDL_Log("SDL_CreateRenderer: %s\n", SDL_GetError());
@@ -110,14 +112,15 @@ void App::init()
     }
 
     TextureController::init(renderer);
-    // SDL_SetWindowIcon(window, TextureController::iconSurface);
+    SDL_SetWindowIcon(window, TextureController::iconSurface);
 
     // display icon at the center
     SDL_Rect iconRect;
-    SDL_QueryTexture(TextureController::getTexture("icon"), NULL, NULL, &iconRect.w, &iconRect.h);
+    SDL_Texture *iconTexture = TextureController::load(renderer, "res/glitch.png");
+    SDL_QueryTexture(iconTexture, NULL, NULL, &iconRect.w, &iconRect.h);
     iconRect.x = (WINDOW_WIDTH - iconRect.w) / 2;
     iconRect.y = (WINDOW_HEIGHT - iconRect.h) / 2;
-    SDL_RenderCopy(renderer, TextureController::getTexture("icon"), NULL, &iconRect);
+    SDL_RenderCopy(renderer, iconTexture, NULL, &iconRect);
     SDL_RenderPresent(renderer);
 
     map = std::make_shared<Map>(SDL_Rect{width / 2, 0, width / 2, height});
@@ -128,12 +131,12 @@ void App::init()
     AudioController::init();
     FontController::LoadFont();
 
-    SDL_Delay(1000);
 #ifdef DEBUG
     SDL_Log("DEBUG MODE");
-    addDebugMessage("Debug mode activated");
+    addDebugMessage("Debug mode");
 #else
     // wait 1 second
+    SDL_Delay(1000);
 #endif
 }
 
