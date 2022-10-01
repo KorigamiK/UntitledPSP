@@ -8,6 +8,7 @@
 #include "utils/eventController.hpp"
 #include "utils/audioController.hpp"
 #include "utils/fontController.hpp"
+#include "utils/textureController.hpp"
 #include "game/map.hpp"
 #include "game/player.hpp"
 

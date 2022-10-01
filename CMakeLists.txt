@@ -27,6 +27,7 @@ set(HEADERS
     utils/audioController.hpp
     utils/sounds.hpp
     utils/fontController.hpp
+    utils/textureController.hpp
     game/object.hpp
     game/map.hpp
     game/entity.hpp
@@ -40,6 +41,7 @@ set(SOURCES
     utils/eventController.cpp
     utils/audioController.cpp
     utils/fontController.cpp
+    utils/textureController.cpp
     game/map.cpp
     game/entity.cpp
     game/player.cpp
@@ -86,7 +88,7 @@ if (PLATFORM_PSP)
     create_pbp_file(
         TARGET untitled_exe
         TITLE "${CMAKE_PROJECT_NAME}"
-        ICON_PATH NULL # "${CMAKE_CURRENT_SOURCE_DIR}/icon0.png"
+        ICON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/res/glitch.png"
         BUILD_PRX
     )
 

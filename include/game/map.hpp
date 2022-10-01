@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <json/json.h>
 #include <fstream>
+
 #include "game/entity.hpp"
 #include "game/object.hpp"
 

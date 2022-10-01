@@ -109,6 +109,17 @@ void App::init()
         throw std::runtime_error("SDL_CreateRenderer failed");
     }
 
+    TextureController::init(renderer);
+    // SDL_SetWindowIcon(window, TextureController::iconSurface);
+
+    // display icon at the center
+    SDL_Rect iconRect;
+    SDL_QueryTexture(TextureController::getTexture("icon"), NULL, NULL, &iconRect.w, &iconRect.h);
+    iconRect.x = (WINDOW_WIDTH - iconRect.w) / 2;
+    iconRect.y = (WINDOW_HEIGHT - iconRect.h) / 2;
+    SDL_RenderCopy(renderer, TextureController::getTexture("icon"), NULL, &iconRect);
+    SDL_RenderPresent(renderer);
+
     map = std::make_shared<Map>(SDL_Rect{width / 2, 0, width / 2, height});
     player = new Player(map->mapRect.w / 2, map->mapRect.h / 2);
     player->init(map);
@@ -117,9 +128,12 @@ void App::init()
     AudioController::init();
     FontController::LoadFont();
 
+    SDL_Delay(1000);
 #ifdef DEBUG
     SDL_Log("DEBUG MODE");
     addDebugMessage("Debug mode activated");
+#else
+    // wait 1 second
 #endif
 }
 
@@ -128,9 +142,10 @@ App::~App()
     SDL_Log("App Destructor");
     AudioController::close();
     FontController::UnloadFont();
-    IMG_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    TextureController::closeAll();
+    IMG_Quit();
     SDL_Quit();
     delete player;
 }
