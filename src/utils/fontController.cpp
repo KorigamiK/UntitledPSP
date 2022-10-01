@@ -20,6 +20,7 @@ void FontController::UnloadFont()
 {
     TTF_CloseFont(fontBase);
     fontBase = NULL;
+    TTF_Quit();
 }
 
 SDL_Texture *FontController::getTexture(SDL_Renderer *renderer, std::string text, SDL_Color color)

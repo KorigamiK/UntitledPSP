@@ -22,4 +22,6 @@ void AudioController::play(Sound sound)
 void AudioController::close()
 {
     Mix_FreeChunk(sound_confirm);
+    Mix_CloseAudio();
+    Mix_Quit();
 }

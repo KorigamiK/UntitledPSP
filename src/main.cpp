@@ -1,11 +1,6 @@
 #ifdef PLATFORM_PSP
 #include <pspkernel.h>
 #include <pspdebug.h>
-/* Define the module info section */
-// PSP_MODULE_INFO("SDL2", 0, 1, 1);
-
-/* Define the main thread's attribute value (optional) */
-// PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
 #endif
 
 #include <iostream>

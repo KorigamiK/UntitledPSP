@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <vector>
 #include <memory>
 
@@ -31,7 +32,6 @@ private:
     EventController eventController;
 
     SDL_Window *window = nullptr;
-    SDL_Joystick *joystick = nullptr;
     SDL_Renderer *renderer = nullptr;
 
     friend class Player;

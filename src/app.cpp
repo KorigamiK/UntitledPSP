@@ -85,6 +85,12 @@ void App::init()
         throw std::runtime_error("SDL_Init failed");
     }
 
+    if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG)
+    {
+        SDL_Log("IMG_Init: %s\n", IMG_GetError());
+        throw std::runtime_error("IMG_Init failed");
+    }
+
     // create an SDL window (pspgl enabled)
     window = SDL_CreateWindow("Untitled", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
     if (!window)
@@ -102,19 +108,6 @@ void App::init()
         SDL_Quit();
         throw std::runtime_error("SDL_CreateRenderer failed");
     }
-
-    if (SDL_NumJoysticks() < 1)
-        SDL_Log("No joysticks connected: %s\n", SDL_GetError());
-
-    joystick = SDL_JoystickOpen(0);
-    if (joystick == NULL)
-    {
-        SDL_Log("SDL_JoystickOpen: %s\n", SDL_GetError());
-        // SDL_Quit();
-        // return -1;
-    }
-    else
-        SDL_Log("Joystick found: %s\n", SDL_JoystickName(joystick));
 
     map = std::make_shared<Map>(SDL_Rect{width / 2, 0, width / 2, height});
     player = new Player(map->mapRect.w / 2, map->mapRect.h / 2);
@@ -135,7 +128,7 @@ App::~App()
     SDL_Log("App Destructor");
     AudioController::close();
     FontController::UnloadFont();
-    SDL_JoystickClose(joystick);
+    IMG_Quit();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

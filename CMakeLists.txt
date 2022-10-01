@@ -56,10 +56,13 @@ if (PLATFORM_PSP)
     target_compile_definitions(untitled_exe PRIVATE PLATFORM_PSP PSP_LARGE_MEMORY DEBUG) 
     target_link_libraries(untitled_exe PRIVATE 
         stdc++
+        SDL2_mixer
+        SDL2_image
+		SDL2
         SDL2main
         SDL2_ttf
-        SDL2_mixer
-		SDL2
+        png
+        jpeg
 		GL
         freetype
 		png
@@ -93,9 +96,10 @@ else()
     find_package(SDL2 REQUIRED)
     find_package(SDL2_ttf REQUIRED)
     find_package(SDL2_mixer CONFIG REQUIRED)
+    find_package(SDL2_image CONFIG REQUIRED)
 
     target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC DEBUG)
-    target_link_libraries(untitled_exe PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2_mixer SDL2_ttf freetype jsoncpp)
+    target_link_libraries(untitled_exe PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2_mixer SDL2_ttf SDL2_image freetype jsoncpp)
     execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
                                                                ${CMAKE_BINARY_DIR}/res)
 endif()
