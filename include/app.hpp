@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 
+#include "utils/colors.hpp"
 #include "utils/eventController.hpp"
 #include "utils/audioController.hpp"
 #include "utils/fontController.hpp"
@@ -12,7 +13,6 @@
 #include "game/map.hpp"
 #include "game/player.hpp"
 
-#define COLOR_WHITE(x) SDL_SetRenderDrawColor(x, 255, 255, 255, 255);
 #define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 272
 #define DEBUG_MESSAGE_MAX 4

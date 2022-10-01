@@ -1,8 +1,10 @@
 #pragma once
 
 #include <memory>
+
 #include "game/entity.hpp"
 #include "game/map.hpp"
+#include "ray_march/ray.hpp"
 
 #define PLAYER_DRECTION_SIZE 20
 #define PLAYER_SIZE 10
@@ -16,11 +18,13 @@ private:
 
     std::shared_ptr<Map> map;
 
+    Ray ray;
     SDL_Point position{0, 0};
-
     int moveStep = 5;
-    float angleStep = 0.3;
+    float angleStep = 0.1;
     float angle = 0;
+
+    void rayMarch();
 
 public:
     void update(Event &event) override;

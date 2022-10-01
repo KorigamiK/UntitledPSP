@@ -11,11 +11,11 @@ void App::draw()
 
     // write "Untitled" in the screen
     /*
-    SDL_Texture *textTexture = FontController::getTexture(renderer, "Debug", {255, 255, 255});
+    SDL_Texture *textTexture = FontController::getTexture(renderer, "Untitled", {255, 255, 255});
     SDL_Rect textRect;
     SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
     textRect.x = textRect.w;
-    textRect.y = height - textRect.h;
+    textRect.y = height/2 - textRect.h;
     SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
     SDL_DestroyTexture(textTexture);
     */

@@ -28,6 +28,9 @@ set(HEADERS
     utils/sounds.hpp
     utils/fontController.hpp
     utils/textureController.hpp
+    utils/colors.hpp
+    utils/functions.hpp
+    ray_march/ray.hpp
     game/object.hpp
     game/map.hpp
     game/entity.hpp
@@ -42,6 +45,8 @@ set(SOURCES
     utils/audioController.cpp
     utils/fontController.cpp
     utils/textureController.cpp
+    utils/functions.cpp
+    ray_march/ray.cpp
     game/map.cpp
     game/entity.cpp
     game/player.cpp

@@ -5,10 +5,9 @@
 #include <json/json.h>
 #include <fstream>
 
+#include "utils/colors.hpp"
 #include "game/entity.hpp"
 #include "game/object.hpp"
-
-#define COLOR_WHITE(x) SDL_SetRenderDrawColor(x, 255, 255, 255, 255);
 
 class Player;
 
@@ -17,6 +16,7 @@ class Map : public Entity
 private:
     friend class App;
     friend class Player;
+    friend class Ray;
 
     Player *player;
     SDL_Rect mapRect = {0, 0, 100, 100}; // x, y, w, h
@@ -28,8 +28,6 @@ private:
 #endif
 
     std::vector<Wall> walls;
-
-    SDL_Point getAbsoluteCoOrdinates(SDL_Point point);
 
     static SDL_Rect getPaddedRect(SDL_Rect rect, int padding);
 
@@ -43,6 +41,7 @@ public:
     void init(Player *p);
     void loadMap();
     void setMapRect(SDL_Rect mapRectAndPosition, int padding = 10);
+    SDL_Point getAbsoluteCoOrdinates(SDL_Point point);
 
     void draw(SDL_Renderer *renderer) override;
     void drawWalls(SDL_Renderer *renderer);
