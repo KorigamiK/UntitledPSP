@@ -20,9 +20,8 @@ jobs:
        run: ./build_psp.sh --package
   
      - name: Extract tag name
-       if: startsWith(github.ref, 'refs/tags/')
        id: tag
-       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+       run: echo ::set-output name=VERSION::$(tail -n1 CHANGELOG.md | head -n1)
 
      - name: Create release
        uses: softprops/action-gh-release@v1
