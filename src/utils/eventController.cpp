@@ -120,7 +120,8 @@ Event EventController::getEventFromControllerButton(Uint32 button)
         event = Event::CANCEL;
         break;
     case SDL_CONTROLLER_BUTTON_START:
-        event = Event::MENU;
+        // event = Event::MENU;
+        event = Event::QUIT;
         break;
     default:
         event = Event::OTHER;

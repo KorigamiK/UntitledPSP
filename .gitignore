@@ -8,3 +8,4 @@ CMakeLists.txt.user
 CMakeUserPresets.json
 
 *.ignore
+.cache/

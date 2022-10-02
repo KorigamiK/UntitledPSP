@@ -1,4 +1,5 @@
 #include <iostream>
+#include <filesystem>
 #include "utils/fontController.hpp"
 
 void FontController::LoadFont()
@@ -8,12 +9,19 @@ void FontController::LoadFont()
         std::cout << "TTF_Init: " << TTF_GetError() << std::endl;
         throw std::runtime_error("TTF_Init failed");
     }
-    fontBase = TTF_OpenFont(FONT_PATH, 16);
+    if (!std::filesystem::exists(FONT_PATH))
+    {
+        SDL_Log("cwd: %s", std::filesystem::current_path().c_str());
+        throw std::runtime_error("File " + std::string(FONT_PATH) + " does not exist");
+    }
+
+    fontBase = TTF_OpenFont(FONT_PATH, 12);
     if (fontBase == NULL)
     {
         SDL_Log("Failed to load font! SDL_ttf Error: %s", TTF_GetError());
         throw std::runtime_error("Failed to load font!");
     }
+    SDL_Log("Font loaded");
 }
 
 void FontController::UnloadFont()
@@ -25,7 +33,7 @@ void FontController::UnloadFont()
 
 SDL_Texture *FontController::getTexture(SDL_Renderer *renderer, std::string text, SDL_Color color)
 {
-    SDL_Surface *textSurface = TTF_RenderText_Solid(fontBase, text.c_str(), color);
+    SDL_Surface *textSurface = TTF_RenderUTF8_Blended_Wrapped(fontBase, text.c_str(), color, 100);
     if (textSurface == NULL)
     {
         SDL_Log("Unable to render text surface! SDL_ttf Error: %s", TTF_GetError());

@@ -27,6 +27,8 @@ private:
 
     bool running = true;
     std::deque<const char *> debugMessages = {};
+    bool debugChanged = true;
+    SDL_Texture *debugTexture = nullptr;
 
     Player *player;
     std::shared_ptr<Map> map;
@@ -62,6 +64,7 @@ public:
         if (debugMessages.size() == DEBUG_MESSAGE_MAX)
             debugMessages.pop_front();
         debugMessages.push_back(message);
+        debugChanged = true;
     }
 
     ~App();

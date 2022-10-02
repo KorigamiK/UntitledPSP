@@ -31,19 +31,25 @@ void App::draw()
 
 void App::renderDebugMessages()
 {
-    SDL_Rect textRect;
-    SDL_Texture *textTexture;
-    int i = 0;
-    for (auto &message : debugMessages)
+    if (debugChanged)
     {
-        textTexture = FontController::getTexture(renderer, message, {255, 255, 255});
-        SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
-        textRect.x = 0;
-        textRect.y = height - textRect.h * (i + 1);
-        SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
-        SDL_DestroyTexture(textTexture);
-        i++;
+        if (debugTexture != nullptr)
+            SDL_DestroyTexture(debugTexture);
+        debugChanged = false;
+        std::string debugText = "";
+        for (auto &message : debugMessages)
+        {
+            debugText += message;
+            debugText += "\n";
+        }
+        debugTexture = FontController::getTexture(renderer, debugText.c_str(), {255, 255, 255});
     }
+
+    SDL_Rect textRect;
+    SDL_QueryTexture(debugTexture, NULL, NULL, &textRect.w, &textRect.h);
+    textRect.x = 0;
+    textRect.y = height - textRect.h;
+    SDL_RenderCopy(renderer, debugTexture, NULL, &textRect);
 }
 
 void App::handleBaseEvents(Event &event)
@@ -65,6 +71,7 @@ void App::handleEvents()
     std::vector<Event> events = eventController.getEvents();
     for (auto &event : events)
     {
+        SDL_Log("Event: %d", event);
         handleBaseEvents(event);
         player->update(event);
     }
@@ -130,6 +137,8 @@ void App::init()
 
     AudioController::init();
     FontController::LoadFont();
+
+    SDL_Log("App::init done");
 
 #ifdef DEBUG
     SDL_Log("DEBUG MODE");
