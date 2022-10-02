@@ -21,10 +21,10 @@ class Ray : public Entity
 private:
     std::shared_ptr<Map> map;
 
-    SDL_Point &position;
-    float &angle;
+    SDL_Point position;
+    float angle;
 
-    Functions::PointF endPosition;
+    Functions::PointF endPosition{0, 0};
     float distance = 0;
 
 public:
@@ -34,6 +34,7 @@ public:
     PointAndDistance march(); // returns the distance to the wall
     Functions::PointF getTarget();
 
-    Ray(SDL_Point &position, float &angle, std::shared_ptr<Map> map) : position(position), angle(angle), map(map), endPosition(getTarget()){};
-    ~Ray(){};
+    inline Ray(){};
+    inline Ray(SDL_Point position, float angle, std::shared_ptr<Map> map) : position(position), angle(angle), map(map), endPosition(getTarget()){};
+    inline ~Ray(){};
 };

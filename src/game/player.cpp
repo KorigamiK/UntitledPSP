@@ -2,7 +2,8 @@
 
 void Player::rayMarch()
 {
-    ray.march();
+    for (auto &ray : rays)
+        ray.march();
 }
 
 void Player::update(Event &event)
@@ -30,12 +31,15 @@ void Player::update(Event &event)
     default:
         break;
     }
+    updateRays();
     rayMarch();
 }
 
 void Player::draw(SDL_Renderer *renderer)
 {
-    ray.draw(renderer);
+    for (auto &ray : rays)
+        ray.draw(renderer);
+
     COLOR_BLUE(renderer);
     SDL_Point relativePos = map->getAbsoluteCoOrdinates(position);
     SDL_Rect r = {relativePos.x - PLAYER_SIZE / 2, relativePos.y - PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE};
@@ -45,22 +49,37 @@ void Player::draw(SDL_Renderer *renderer)
 void Player::init(std::shared_ptr<Map> map)
 {
     this->map = map;
-    ray.map = map;
+    for (auto &ray : rays)
+        ray.map = map;
+    updateRays();
 }
 
-Player::Player() : Entity(), ray(position, angle, map)
+Player::Player() : Entity()
 {
     Logger::Info("Player created");
     name = "Player";
+    // for (int r = -PLAYER_FIELD_OF_VIEW / 2; r < PLAYER_FIELD_OF_VIEW / 2; r++)
+    //     rays[r + PLAYER_FIELD_OF_VIEW / 2] = Ray(position, angle + (float)r * Constants::OneDegreeRadian, map);
 }
 
-Player::Player(int x, int y) : Entity(), position{x, y}, ray(position, angle, map)
+Player::Player(int x, int y) : Entity(), position{x, y}
 {
     Logger::Info("Player created");
     name = "Player";
+    updateRays();
 }
 
 Player::~Player()
 {
     Logger::Info("Player Destructor");
+}
+
+void Player::updateRays()
+{
+    int i = 0;
+    for (int a = -PLAYER_FIELD_OF_VIEW / 2; a < PLAYER_FIELD_OF_VIEW / 2; a++)
+    {
+        rays[a + PLAYER_FIELD_OF_VIEW / 2].angle = angle + a * Constants::OneDegreeRadian;
+        rays[a + PLAYER_FIELD_OF_VIEW / 2].position = position;
+    }
 }

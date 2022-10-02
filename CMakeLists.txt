@@ -22,6 +22,7 @@ target_compile_features(untitled_exe PRIVATE cxx_std_17)
 # Header files (relative to "include" directory)
 set(HEADERS
     app.hpp
+    utils/constants.hpp
     utils/logger.hpp
     utils/eventController.hpp
     utils/events.hpp
