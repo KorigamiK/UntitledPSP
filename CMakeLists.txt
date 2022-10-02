@@ -61,7 +61,10 @@ target_include_directories(untitled_exe PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/incl
 
 if (PLATFORM_PSP)
     set(PSP_LARGE_MEMORY ON)
-    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PSP PSP_LARGE_MEMORY DEBUG) 
+    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PSP PSP_LARGE_MEMORY)
+    if (VERBOSE)
+        target_compile_definitions(untitled_exe PRIVATE VERBOSE)
+    endif()
     target_link_libraries(untitled_exe PRIVATE 
         stdc++
         SDL2_mixer
