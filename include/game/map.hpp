@@ -21,11 +21,7 @@ private:
     Player *player;
     SDL_Rect mapRect = {0, 0, 100, 100}; // x, y, w, h
 
-#ifdef PLATFORM_PSP
-    const char *mapFile = "map.json";
-#else
     const char *mapFile = "res/map.json";
-#endif
 
     std::vector<Wall> walls;
 

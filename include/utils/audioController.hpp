@@ -6,11 +6,7 @@
 
 #include "utils/sounds.hpp"
 
-#ifdef PLATFORM_PSP
-#define SOUND_CONFIRM_PATH "sound.wav"
-#else
 #define SOUND_CONFIRM_PATH "res/sound.wav"
-#endif
 
 namespace AudioController
 {
