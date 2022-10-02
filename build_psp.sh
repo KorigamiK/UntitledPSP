@@ -1,6 +1,7 @@
 #!/bin/bash
 
 mkdir -p build/psp &&
+cp -r res build/psp &&
 cd build/psp &&
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$PSPDEV/psp/share/pspdev.cmake -S ../../ -B . &&
 make &&
