@@ -2,7 +2,7 @@
 
 enum class Event
 {
-    NONE,
+    NONE = 0,
     CONFIRM,
     CANCEL,
     LEFT,

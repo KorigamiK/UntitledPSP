@@ -18,3 +18,4 @@ namespace AudioController
     void play(Sound sound);
     void close();
 }
+

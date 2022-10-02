@@ -5,6 +5,7 @@
 #include <json/json.h>
 #include <fstream>
 
+#include "utils/logger.hpp"
 #include "utils/colors.hpp"
 #include "game/entity.hpp"
 #include "game/object.hpp"

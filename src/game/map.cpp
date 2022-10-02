@@ -2,7 +2,7 @@
 
 Map::Map(const char *mapFileName) : mapFile(mapFileName){};
 
-Map::~Map() { SDL_Log("Map Destructor"); }
+Map::~Map() { Logger::Info("Map Destructor"); }
 
 void Map::init(Player *p)
 {
@@ -65,14 +65,14 @@ void Map::draw(SDL_Renderer *renderer)
 #ifndef PLATFORM_PSP
 void Map::loadMap()
 {
-  SDL_Log("Map::loadMap");
+  Logger::Info("Map::loadMap");
   Json::Value root;
   Json::Reader reader;
   std::ifstream file(mapFile);
   bool parsingSuccessful = reader.parse(file, root);
   if (!parsingSuccessful)
   {
-    SDL_Log("Failed to parse map.json");
+    Logger::Error("Failed to parse map.json");
     return;
   }
 
@@ -97,7 +97,7 @@ void Map::loadMap()
                 .get("y", "0")
                 .asInt()}});
 
-    SDL_Log("Wall %d Color: %s", index, walls.at(index).color.c_str());
+    Logger::Debug("Wall %d Color: %s", index, walls[index].color.c_str());
   }
 }
 #endif

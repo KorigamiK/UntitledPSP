@@ -193,7 +193,7 @@ void EventController::openGameController(Sint32 index)
     if (SDL_IsGameController(index))
     {
         SDL_GameController *controller = SDL_GameControllerOpen(index);
-        SDL_Log("Adding controller: %s", SDL_GameControllerName(controller));
+        Logger::Debug("Adding controller: %s", SDL_GameControllerName(controller));
         gameControllers.push_back(controller);
     }
 }
@@ -205,7 +205,7 @@ void EventController::closeDisconnectedGameControllers()
     {
         if (!SDL_GameControllerGetAttached(controller))
         {
-            SDL_Log("Removing controller: %s", SDL_GameControllerName(controller));
+            Logger::Debug("Removing controller: %s", SDL_GameControllerName(controller));
             SDL_GameControllerClose(controller);
             controller = NULL;
         }
@@ -219,7 +219,7 @@ void EventController::closeAllGameControllers()
 {
     for (int i = 0; i < int(gameControllers.size()); i++)
     {
-        SDL_Log("Removing controller: %s", SDL_GameControllerName(gameControllers[i]));
+        Logger::Debug("Removing controller: %s", SDL_GameControllerName(gameControllers[i]));
         SDL_GameControllerClose(gameControllers[i]);
         gameControllers[i] = NULL;
     }
@@ -227,6 +227,6 @@ void EventController::closeAllGameControllers()
 
 EventController::~EventController()
 {
-    SDL_Log("EventController Destructor");
+    Logger::Info("EventController Destructor");
     closeAllGameControllers();
 }

@@ -7,20 +7,22 @@ SDL_Texture *TextureController::load(SDL_Renderer *renderer, const char *file)
 {
     if (!std::filesystem::exists(file))
     {
-        SDL_Log("cwd: %s", std::filesystem::current_path().c_str());
+        Logger::Error("cwd: %s", std::filesystem::current_path().c_str());
         throw std::runtime_error("File " + std::string(file) + " does not exist");
     }
 
     SDL_Texture *texture = IMG_LoadTexture(renderer, file);
     if (!texture)
     {
-        SDL_Log("IMG_LoadTexture: %s", IMG_GetError());
+        Logger::Error("IMG_LoadTexture: %s", IMG_GetError());
         throw std::runtime_error("IMG_LoadTexture failed");
     }
 
+#ifdef VERBOSE
     int w, h;
     SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-    SDL_Log("w %d h %d", w, h);
+    Logger::Debug("Texture loaded: %s (%d x %d)", file, w, h);
+#endif
 
     return texture;
 }
@@ -48,10 +50,10 @@ SDL_Surface *TextureController::getSurfaceFromFile(const char *name)
 
 void TextureController::closeAll()
 {
-    SDL_Log("Closing all textures");
+    Logger::Info("Closing all textures");
     if (textures["icon"] != NULL)
     {
-        SDL_Log("Closing icon texture");
+        Logger::Info("Closing icon texture");
         close(textures["icon"]);
     }
 }

@@ -9,18 +9,7 @@ void App::draw()
 
     SDL_GetWindowSize(window, &width, &height);
 
-    // write "Untitled" in the screen
-    /*
-    SDL_Texture *textTexture = FontController::getTexture(renderer, "Untitled", {255, 255, 255});
-    SDL_Rect textRect;
-    SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
-    textRect.x = textRect.w;
-    textRect.y = height/2 - textRect.h;
-    SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
-    SDL_DestroyTexture(textTexture);
-    */
-
-#ifdef DEBUG
+#ifdef VERBOSE
     renderDebugMessages();
 #endif
 
@@ -71,7 +60,7 @@ void App::handleEvents()
     std::vector<Event> events = eventController.getEvents();
     for (auto &event : events)
     {
-        SDL_Log("Event: %d", event);
+        Logger::Debug("Event: %d", event);
         handleBaseEvents(event);
         player->update(event);
     }
@@ -84,19 +73,22 @@ void App::rerender()
 
 void App::init()
 {
-    SDL_Log("App::init");
+    Logger::Info("App::init");
 
-    // SET THIS TO ACTIVATE joystick
+#ifdef VERBOSE
+    SDL_LogSetPriority(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_VERBOSE);
+#endif
+
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER) < 0)
     {
-        SDL_Log("SDL_Init: %s\n", SDL_GetError());
+        Logger::Error("SDL_Init: %s\n", SDL_GetError());
         throw std::runtime_error("SDL_Init failed");
     }
 
     if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG)
     {
-        SDL_Log("IMG_Init: %s\n", IMG_GetError());
+        Logger::Error("IMG_Init: %s\n", IMG_GetError());
         throw std::runtime_error("IMG_Init failed");
     }
 
@@ -104,7 +96,7 @@ void App::init()
     window = SDL_CreateWindow("Untitled", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
     if (!window)
     {
-        SDL_Log("SDL_CreateWindow: %s\n", SDL_GetError());
+        Logger::Error("SDL_CreateWindow: %s\n", SDL_GetError());
         SDL_Quit();
         throw std::runtime_error("SDL_CreateWindow failed");
     }
@@ -113,7 +105,7 @@ void App::init()
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!renderer)
     {
-        SDL_Log("SDL_CreateRenderer: %s\n", SDL_GetError());
+        Logger::Error("SDL_CreateRenderer: %s\n", SDL_GetError());
         SDL_Quit();
         throw std::runtime_error("SDL_CreateRenderer failed");
     }
@@ -121,7 +113,6 @@ void App::init()
     TextureController::init(renderer);
     SDL_SetWindowIcon(window, TextureController::iconSurface);
 
-    // display icon at the center
     SDL_Rect iconRect;
     SDL_Texture *iconTexture = TextureController::load(renderer, "res/glitch.png");
     SDL_QueryTexture(iconTexture, NULL, NULL, &iconRect.w, &iconRect.h);
@@ -138,20 +129,19 @@ void App::init()
     AudioController::init();
     FontController::LoadFont();
 
-    SDL_Log("App::init done");
+    Logger::Info("App::init done");
 
-#ifdef DEBUG
-    SDL_Log("DEBUG MODE");
+#ifdef VERBOSE
+    Logger::Info("DEBUG MODE");
     addDebugMessage("Debug mode");
 #else
-    // wait 1 second
     SDL_Delay(1000);
 #endif
 }
 
 App::~App()
 {
-    SDL_Log("App Destructor");
+    Logger::Info("App Destructor");
     AudioController::close();
     FontController::UnloadFont();
     SDL_DestroyRenderer(renderer);

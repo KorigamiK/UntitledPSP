@@ -3,6 +3,7 @@
 #include <vector>
 #include <SDL2/SDL.h>
 
+#include "utils/logger.hpp"
 #include "utils/events.hpp"
 
 #define AXIS_MAX 32767

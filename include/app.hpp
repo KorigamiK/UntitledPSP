@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 
+#include "utils/logger.hpp"
 #include "utils/colors.hpp"
 #include "utils/eventController.hpp"
 #include "utils/audioController.hpp"

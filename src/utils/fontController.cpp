@@ -6,22 +6,22 @@ void FontController::LoadFont()
 {
     if (TTF_Init() < 0)
     {
-        std::cout << "TTF_Init: " << TTF_GetError() << std::endl;
+        Logger::Error("Failed to initialize SDL_ttf: %s", TTF_GetError());
         throw std::runtime_error("TTF_Init failed");
     }
     if (!std::filesystem::exists(FONT_PATH))
     {
-        SDL_Log("cwd: %s", std::filesystem::current_path().c_str());
+        Logger::Error("cwd: %s", std::filesystem::current_path().c_str());
         throw std::runtime_error("File " + std::string(FONT_PATH) + " does not exist");
     }
 
     fontBase = TTF_OpenFont(FONT_PATH, 12);
     if (fontBase == NULL)
     {
-        SDL_Log("Failed to load font! SDL_ttf Error: %s", TTF_GetError());
+        Logger::Error("Failed to load font! SDL_ttf Error: %s", TTF_GetError());
         throw std::runtime_error("Failed to load font!");
     }
-    SDL_Log("Font loaded");
+    Logger::Info("Font loaded");
 }
 
 void FontController::UnloadFont()
@@ -36,13 +36,13 @@ SDL_Texture *FontController::getTexture(SDL_Renderer *renderer, std::string text
     SDL_Surface *textSurface = TTF_RenderUTF8_Blended_Wrapped(fontBase, text.c_str(), color, 100);
     if (textSurface == NULL)
     {
-        SDL_Log("Unable to render text surface! SDL_ttf Error: %s", TTF_GetError());
+        Logger::Error("Unable to render text surface! SDL_ttf Error: %s", TTF_GetError());
         throw std::runtime_error("Unable to render text surface!");
     }
     SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
     if (textTexture == NULL)
     {
-        SDL_Log("Unable to create texture from rendered text! SDL Error: %s", SDL_GetError());
+        Logger::Error("Unable to create texture from rendered text! SDL Error: %s", SDL_GetError());
         throw std::runtime_error("Unable to create texture from rendered text!");
     }
     SDL_FreeSurface(textSurface);

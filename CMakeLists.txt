@@ -22,6 +22,7 @@ target_compile_features(untitled_exe PRIVATE cxx_std_17)
 # Header files (relative to "include" directory)
 set(HEADERS
     app.hpp
+    utils/logger.hpp
     utils/eventController.hpp
     utils/events.hpp
     utils/audioController.hpp
@@ -105,7 +106,7 @@ else()
     find_package(SDL2_mixer CONFIG REQUIRED)
     find_package(SDL2_image CONFIG REQUIRED)
 
-    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC DEBUG)
+    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC VERBOSE)
     target_link_libraries(untitled_exe PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2_mixer SDL2_ttf SDL2_image freetype jsoncpp)
     execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
                                                                ${CMAKE_BINARY_DIR}/res)

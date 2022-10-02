@@ -7,7 +7,6 @@ void Player::rayMarch()
 
 void Player::update(Event &event)
 {
-    SDL_Log("Player::update %d", event);
     switch (event)
     {
     case Event::UP:
@@ -51,17 +50,17 @@ void Player::init(std::shared_ptr<Map> map)
 
 Player::Player() : Entity(), ray(position, angle, map)
 {
-    SDL_Log("Player created");
+    Logger::Info("Player created");
     name = "Player";
 }
 
 Player::Player(int x, int y) : Entity(), position{x, y}, ray(position, angle, map)
 {
-    SDL_Log("Player created");
+    Logger::Info("Player created");
     name = "Player";
 }
 
 Player::~Player()
 {
-    SDL_Log("Player Destructor");
+    Logger::Info("Player Destructor");
 }
