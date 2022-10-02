@@ -8,7 +8,7 @@ make &&
 if [[ $1 == "--package" ]]; then
     mkdir -p dist &&
     cp EBOOT.PBP dist/ &&
-    cp -r assets dist/ &&
+    cp -r res dist/ &&
     cp ../../README.md dist/ &&
     cp ../../LICENSE dist/ &&
     cp ../../CHANGELOG.md dist/ &&
