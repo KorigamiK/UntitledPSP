@@ -1,14 +1,14 @@
 #pragma once
 
-#include <SDL2/SDL.h>
 #include <memory>
+#include <SDL2/SDL.h>
 #include "game/map.hpp"
 
 #include "utils/colors.hpp"
 #include "utils/functions.hpp"
 #include "game/entity.hpp"
 
-#define PLAYER_VIEW_DISTANCE 100
+#define PLAYER_VIEW_DISTANCE 200
 
 typedef struct
 {
@@ -24,11 +24,12 @@ private:
     SDL_Point position;
     float angle;
 
-    Functions::PointF endPosition{0, 0};
-    float distance = 0;
-
 public:
     friend class Player;
+    friend class PlayerView;
+
+    Functions::PointF endPosition{0, 0};
+    float distance = 0;
 
     void draw(SDL_Renderer *renderer) override;
     PointAndDistance march(); // returns the distance to the wall

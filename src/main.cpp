@@ -1,30 +1,26 @@
 #ifdef PLATFORM_PSP
-#include <pspkernel.h>
 #include <pspdebug.h>
+#include <pspkernel.h>
 #endif
 
-#include <iostream>
 #include <SDL2/SDL.h>
+#include <iostream>
 
 #include "app.hpp"
 
 #define FRAME_RENDER_DELAY 25
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
   App &app = App::get();
 
-  try
-  {
+  try {
     app.init();
-  }
-  catch (const std::exception &e)
-  {
+    Logger::Info("Init Done");
+  } catch (const std::exception &e) {
     std::cerr << e.what() << '\n';
   }
 
-  while (app.running)
-  {
+  while (app.running) {
     app.handleEvents();
 
     app.draw();

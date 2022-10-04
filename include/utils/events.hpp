@@ -11,6 +11,8 @@ enum class Event
     DOWN,
     ROTATE_LEFT,
     ROTATE_RIGHT,
+    ROTATE_UP,
+    ROTATE_DOWN,
     MENU,
     MOUSEMOVE,
     QUIT,

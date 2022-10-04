@@ -25,9 +25,9 @@ PointAndDistance Ray::march()
     float closestDistance = PLAYER_VIEW_DISTANCE;
     auto closestPoint = getTarget();
 
+    auto target = getTarget();
     for (auto &wall : map->walls)
     {
-        auto target = getTarget();
         float a1 = target.y - position.y;
         float b1 = position.x - target.x;
         float c1 = a1 * (position.x) + b1 * (position.y);
@@ -60,7 +60,6 @@ PointAndDistance Ray::march()
             }
         }
     }
-
     endPosition = closestPoint;
     distance = closestDistance;
 

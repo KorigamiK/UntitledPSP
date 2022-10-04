@@ -7,9 +7,10 @@
 #include "game/map.hpp"
 #include "ray_march/ray.hpp"
 
-#define PLAYER_DRECTION_SIZE 20
 #define PLAYER_SIZE 10
-#define PLAYER_FIELD_OF_VIEW 2
+#define PLAYER_FIELD_OF_VIEW 90
+#define PLAYER_VERTICAL_FIELD_OF_VIEW_DEG 130
+#define RAYS_CASTED 130
 
 class Map;
 
@@ -24,12 +25,15 @@ private:
     int moveStep = 5;
     float angleStep = 0.1;
     float angle = 0;
-    Ray rays[PLAYER_FIELD_OF_VIEW]; // rays to be casted per degree
+    float verticalAngle = 0;
+    Ray rays[RAYS_CASTED]; // rays to be casted per degree
 
     void rayMarch();
     void updateRays();
 
 public:
+    friend class PlayerView;
+
     void update(Event &event) override;
     void draw(SDL_Renderer *renderer) override;
     Player();

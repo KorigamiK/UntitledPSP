@@ -37,6 +37,7 @@ set(HEADERS
     game/map.hpp
     game/entity.hpp
     game/player.hpp
+		game/player_view.hpp
 )
 
 # Source files (relative to "src" directory)
@@ -52,6 +53,7 @@ set(SOURCES
     game/map.cpp
     game/entity.cpp
     game/player.cpp
+		game/player_view.cpp
 )
 
 list(TRANSFORM HEADERS PREPEND "include/")

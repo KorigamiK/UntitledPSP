@@ -28,6 +28,12 @@ void Player::update(Event &event)
     case Event::ROTATE_RIGHT:
         angle += angleStep;
         break;
+    case Event::ROTATE_UP:
+        verticalAngle -= angleStep;
+        break;
+    case Event::ROTATE_DOWN:
+        verticalAngle += angleStep;
+        break;
     default:
         break;
     }
@@ -74,10 +80,12 @@ Player::~Player()
 
 void Player::updateRays()
 {
+    static float anglePerRay = PLAYER_FIELD_OF_VIEW * Constants::OneDegreeRadian / RAYS_CASTED;
+
     int i = 0;
-    for (int a = -PLAYER_FIELD_OF_VIEW / 2; a < PLAYER_FIELD_OF_VIEW / 2; a++)
+    for (int a = -RAYS_CASTED / 2; a < RAYS_CASTED / 2; a++)
     {
-        rays[a + PLAYER_FIELD_OF_VIEW / 2].angle = angle + a * Constants::OneDegreeRadian;
-        rays[a + PLAYER_FIELD_OF_VIEW / 2].position = position;
+        rays[a + RAYS_CASTED / 2].angle = angle + a * anglePerRay;
+        rays[a + RAYS_CASTED / 2].position = position;
     }
 }

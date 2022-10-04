@@ -65,6 +65,12 @@ Event EventController::getEventFromKeyboard(SDL_Keycode key)
     case SDLK_e:
         event = Event::ROTATE_RIGHT;
         break;
+    case SDLK_z:
+        event = Event::ROTATE_UP;
+        break;
+    case SDLK_x:
+        event = Event::ROTATE_DOWN;
+        break;
     case SDLK_RETURN:
     case SDLK_SPACE:
         event = Event::CONFIRM;
@@ -118,6 +124,12 @@ Event EventController::getEventFromControllerButton(Uint32 button)
         break;
     case SDL_CONTROLLER_BUTTON_B:
         event = Event::CANCEL;
+        break;
+    case SDL_CONTROLLER_BUTTON_X:
+        event = Event::ROTATE_DOWN;
+        break;
+    case SDL_CONTROLLER_BUTTON_Y:
+        event = Event::ROTATE_UP;
         break;
     case SDL_CONTROLLER_BUTTON_START:
         // event = Event::MENU;

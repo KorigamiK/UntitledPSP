@@ -13,6 +13,7 @@
 #include "utils/textureController.hpp"
 #include "game/map.hpp"
 #include "game/player.hpp"
+#include "game/player_view.hpp"
 
 #define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 272
@@ -32,6 +33,7 @@ private:
     SDL_Texture *debugTexture = nullptr;
 
     Player *player;
+    std::unique_ptr<PlayerView> playerView;
     std::shared_ptr<Map> map;
     EventController eventController;
 

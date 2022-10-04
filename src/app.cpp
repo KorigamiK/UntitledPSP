@@ -13,9 +13,12 @@ void App::draw()
     renderDebugMessages();
 #endif
 
-    map->setMapRect(SDL_Rect{width / 2, 0, width / 2, height}, 10);
+    map->setMapRect(std::move(SDL_Rect{width / 2, 0, width / 2, height}), 10);
+    playerView->setViewRect(std::move(SDL_Rect{0, 0, width / 2, height}));
+
     player->draw(renderer);
     map->draw(renderer);
+    playerView->draw(renderer);
 }
 
 void App::renderDebugMessages()
@@ -125,6 +128,7 @@ void App::init()
     player = new Player(map->mapRect.w / 2, map->mapRect.h / 2);
     player->init(map);
     map->init(player);
+    playerView = std::make_unique<PlayerView>(player, SDL_Rect{0, 0, width / 2, height});
 
     AudioController::init();
     FontController::LoadFont();

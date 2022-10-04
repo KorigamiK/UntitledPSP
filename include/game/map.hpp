@@ -19,6 +19,7 @@ class Map : public Entity
 private:
     friend class App;
     friend class Player;
+    friend class PlayerView;
     friend class Ray;
 
     Player *player;
