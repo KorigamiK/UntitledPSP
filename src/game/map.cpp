@@ -30,17 +30,20 @@ SDL_Rect Map::getPaddedRect(SDL_Rect rect, int padding)
 
 SDL_Point Map::getAbsoluteCoOrdinates(SDL_Point point)
 {
-  return SDL_Point{point.x + mapRect.x, point.y + mapRect.y};
+  return std::move(SDL_Point{point.x + mapRect.x, point.y + mapRect.y});
 }
 
 void Map::drawWalls(SDL_Renderer *renderer)
 {
+  static auto fp = [this](SDL_Point point)
+  { return this->getAbsoluteCoOrdinates(point); };
+
   COLOR_WHITE(renderer);
   for (auto &wall : walls)
   {
-    auto p1 = getAbsoluteCoOrdinates(wall.p1);
-    auto p2 = getAbsoluteCoOrdinates(wall.p2);
-    SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);
+    SDL_Point absolutePoints[wall.points.size()];
+    std::transform(wall.points.begin(), wall.points.end(), absolutePoints, fp);
+    SDL_RenderDrawLines(renderer, absolutePoints, wall.points.size());
   }
 }
 
@@ -50,7 +53,7 @@ void Map::generateRandomWalls(unsigned int number)
   {
     SDL_Point p1 = {rand() % mapRect.w, rand() % mapRect.h};
     SDL_Point p2 = {rand() % mapRect.w, rand() % mapRect.h};
-    walls.push_back(Wall{"blue", "random", p1, p2});
+    walls.push_back(Wall{"blue", "random", {p1, p2}});
   }
 }
 
@@ -80,22 +83,14 @@ void Map::loadMap()
   for (int index = 0; index < jsonWalls.size(); ++index)
   {
     std::string name = jsonWalls[index].get("name", "name").asString();
+    std::string color = jsonWalls[index].get("color", "white").asString();
 
-    walls.push_back(Wall{
-        jsonWalls[index].get("color", "blue").asString(), // Object
-        name,
-        SDL_Point{
-            jsonWalls[index].get("p1", "A DEFAULT VALUE").get("x", "0").asInt(),
-            jsonWalls[index]
-                .get("p1", "A DEFAULT VALUE")
-                .get("y", "0")
-                .asInt()},
-        SDL_Point{
-            jsonWalls[index].get("p2", "A DEFAULT VALUE").get("x", "0").asInt(),
-            jsonWalls[index]
-                .get("p2", "A DEFAULT VALUE")
-                .get("y", "0")
-                .asInt()}});
+    Json::Value &jsonPoints = jsonWalls[index]["points"];
+    std::vector<SDL_Point> points;
+    for (Json::Value::ArrayIndex i = 0; i < jsonPoints.size(); ++i)
+      points.push_back(SDL_Point{jsonPoints[i].get("x", -1).asInt(), jsonPoints[i].get("y", -1).asInt()});
+
+    walls.push_back(Wall{color, name, std::move(points)});
 
     Logger::Debug("Wall %d Color: %s", index, walls[index].color.c_str());
   }

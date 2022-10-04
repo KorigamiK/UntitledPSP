@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <algorithm>
+#include <functional>
 #include <SDL2/SDL.h>
 #include <json/json.h>
 #include <fstream>

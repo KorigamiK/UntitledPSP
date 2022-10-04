@@ -11,6 +11,5 @@ struct Object
 struct Wall : Object
 {
     std::string name;
-    SDL_Point p1;
-    SDL_Point p2;
+    std::vector<SDL_Point> points;
 };

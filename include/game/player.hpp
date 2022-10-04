@@ -9,7 +9,7 @@
 
 #define PLAYER_DRECTION_SIZE 20
 #define PLAYER_SIZE 10
-#define PLAYER_FIELD_OF_VIEW 60
+#define PLAYER_FIELD_OF_VIEW 2
 
 class Map;
 

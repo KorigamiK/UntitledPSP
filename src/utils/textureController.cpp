@@ -24,7 +24,7 @@ SDL_Texture *TextureController::load(SDL_Renderer *renderer, const char *file)
     Logger::Debug("Texture loaded: %s (%d x %d)", file, w, h);
 #endif
 
-    return texture;
+    return std::move(texture);
 }
 
 void TextureController::close(SDL_Texture *texture)

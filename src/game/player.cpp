@@ -58,8 +58,6 @@ Player::Player() : Entity()
 {
     Logger::Info("Player created");
     name = "Player";
-    // for (int r = -PLAYER_FIELD_OF_VIEW / 2; r < PLAYER_FIELD_OF_VIEW / 2; r++)
-    //     rays[r + PLAYER_FIELD_OF_VIEW / 2] = Ray(position, angle + (float)r * Constants::OneDegreeRadian, map);
 }
 
 Player::Player(int x, int y) : Entity(), position{x, y}
