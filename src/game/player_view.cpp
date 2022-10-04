@@ -29,12 +29,12 @@ void PlayerView::draw(SDL_Renderer *renderer)
         SDL_Rect rect = {(int)rectX, (int)rectY, (int)rectW, (int)rectH};
         prevX = rectX;
 
-        float brightness = 1 - (ray.distance / PLAYER_VIEW_DISTANCE);
-        brightness = brightness < 0 ? 0 : brightness;
+        float brightness = 255 * std::max<float>(0, 2 * ray.distance / PLAYER_VIEW_DISTANCE - 1);
 
         if (rectX + rectW > viewRect.w + viewRect.x)
             continue;
-        SDL_SetRenderDrawColor(renderer, 255 * brightness, 255 * brightness, 255 * brightness, 255);
+
+        SDL_SetRenderDrawColor(renderer, brightness, brightness, brightness, 255);
         SDL_RenderFillRect(renderer, &rect);
     }
 }
