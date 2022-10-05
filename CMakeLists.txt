@@ -122,7 +122,7 @@ else()
 
     option(BUILD_STATIC "Build a static binary (Windows only)" ON)
 
-     target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
+     target_link_libraries(untitled_exe PRIVATE
           SDL2::SDL2
           SDL2::SDL2main
           SDL2::SDL2_image
