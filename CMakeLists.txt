@@ -113,10 +113,9 @@ else()
     find_package(SDL2_image CONFIG REQUIRED)
 
     if (NOT WIN32)
-        target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC VERBOSE)
         target_link_libraries(untitled_exe PRIVATE SDL2::SDL2main SDL2::SDL2 SDL2_mixer SDL2_ttf SDL2_image freetype jsoncpp)
         execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
-                                                                   ${CMAKE_BINARY_DIR}/res)
+        ${CMAKE_BINARY_DIR}/res)
     else()
         # copy runtime dependencies to binary directory
         file(COPY ${SDL2_DLL} DESTINATION ${CMAKE_BINARY_DIR})
@@ -126,6 +125,9 @@ else()
         file(COPY ${FREETYPE_DLL} DESTINATION ${CMAKE_BINARY_DIR})
         file(COPY ${JSONCPP_DLL} DESTINATION ${CMAKE_BINARY_DIR})
         file(COPY ${CMAKE_SOURCE_DIR}/res DESTINATION ${CMAKE_BINARY_DIR})
+        
+        target_link_libraries(untitled_exe PRIVATE SDL2::SDL2main SDL2::SDL2 SDL2::SDL2-static jsoncpp-static SDL2::SDL2_mixer SDL2::SDL2_mixer-static SDL2::SDL2_ttf SDL2::SDL2_ttf-static SDL2::SDL2_image SDL2::SDL2_image-static)
     endif()
+        target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC VERBOSE)
 endif()
 
