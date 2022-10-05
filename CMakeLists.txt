@@ -126,7 +126,7 @@ else()
         file(COPY ${JSONCPP_DLL} DESTINATION ${CMAKE_BINARY_DIR})
         file(COPY ${CMAKE_SOURCE_DIR}/res DESTINATION ${CMAKE_BINARY_DIR})
         
-        target_link_libraries(untitled_exe PRIVATE SDL2::SDL2-static SDL2_mixer SDL2_ttf SDL2_image SDL2_image jsoncpp)
+        target_link_libraries(untitled_exe PRIVATE SDL2::SDL2main SDL2::SDL2-static SDL2_mixer SDL2_ttf SDL2_image SDL2_image jsoncpp)
     endif()
         target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC VERBOSE)
 endif()
