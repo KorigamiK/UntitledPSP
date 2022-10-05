@@ -118,7 +118,14 @@ else()
         execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
                                                                    ${CMAKE_BINARY_DIR}/res)
     else()
-        set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static -Wl,-Bstatic -lSDL2main -lSDL2 -lSDL2_mixer -lSDL2_ttf -lSDL2_image -lfreetype -ljsoncpp")
+        # copy runtime dependencies to binary directory
+        file(COPY ${SDL2_DLL} DESTINATION ${CMAKE_BINARY_DIR})
+        file(COPY ${SDL2_MIXER_DLL} DESTINATION ${CMAKE_BINARY_DIR})
+        file(COPY ${SDL2_TTF_DLL} DESTINATION ${CMAKE_BINARY_DIR})
+        file(COPY ${SDL2_IMAGE_DLL} DESTINATION ${CMAKE_BINARY_DIR})
+        file(COPY ${FREETYPE_DLL} DESTINATION ${CMAKE_BINARY_DIR})
+        file(COPY ${JSONCPP_DLL} DESTINATION ${CMAKE_BINARY_DIR})
+        file(COPY ${CMAKE_SOURCE_DIR}/res DESTINATION ${CMAKE_BINARY_DIR})
     endif()
 endif()
 
