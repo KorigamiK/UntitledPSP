@@ -59,7 +59,6 @@ void App::handleEvents()
     std::vector<Event> events = eventController.getEvents();
     for (auto &event : events)
     {
-        Logger::Debug("Event: %d", event);
         handleBaseEvents(event);
         stateController->handleEvent(event);
     }
@@ -118,12 +117,12 @@ void App::init()
     SDL_RenderCopy(renderer, iconTexture, NULL, &iconRect);
     SDL_RenderPresent(renderer);
 
-    stateController = std::make_unique<StateController>(renderer, running);
-
     AudioController::init();
     FontController::LoadFont();
 
     Logger::Info("App::init done");
+
+    stateController = std::make_unique<StateController>(renderer, running);
 
 #ifdef VERBOSE
     Logger::Info("DEBUG MODE");

@@ -120,7 +120,6 @@ else()
     find_package(SDL2_ttf REQUIRED)
     find_package(SDL2_mixer CONFIG REQUIRED)
     find_package(SDL2_image CONFIG REQUIRED)
-    find_package(jsoncpp CONFIG REQUIRED)
 
     if (NOT WIN32)
         target_link_libraries(untitled_exe PRIVATE SDL2::SDL2main SDL2::SDL2 SDL2_mixer SDL2_ttf SDL2_image freetype jsoncpp)
