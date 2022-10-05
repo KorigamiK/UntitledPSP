@@ -1,12 +1,14 @@
 #include "game/state/controller.hpp"
 
-#include "game/state/game.hpp"
-#include "game/state/menu.hpp"
 #include "utils/audioController.hpp"
 #include "utils/sounds.hpp"
 
+#include "game/state/game.hpp"
+#include "game/state/menu.hpp"
+#include "game/state/not_implemented.hpp"
+
 StateController::StateController(SDL_Renderer *renderer, bool &running)
-    : renderer(renderer), appRunning(running), currentState(new MenuState(renderer))
+    : renderer(renderer), appRunning(running), currentState(new NotImplemented(renderer))
 {
 }
 
@@ -37,6 +39,9 @@ void StateController::switchState(State state)
         break;
     case State::Menu:
         this->currentState = new MenuState(renderer);
+        break;
+    case State::NotImplemented:
+        this->currentState = new NotImplemented(renderer);
         break;
     case State::Exit:
         appRunning = false;

@@ -31,9 +31,9 @@ void FontController::UnloadFont()
     TTF_Quit();
 }
 
-SDL_Texture *FontController::getTexture(SDL_Renderer *renderer, std::string text, SDL_Color color)
+SDL_Texture *FontController::getTexture(SDL_Renderer *renderer, std::string text, SDL_Color color, int wrapLength)
 {
-    SDL_Surface *textSurface = TTF_RenderUTF8_Blended_Wrapped(fontBase, text.c_str(), color, 100);
+    SDL_Surface *textSurface = TTF_RenderUTF8_Blended_Wrapped(fontBase, text.c_str(), color, wrapLength);
     if (textSurface == NULL)
     {
         Logger::Error("Unable to render text surface! SDL_ttf Error: %s", TTF_GetError());

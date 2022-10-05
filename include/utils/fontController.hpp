@@ -13,5 +13,5 @@ namespace FontController
 
     void LoadFont();
     void UnloadFont();
-    SDL_Texture *getTexture(SDL_Renderer *renderer, std::string text, SDL_Color color);
+    SDL_Texture *getTexture(SDL_Renderer *renderer, std::string text, SDL_Color color, int wrapLength = 100);
 }

@@ -18,7 +18,6 @@ public:
 
     virtual void handleEvent(Event &event) = 0;
     virtual void draw(float dt, int windowWidth, int windowHeight) = 0;
-
     virtual bool isDone() { return done; };
     virtual State getNextState() { return State::Exit; };
 

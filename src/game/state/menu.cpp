@@ -32,6 +32,6 @@ void MenuState::draw(float dt, int w, int h)
 
 MenuState::~MenuState()
 {
-    Logger::Info("MenuState::~MenuState");
+    Logger::Debug("MenuState::~MenuState");
     SDL_DestroyTexture(titleTexture);
 }

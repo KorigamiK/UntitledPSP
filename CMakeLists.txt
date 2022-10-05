@@ -43,6 +43,7 @@ set(HEADERS
     game/state/controller.hpp
     game/state/menu.hpp
     game/state/game.hpp
+    game/state/not_implemented.hpp
 )
 
 # Source files (relative to "src" directory)
@@ -63,6 +64,7 @@ set(SOURCES
     game/state/menu.cpp
     game/state/controller.cpp
     game/state/game.cpp
+    game/state/not_implemented.cpp
 )
 
 list(TRANSFORM HEADERS PREPEND "include/")

@@ -2,7 +2,7 @@
 
 enum class State
 {
-    None,
+    NotImplemented,
     Menu,
     Game,
     Pause,
