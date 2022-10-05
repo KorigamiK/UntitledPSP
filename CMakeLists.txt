@@ -50,6 +50,7 @@ set(HEADERS
 set(SOURCES
     main.cpp
     app.cpp
+    utils/constants.cpp
     utils/eventController.cpp
     utils/audioController.cpp
     utils/fontController.cpp

@@ -8,7 +8,6 @@ void Player::rayMarch()
 
 void Player::update(Event &event)
 {
-    Logger::Debug("Player::update %d", event);
     switch (event)
     {
     case Event::UP:

@@ -23,10 +23,18 @@
     - Windows CI/CD pipeline
   - Fixed
     - Fixed bugs
-
+- [0.1.6] - 2022-05-10
+  - Added
+    - Added State Abstraction
+    - Added a Menu
+    - CI/CD pipeline for windows
+  - Fixed
+    - Fixed bugs
+  
 ### VERSION HISTORY:
 0.1.0
 0.1.1
 0.1.2
 0.1.4
 0.1.6
+0.1.7

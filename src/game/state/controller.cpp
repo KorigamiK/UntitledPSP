@@ -8,7 +8,7 @@
 #include "game/state/not_implemented.hpp"
 
 StateController::StateController(SDL_Renderer *renderer, bool &running)
-    : renderer(renderer), appRunning(running), currentState(new NotImplemented(renderer))
+    : renderer(renderer), appRunning(running), currentState(new MenuState(renderer))
 {
 }
 
