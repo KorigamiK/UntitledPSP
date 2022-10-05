@@ -72,8 +72,8 @@ if (PLATFORM_PSP)
         stdc++
         SDL2_mixer
         SDL2_image
-		SDL2
         SDL2main
+		SDL2
         SDL2_ttf
         png
         jpeg
@@ -113,7 +113,7 @@ else()
     find_package(SDL2_image CONFIG REQUIRED)
 
     target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC VERBOSE)
-    target_link_libraries(untitled_exe PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2_mixer SDL2_ttf SDL2_image freetype jsoncpp)
+    target_link_libraries(untitled_exe PRIVATE SDL2::SDL2main SDL2::SDL2 SDL2_mixer SDL2_ttf SDL2_image freetype jsoncpp)
     if (NOT WIN32)
         execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
                                                                    ${CMAKE_BINARY_DIR}/res)
