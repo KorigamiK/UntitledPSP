@@ -5,6 +5,7 @@
         "ms-vscode.cpptools-extension-pack",
         "cschlosser.doxdocgen",
         "betwo.vscode-doxygen-runner",
-        "usernamehw.errorlens"
+        "usernamehw.errorlens",
+        "redhat.vscode-yaml"
     ]
 }

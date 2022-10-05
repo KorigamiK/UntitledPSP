@@ -72,8 +72,8 @@ if (PLATFORM_PSP)
         stdc++
         SDL2_mixer
         SDL2_image
-		SDL2
         SDL2main
+		SDL2
         SDL2_ttf
         png
         jpeg
@@ -111,12 +111,58 @@ else()
     find_package(SDL2_ttf REQUIRED)
     find_package(SDL2_mixer CONFIG REQUIRED)
     find_package(SDL2_image CONFIG REQUIRED)
+    find_package(jsoncpp CONFIG REQUIRED)
 
-    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC VERBOSE)
-    target_link_libraries(untitled_exe PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2_mixer SDL2_ttf SDL2_image freetype jsoncpp)
     if (NOT WIN32)
+        target_link_libraries(untitled_exe PRIVATE SDL2::SDL2main SDL2::SDL2 SDL2_mixer SDL2_ttf SDL2_image freetype jsoncpp)
         execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
-                                                                   ${CMAKE_BINARY_DIR}/res)
+        ${CMAKE_BINARY_DIR}/res)
+    
+    else()
+
+    option(BUILD_STATIC "Build a static binary (Windows only)" ON)
+
+     target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
+          SDL2::SDL2
+          SDL2::SDL2main
+          SDL2::SDL2_image
+          SDL2::SDL2_mixer
+          SDL2::SDL2_ttf
+          jsoncpp_object
+          JsonCpp::JsonCpp
+     )
+
+     if(BUILD_STATIC)
+          if(MSVC)
+               set(CompilerFlags
+                    CMAKE_CXX_FLAGS
+                    CMAKE_CXX_FLAGS_DEBUG
+                    CMAKE_CXX_FLAGS_RELEASE
+                    CMAKE_CXX_FLAGS_MINSIZEREL
+                    CMAKE_CXX_FLAGS_RELWITHDEBINFO
+               )
+               foreach(CompilerFlag ${CompilerFlags})
+                    string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+                    set(${CompilerFlag} "${${CompilerFlag}}" CACHE STRING "msvc compiler flags" FORCE)
+                    message("MSVC flags: ${CompilerFlag}:${${CompilerFlag}}")
+               endforeach()
+          endif()
+          target_link_libraries(untitled_exe PRIVATE
+               SDL2::SDL2-static
+               jsoncpp_static
+               Shlwapi
+          )
+     endif()
+
+     target_include_directories(untitled_exe PRIVATE
+          ${SDL2_INCLUDE_DIRS}
+          ${SDL2_IMAGE_INCLUDE_DIRS}
+          ${SDL2_TTF_INCLUDE_DIRS}
+          ${SDL2_MIXER_INCLUDE_DIRS}
+          ${JSONCPP_INCLUDE_DIRS}
+     )
+
     endif()
+        target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC VERBOSE)
 endif()
 
