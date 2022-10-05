@@ -40,14 +40,12 @@ SDL_Point Map::getAbsoluteCoOrdinates(Functions::PointF point)
 
 void Map::drawWalls(SDL_Renderer *renderer)
 {
-  static auto fp = [this](SDL_Point point)
-  { return this->getAbsoluteCoOrdinates(point); };
-
   COLOR_WHITE(renderer);
   for (auto &wall : walls)
   {
     SDL_Point absolutePoints[wall.points.size()];
-    std::transform(wall.points.begin(), wall.points.end(), absolutePoints, fp);
+    for (int i = 0; i < wall.points.size(); i++)
+      absolutePoints[i] = getAbsoluteCoOrdinates(wall.points[i]);
     SDL_RenderDrawLines(renderer, absolutePoints, wall.points.size());
   }
 }

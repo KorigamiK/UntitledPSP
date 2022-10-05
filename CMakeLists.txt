@@ -43,6 +43,7 @@ set(HEADERS
     game/state/controller.hpp
     game/state/menu.hpp
     game/state/game.hpp
+    game/state/pauseScreen.hpp
     game/state/not_implemented.hpp
 )
 
@@ -65,6 +66,7 @@ set(SOURCES
     game/state/menu.cpp
     game/state/controller.cpp
     game/state/game.cpp
+    game/state/pauseScreen.cpp
     game/state/not_implemented.cpp
 )
 

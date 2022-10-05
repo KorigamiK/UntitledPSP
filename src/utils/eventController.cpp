@@ -48,12 +48,16 @@ Event EventController::getReleaseEventFromKeyboard(SDL_Keycode key)
     switch (key)
     {
     case SDLK_LEFT:
+    case SDLK_a:
         return Event::LEFT_RELEASE;
     case SDLK_RIGHT:
+    case SDLK_d:
         return Event::RIGHT_RELEASE;
     case SDLK_UP:
+    case SDLK_w:
         return Event::UP_RELEASE;
     case SDLK_DOWN:
+    case SDLK_s:
         return Event::DOWN_RELEASE;
     default:
         return Event::OTHER;
