@@ -118,7 +118,7 @@ else()
         execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
                                                                    ${CMAKE_BINARY_DIR}/res)
     else()
-        set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static -Wl,-Bstatic `sdl-config --static-libs` -lSDL2main -lSDL2 -lSDL2_mixer -lSDL2_ttf -lSDL2_image -lfreetype -ljsoncpp")
+        set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static -Wl,-Bstatic -lSDL2main -lSDL2 -lSDL2_mixer -lSDL2_ttf -lSDL2_image -lfreetype -ljsoncpp")
     endif()
 endif()
 
