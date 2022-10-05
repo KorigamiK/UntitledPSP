@@ -18,7 +18,7 @@ jobs:
        uses: actions/checkout@v2
 
      - name: Build
-       run: ./build_psp.sh --package
+       run: ./build_psp.sh --dist
   
      - name: Extract tag name
        id: tag
@@ -28,7 +28,7 @@ jobs:
        uses: actions/upload-artifact@v2
        with:
           name: untitled-psp.zip
-          path: build/psp/*.zip
+          path: build/psp/dist
 
 
   Windows:
