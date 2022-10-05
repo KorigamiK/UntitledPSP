@@ -20,4 +20,9 @@ namespace Functions
 
     // Check if a point t is on a line segment p1-p2
     bool PointOnLine(PointF p1, PointF p2, PointF t);
+
+    // Linear interpolation between two values
+    float Lerp(float goal, float current, float dt);
+
+    float clampSmall(float value, float min);
 }

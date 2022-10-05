@@ -6,7 +6,7 @@ void Ray::draw(SDL_Renderer *renderer)
     if (map != nullptr && distance != 0)
     {
         auto startAbsolutePos = map->getAbsoluteCoOrdinates(position);
-        auto endAbsolutePos = map->getAbsoluteCoOrdinates({(int)endPosition.x, (int)endPosition.y});
+        auto endAbsolutePos = map->getAbsoluteCoOrdinates(SDL_Point{(int)endPosition.x, (int)endPosition.y});
         if (distance != PLAYER_VIEW_DISTANCE)
             COLOR_RED(renderer)
         else

@@ -20,8 +20,14 @@ std::vector<Event> EventController::getEvents()
         // case SDL_MOUSEBUTTONUP:
         //     events.push_back(getEventFromMouseButtonUp(event.button.button));
         //     break;
+        case SDL_KEYUP:
+            events.push_back(getReleaseEventFromKeyboard(event.key.keysym.sym));
+            break;
         case SDL_CONTROLLERBUTTONDOWN:
             events.push_back(getEventFromControllerButton(event.cbutton.button));
+            break;
+        case SDL_CONTROLLERBUTTONUP:
+            events.push_back(getReleaseEventFromControllerButton(event.cbutton.button));
             break;
         case SDL_CONTROLLERAXISMOTION:
             events.push_back(getEventFromControllerAxis(event.caxis.axis, event.caxis.value));
@@ -35,6 +41,40 @@ std::vector<Event> EventController::getEvents()
         }
     }
     return events;
+}
+
+Event EventController::getReleaseEventFromKeyboard(SDL_Keycode key)
+{
+    switch (key)
+    {
+    case SDLK_LEFT:
+        return Event::LEFT_RELEASE;
+    case SDLK_RIGHT:
+        return Event::RIGHT_RELEASE;
+    case SDLK_UP:
+        return Event::UP_RELEASE;
+    case SDLK_DOWN:
+        return Event::DOWN_RELEASE;
+    default:
+        return Event::OTHER;
+    }
+}
+
+Event EventController::getReleaseEventFromControllerButton(Uint32 button)
+{
+    switch (button)
+    {
+    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+        return Event::LEFT_RELEASE;
+    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+        return Event::RIGHT_RELEASE;
+    case SDL_CONTROLLER_BUTTON_DPAD_UP:
+        return Event::UP_RELEASE;
+    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+        return Event::DOWN_RELEASE;
+    default:
+        return Event::OTHER;
+    }
 }
 
 Event EventController::getEventFromKeyboard(SDL_Keycode key)
@@ -147,51 +187,33 @@ Event EventController::getEventFromControllerAxis(Uint32 axis, Sint16 value)
 {
     Event event = Event::NONE;
 
+    static const int deadZone = 8000;
+
     switch (axis)
     {
     case SDL_CONTROLLER_AXIS_LEFTX:
-        if (value > (AXIS_MAX * ANALOG_DEADZONE_MULTIPLIER))
-        {
-            if (this->returned_to_horizontal_center)
-            {
-                event = Event::RIGHT;
-                this->returned_to_horizontal_center = false;
-            }
-        }
-        else if (value < (AXIS_MIN * ANALOG_DEADZONE_MULTIPLIER))
-        {
-            if (this->returned_to_horizontal_center)
-            {
-                event = Event::LEFT;
-                this->returned_to_horizontal_center = false;
-            }
-        }
-        else
-        {
-            this->returned_to_horizontal_center = true;
-        }
+        if (value < -deadZone)
+            event = Event::ROTATE_LEFT;
+        else if (value > deadZone)
+            event = Event::ROTATE_RIGHT;
         break;
     case SDL_CONTROLLER_AXIS_LEFTY:
-        if (value > (AXIS_MAX * ANALOG_DEADZONE_MULTIPLIER))
-        {
-            if (this->returned_to_vertical_center)
-            {
-                event = Event::DOWN;
-                this->returned_to_vertical_center = false;
-            }
-        }
-        else if (value < (AXIS_MIN * ANALOG_DEADZONE_MULTIPLIER))
-        {
-            if (this->returned_to_vertical_center)
-            {
-                event = Event::UP;
-                this->returned_to_vertical_center = false;
-            }
-        }
-        else
-        {
-            this->returned_to_vertical_center = true;
-        }
+        if (value < -deadZone)
+            event = Event::ROTATE_UP;
+        else if (value > deadZone)
+            event = Event::ROTATE_DOWN;
+        break;
+    case SDL_CONTROLLER_AXIS_RIGHTY:
+        if (value < -deadZone)
+            event = Event::LEFT;
+        else if (value > deadZone)
+            event = Event::RIGHT;
+        break;
+    case SDL_CONTROLLER_AXIS_RIGHTX:
+        if (value < -deadZone)
+            event = Event::UP;
+        else if (value > deadZone)
+            event = Event::DOWN;
         break;
     default:
         break;

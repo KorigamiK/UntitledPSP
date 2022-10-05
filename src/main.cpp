@@ -8,26 +8,38 @@
 
 #include "app.hpp"
 
-#define FRAME_RENDER_DELAY 25
-
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
   App &app = App::get();
 
-  try {
+  try
+  {
     app.init();
     Logger::Info("Init Done");
-  } catch (const std::exception &e) {
+  }
+  catch (const std::exception &e)
+  {
     std::cerr << e.what() << '\n';
   }
 
-  while (app.running) {
+  Uint32 prevTime = 0, currentTime = SDL_GetTicks();
+  double dt = 0;
+
+  while (app.running)
+  {
+    prevTime = currentTime;
+    currentTime = SDL_GetTicks();
+
+    dt = currentTime - prevTime;
+
+    if (dt > 0.15f)
+      dt = 0.15f;
+
     app.handleEvents();
 
-    app.draw();
+    app.draw(dt * 20);
 
     app.rerender();
-
-    SDL_Delay(FRAME_RENDER_DELAY);
   }
 
 #ifdef PLATFORM_PSP

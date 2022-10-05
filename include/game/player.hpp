@@ -1,7 +1,9 @@
 #pragma once
 
 #include <memory>
+#include <cmath>
 
+#include "utils/functions.hpp"
 #include "utils/constants.hpp"
 #include "game/entity.hpp"
 #include "game/map.hpp"
@@ -21,23 +23,30 @@ private:
 
     std::shared_ptr<Map> map;
 
-    SDL_Point position{0, 0};
-    int moveStep = 5;
+    Functions::PointF position{0, 0};
+
+    float xGoal = 0, yGoal = 0;
+
+    int moveStep = 1;
+    bool movingLeft = false, movingRight = false, movingUp = false, movingDown = false;
+
     float angleStep = 0.1;
     float angle = 0;
     float verticalAngle = 0;
-    Ray rays[RAYS_CASTED]; // rays to be casted per degree
+    Ray rays[RAYS_CASTED];
 
     void rayMarch();
     void updateRays();
+    void move(float dt);
 
 public:
     friend class PlayerView;
 
     void update(Event &event) override;
-    void draw(SDL_Renderer *renderer) override;
+    void draw(SDL_Renderer *renderer, float dt) override;
+
     Player();
-    Player(int x, int y);
+    Player(float x, float y);
 
     void init(std::shared_ptr<Map> map);
 

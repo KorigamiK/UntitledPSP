@@ -33,6 +33,11 @@ SDL_Point Map::getAbsoluteCoOrdinates(SDL_Point point)
   return std::move(SDL_Point{point.x + mapRect.x, point.y + mapRect.y});
 }
 
+SDL_Point Map::getAbsoluteCoOrdinates(Functions::PointF point)
+{
+  return SDL_Point{(int)point.x + mapRect.x, (int)point.y + mapRect.y};
+}
+
 void Map::drawWalls(SDL_Renderer *renderer)
 {
   static auto fp = [this](SDL_Point point)

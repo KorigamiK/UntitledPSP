@@ -58,7 +58,7 @@ public:
 
     void handleEvents();
 
-    void draw();
+    void draw(float dt);
 
     void rerender();
 

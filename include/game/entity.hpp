@@ -12,6 +12,7 @@ private:
 public:
     virtual void update(Event &event){};
     virtual void draw(SDL_Renderer *renderer){};
+    virtual void draw(SDL_Renderer *renderer, float dt){};
 
     Entity();
     ~Entity();

@@ -17,9 +17,9 @@ private:
     static inline constexpr float ANALOG_DEADZONE_MULTIPLIER = 0.5;
 
     Event getEventFromKeyboard(SDL_Keycode key);
-    // Event getEventFromMouseButton(Uint8 button);
-    // Event getEventFromMouseButtonUp(Uint8 button);
+    Event getReleaseEventFromKeyboard(SDL_Keycode key);
     Event getEventFromControllerButton(Uint32 button);
+    Event getReleaseEventFromControllerButton(Uint32 button);
     Event getEventFromControllerAxis(Uint32 axis, Sint16 value);
 
     void openGameController(Sint32);

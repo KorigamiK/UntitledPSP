@@ -7,6 +7,7 @@
 #include <json/json.h>
 #include <fstream>
 
+#include "utils/functions.hpp"
 #include "utils/logger.hpp"
 #include "utils/colors.hpp"
 #include "game/entity.hpp"
@@ -42,6 +43,7 @@ public:
     void loadMap();
     void setMapRect(SDL_Rect mapRectAndPosition, int padding = 10);
     SDL_Point getAbsoluteCoOrdinates(SDL_Point point);
+    SDL_Point getAbsoluteCoOrdinates(Functions::PointF point);
 
     void draw(SDL_Renderer *renderer) override;
     void drawWalls(SDL_Renderer *renderer);

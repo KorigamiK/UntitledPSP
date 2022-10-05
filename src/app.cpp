@@ -2,23 +2,23 @@
 
 App App::_instance;
 
-void App::draw()
+void App::draw(float dt)
 {
     SDL_SetRenderDrawColor(renderer, 41, 41, 41, 255);
     SDL_RenderClear(renderer);
 
     SDL_GetWindowSize(window, &width, &height);
 
-#ifdef VERBOSE
-    renderDebugMessages();
-#endif
-
     map->setMapRect(std::move(SDL_Rect{width / 2, 0, width / 2, height}), 10);
     playerView->setViewRect(std::move(SDL_Rect{0, 0, width / 2, height}));
 
-    player->draw(renderer);
+    player->draw(renderer, dt);
     map->draw(renderer);
     playerView->draw(renderer);
+
+#ifdef VERBOSE
+    renderDebugMessages();
+#endif
 }
 
 void App::renderDebugMessages()
