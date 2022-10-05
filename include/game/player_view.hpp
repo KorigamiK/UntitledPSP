@@ -19,9 +19,10 @@ private:
   void drawFloor(SDL_Renderer *renderer);
 
 public:
-  void setViewRect(SDL_Rect rect);
-
   PlayerView(Player *p, SDL_Rect view) : Entity(), player(p), viewRect(view) {}
-  ~PlayerView();
+
+  void setViewRect(SDL_Rect rect);
   void draw(SDL_Renderer *renderer) override;
+
+  ~PlayerView();
 };

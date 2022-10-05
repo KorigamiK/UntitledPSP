@@ -37,7 +37,12 @@ set(HEADERS
     game/map.hpp
     game/entity.hpp
     game/player.hpp
-		game/player_view.hpp
+    game/player_view.hpp
+    game/state/base.hpp
+    game/state/states.hpp
+    game/state/controller.hpp
+    game/state/menu.hpp
+    game/state/game.hpp
 )
 
 # Source files (relative to "src" directory)
@@ -53,7 +58,11 @@ set(SOURCES
     game/map.cpp
     game/entity.cpp
     game/player.cpp
-		game/player_view.cpp
+    game/player_view.cpp
+    game/state/base.cpp
+    game/state/menu.cpp
+    game/state/controller.cpp
+    game/state/game.cpp
 )
 
 list(TRANSFORM HEADERS PREPEND "include/")
@@ -120,7 +129,7 @@ else()
     
     else()
 
-    option(BUILD_STATIC "Build a static binary (Windows only)" ON)
+    option(BUILD_STATIC "Build a static binary (Windows only)" OFF)
 
      target_link_libraries(untitled_exe PRIVATE
           SDL2::SDL2main

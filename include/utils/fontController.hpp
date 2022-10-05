@@ -1,6 +1,8 @@
 #pragma once
 
+#include <string>
 #include <SDL2/SDL_ttf.h>
+
 #include "utils/logger.hpp"
 
 #define FONT_PATH "res/font.ttf"

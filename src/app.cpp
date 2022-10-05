@@ -9,12 +9,8 @@ void App::draw(float dt)
 
     SDL_GetWindowSize(window, &width, &height);
 
-    map->setMapRect(std::move(SDL_Rect{width / 2, 0, width / 2, height}), 10);
-    playerView->setViewRect(std::move(SDL_Rect{0, 0, width / 2, height}));
-
-    player->draw(renderer, dt);
-    map->draw(renderer);
-    playerView->draw(renderer);
+    stateController->currentState->draw(dt, width, height);
+    stateController->update();
 
 #ifdef VERBOSE
     renderDebugMessages();
@@ -65,7 +61,7 @@ void App::handleEvents()
     {
         Logger::Debug("Event: %d", event);
         handleBaseEvents(event);
-        player->update(event);
+        stateController->handleEvent(event);
     }
 }
 
@@ -95,7 +91,6 @@ void App::init()
         throw std::runtime_error("IMG_Init failed");
     }
 
-    // create an SDL window (pspgl enabled)
     window = SDL_CreateWindow("Untitled", 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
     if (!window)
     {
@@ -104,7 +99,6 @@ void App::init()
         throw std::runtime_error("SDL_CreateWindow failed");
     }
 
-    // create a renderer (OpenGL ES2)
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!renderer)
     {
@@ -124,11 +118,7 @@ void App::init()
     SDL_RenderCopy(renderer, iconTexture, NULL, &iconRect);
     SDL_RenderPresent(renderer);
 
-    map = std::make_shared<Map>(SDL_Rect{width / 2, 0, width / 2, height});
-    player = new Player(map->mapRect.w / 2, map->mapRect.h / 2);
-    player->init(map);
-    map->init(player);
-    playerView = std::make_unique<PlayerView>(player, SDL_Rect{0, 0, width / 2, height});
+    stateController = std::make_unique<StateController>(renderer, running);
 
     AudioController::init();
     FontController::LoadFont();
@@ -153,5 +143,4 @@ App::~App()
     TextureController::closeAll();
     IMG_Quit();
     SDL_Quit();
-    delete player;
 }

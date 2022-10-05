@@ -14,9 +14,8 @@
 #include "game/map.hpp"
 #include "game/player.hpp"
 #include "game/player_view.hpp"
+#include "game/state/controller.hpp"
 
-#define WINDOW_WIDTH 480
-#define WINDOW_HEIGHT 272
 #define DEBUG_MESSAGE_MAX 4
 
 // * Singleton Application class
@@ -32,10 +31,8 @@ private:
     bool debugChanged = true;
     SDL_Texture *debugTexture = nullptr;
 
-    Player *player;
-    std::unique_ptr<PlayerView> playerView;
-    std::shared_ptr<Map> map;
     EventController eventController;
+    std::unique_ptr<StateController> stateController;
 
     SDL_Window *window = nullptr;
     SDL_Renderer *renderer = nullptr;
