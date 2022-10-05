@@ -123,11 +123,10 @@ else()
     option(BUILD_STATIC "Build a static binary (Windows only)" ON)
 
      target_link_libraries(untitled_exe PRIVATE
-          SDL2::SDL2
           SDL2::SDL2main
-          SDL2::SDL2_image
-          SDL2::SDL2_mixer
-          SDL2::SDL2_ttf
+          SDL2_image
+          SDL2_mixer
+          SDL2_ttf
           jsoncpp_object
           JsonCpp::JsonCpp
      )
@@ -152,6 +151,10 @@ else()
                jsoncpp_static
                Shlwapi
           )
+     else()
+        target_link_libraries(untitled_exe PRIVATE
+                SDL2::SDL2
+        )
      endif()
 
      target_include_directories(untitled_exe PRIVATE

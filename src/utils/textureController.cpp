@@ -34,7 +34,7 @@ void TextureController::close(SDL_Texture *texture)
 
 void TextureController::init(SDL_Renderer *renderer)
 {
-    textures["icon"] = load(renderer, "res/glitch.png");
+    textures["icon"] = load(renderer, "./res/glitch.png");
     iconSurface = getSurfaceFromFile("res/glitch.png");
 }
 
