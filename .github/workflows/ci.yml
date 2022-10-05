@@ -16,6 +16,7 @@ jobs:
        run: apk add cmake git zip
      - name: Checkout
        uses: actions/checkout@v2
+
      - name: Build
        run: ./build_psp.sh --package
   
@@ -23,17 +24,90 @@ jobs:
        id: tag
        run: echo ::set-output name=VERSION::$(tail -n1 CHANGELOG.md | head -n1)
 
-     - name: Create release
-       uses: softprops/action-gh-release@v1
+     - name: Upload artifact
+       uses: actions/upload-artifact@v2
        with:
-        files: build/psp/*.zip
-        body: |
+          name: psp-${{ steps.tag.outputs.VERSION }}.zip
+          path: build/psp/*.zip
+
+
+  Windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Install dependencies
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-binutils
+            mingw-w64-x86_64-make
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-pkgconf
+            mingw-w64-x86_64-SDL2
+            mingw-w64-x86_64-SDL2_ttf
+            mingw-w64-x86_64-SDL2_mixer
+            mingw-w64-x86_64-SDL2_image
+            mingw-w64-x86_64-jsoncpp
+          update: true
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run : |
+          cmake -DCMAKE_BUILD_TYPE=Release -G "MinGW Makefiles" -B build .
+          cmake --build build
+          cp README.md build
+          cp LICENSE build
+          cp CHANGELOG.md build
+          cp -r res build
+          strip --strip-unneeded build/untitled_exe.exe
+
+      - name: Publish artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Untitled-windows
+          path: |
+            build/untitled_exe.exe
+            build/res
+            build/LICENSE
+            build/README.md
+            build/CHANGELOG.md
+
+  Release:
+    needs: [Windows, PSP]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        build: [windows, psp]
+
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Extract tag name
+        id: tag
+        run: echo ::set-output name=VERSION::$(tail -n1 CHANGELOG.md | head -n1)
+
+      - uses: actions/download-artifact@v2
+      - name: Zip artifacts
+        run: |
+         zip -r untitled-${{matrix.build}}.zip untitled-${{matrix.build}}
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+         files: |
+           untitled-${{matrix.build}}.zip
+         body: |
           This is an automated release of the latest version of UNTITLED-PSP.
-        prerelease: true
-        tag_name: ${{ steps.tag.outputs.VERSION }}
-        name: Untitled ${{ steps.tag.outputs.VERSION }}
-       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
+         prerelease: true
+         tag_name: ${{ steps.tag.outputs.VERSION }}
+         name: Untitled ${{ steps.tag.outputs.VERSION }}
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

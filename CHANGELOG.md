@@ -16,7 +16,15 @@
     - Added multipoint walls
   - Fixed
     - Fixed bugs
+- [0.1.2] - 2022-05-10
+  - Added
+    - Linear Interpolation for movement
+    - Better controls for PSP analog stick
+    - Windows CI/CD pipeline
+  - Fixed
+    - Fixed bugs
 
 ### VERSION HISTORY:
 0.1.0
 0.1.1
+0.1.2
