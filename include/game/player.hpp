@@ -3,6 +3,8 @@
 #include <memory>
 #include <cmath>
 
+class Map;
+
 #include "utils/functions.hpp"
 #include "utils/constants.hpp"
 #include "game/entity.hpp"
@@ -13,8 +15,6 @@
 #define PLAYER_FIELD_OF_VIEW 90
 #define PLAYER_VERTICAL_FIELD_OF_VIEW_DEG 130
 #define RAYS_CASTED 130
-
-class Map;
 
 class Player : public Entity
 {
@@ -36,11 +36,13 @@ private:
     Ray rays[RAYS_CASTED];
 
     void rayMarch();
+    bool checkCollision(Functions::PointF position);
     void updateRays();
     void move(float dt);
 
 public:
     friend class PlayerView;
+    friend class Map;
 
     void update(Event &event) override;
     void draw(SDL_Renderer *renderer, float dt) override;

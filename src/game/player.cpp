@@ -1,9 +1,26 @@
 #include "game/player.hpp"
 
+#include <SDL2/SDL2_gfxPrimitives.h>
+
 void Player::rayMarch()
 {
     for (auto &ray : rays)
         ray.march();
+}
+
+bool Player::checkCollision(Functions::PointF point)
+{
+    for (auto &wall : map->walls)
+    {
+        wall.colliding = false;
+        for (int i = 0; i < wall.points.size() - 1; i++)
+            if (Functions::LineCircleIntersection(point, PLAYER_SIZE, wall.points[i], wall.points[i + 1]))
+            {
+                wall.colliding = true;
+                return true;
+            }
+    }
+    return false;
 }
 
 void Player::update(Event &event)
@@ -55,14 +72,41 @@ void Player::update(Event &event)
 
 void Player::move(float dt)
 {
+
     if (movingLeft)
-        xGoal -= moveStep * dt;
+    {
+        xGoal += moveStep * cos(angle - M_PI / 2) * dt;
+        yGoal += moveStep * sin(angle - M_PI / 2) * dt;
+    }
+
     if (movingRight)
-        xGoal += moveStep * dt;
+    {
+        xGoal -= moveStep * cos(angle - M_PI / 2) * dt;
+        yGoal -= moveStep * sin(angle - M_PI / 2) * dt;
+    }
+
     if (movingUp)
-        yGoal -= moveStep * dt;
+    {
+        xGoal += moveStep * cos(angle) * dt;
+        yGoal += moveStep * sin(angle) * dt;
+    }
+
     if (movingDown)
-        yGoal += moveStep * dt;
+    {
+        xGoal -= moveStep * cos(angle) * dt;
+        yGoal -= moveStep * sin(angle) * dt;
+    }
+
+    if (checkCollision({xGoal, yGoal}))
+    {
+        xGoal = position.x;
+        yGoal = position.y;
+    }
+    else
+    {
+        position.x = xGoal;
+        position.y = yGoal;
+    }
 
     position.x = Functions::Lerp(xGoal, position.x, dt);
     position.y = Functions::Lerp(yGoal, position.y, dt);
@@ -78,10 +122,8 @@ void Player::draw(SDL_Renderer *renderer, float dt)
     for (auto &ray : rays)
         ray.draw(renderer);
 
-    COLOR_BLUE(renderer);
     SDL_Point relativePos = map->getAbsoluteCoOrdinates(position);
-    SDL_Rect r = {relativePos.x - PLAYER_SIZE / 2, relativePos.y - PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE};
-    SDL_RenderFillRect(renderer, &r);
+    filledCircleRGBA(renderer, relativePos.x, relativePos.y, PLAYER_SIZE, 0, 0, 255, 255);
 }
 
 void Player::init(std::shared_ptr<Map> map)

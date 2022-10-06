@@ -30,9 +30,28 @@ float Functions::Lerp(float flGoal, float flCurrent, float dt)
     return flGoal;
 }
 
-float Functions::clampSmall(float value, float min)
+bool Functions::LineCircleIntersection(PointF center, float radius, PointF p1, PointF p2)
 {
-    if (value < min)
-        return 0;
-    return value;
+    float dx = p2.x - p1.x;
+    float dy = p2.y - p1.y;
+
+    float a = dx * dx + dy * dy;
+    float b = 2 * (dx * (p1.x - center.x) + dy * (p1.y - center.y));
+    float c = (p1.x - center.x) * (p1.x - center.x) + (p1.y - center.y) * (p1.y - center.y) - radius * radius;
+
+    float discriminant = b * b - 4 * a * c;
+    if (discriminant < 0)
+        return false;
+
+    discriminant = sqrt(discriminant);
+
+    float t1 = (-b - discriminant) / (2 * a);
+    float t2 = (-b + discriminant) / (2 * a);
+
+    if (t1 >= 0 && t1 <= 1)
+        return true;
+    if (t2 >= 0 && t2 <= 1)
+        return true;
+
+    return false;
 }

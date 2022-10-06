@@ -1,4 +1,5 @@
 #include "ray_march/ray.hpp"
+#include "game/map.hpp"
 
 void Ray::draw(SDL_Renderer *renderer)
 {

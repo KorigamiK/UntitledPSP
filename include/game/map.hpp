@@ -12,6 +12,7 @@
 #include "utils/colors.hpp"
 #include "game/entity.hpp"
 #include "game/object.hpp"
+#include "game/player.hpp"
 
 class Player;
 
@@ -33,6 +34,7 @@ private:
     static SDL_Rect getPaddedRect(SDL_Rect rect, int padding);
 
     void generateRandomWalls(unsigned int number = 3);
+    void drawCollisionPoints(SDL_Renderer *renderer);
 
 public:
     Map(const char *mapFile);

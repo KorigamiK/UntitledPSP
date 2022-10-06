@@ -1,5 +1,7 @@
 #include "game/map.hpp"
 
+#include <SDL2/SDL2_gfxPrimitives.h>
+
 Map::Map(const char *mapFileName) : mapFile(mapFileName){};
 
 Map::~Map() { Logger::Info("Map Destructor"); }
@@ -40,13 +42,25 @@ SDL_Point Map::getAbsoluteCoOrdinates(Functions::PointF point)
 
 void Map::drawWalls(SDL_Renderer *renderer)
 {
-  COLOR_WHITE(renderer);
   for (auto &wall : walls)
   {
     SDL_Point absolutePoints[wall.points.size()];
+    COLOR_WHITE(renderer);
+    if (wall.colliding)
+      COLOR_RED(renderer)
     for (int i = 0; i < wall.points.size(); i++)
       absolutePoints[i] = getAbsoluteCoOrdinates(wall.points[i]);
     SDL_RenderDrawLines(renderer, absolutePoints, wall.points.size());
+  }
+}
+
+void Map::drawCollisionPoints(SDL_Renderer *renderer)
+{
+  COLOR_BLACK(renderer);
+  for (auto &ray : player->rays)
+  {
+    SDL_Point absolutePoint = getAbsoluteCoOrdinates(ray.endPosition);
+    filledCircleRGBA(renderer, absolutePoint.x, absolutePoint.y, 2, 0, 0, 0, 255);
   }
 }
 
@@ -65,6 +79,7 @@ void Map::draw(SDL_Renderer *renderer)
   COLOR_WHITE(renderer);
   SDL_RenderDrawRect(renderer, &mapRect);
   drawWalls(renderer);
+  drawCollisionPoints(renderer);
 }
 
 /* TODO: Json doesn't work with the PSP */

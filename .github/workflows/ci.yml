@@ -32,6 +32,7 @@ jobs:
 
 
   Windows:
+    if: ${{ false }}  # disable for now
     runs-on: windows-latest
     defaults:
       run:
@@ -51,6 +52,7 @@ jobs:
             mingw-w64-x86_64-SDL2_ttf
             mingw-w64-x86_64-SDL2_mixer
             mingw-w64-x86_64-SDL2_image
+            mingw-w64-x86_64-SDL2_gfx
             mingw-w64-x86_64-jsoncpp
           update: true
       - name: Checkout

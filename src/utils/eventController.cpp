@@ -176,8 +176,7 @@ Event EventController::getEventFromControllerButton(Uint32 button)
         event = Event::ROTATE_UP;
         break;
     case SDL_CONTROLLER_BUTTON_START:
-        // event = Event::MENU;
-        event = Event::QUIT;
+        event = Event::MENU;
         break;
     default:
         event = Event::OTHER;

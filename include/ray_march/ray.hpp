@@ -1,8 +1,9 @@
 #pragma once
 
+class Map;
+
 #include <memory>
 #include <SDL2/SDL.h>
-#include "game/map.hpp"
 
 #include "utils/colors.hpp"
 #include "utils/functions.hpp"

@@ -89,6 +89,7 @@ if (PLATFORM_PSP)
         SDL2main
 		SDL2
         SDL2_ttf
+        SDL2_gfx
         png
         jpeg
 		GL
@@ -127,7 +128,7 @@ else()
     find_package(SDL2_image CONFIG REQUIRED)
 
     if (NOT WIN32)
-        target_link_libraries(untitled_exe PRIVATE SDL2::SDL2main SDL2::SDL2 SDL2_mixer SDL2_ttf SDL2_image freetype jsoncpp)
+        target_link_libraries(untitled_exe PRIVATE SDL2::SDL2main SDL2::SDL2 SDL2_mixer SDL2_ttf SDL2_image SDL2_gfx freetype jsoncpp)
         execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
         ${CMAKE_BINARY_DIR}/res)
     
