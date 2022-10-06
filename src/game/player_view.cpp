@@ -16,7 +16,7 @@ void PlayerView::draw(SDL_Renderer *renderer)
     static float playerDistanceHeadOn = PLAYER_VIEW_DISTANCE * cos(.5f * PLAYER_FIELD_OF_VIEW * Constants::OneDegreeRadian);
 
     float floorLevel = 0.5f * viewRect.h * (1 + tan(player->verticalAngle) / tan(0.5f * PLAYER_VERTICAL_FIELD_OF_VIEW_DEG * Constants::OneDegreeRadian));
-
+    // SDL_RenderSetScale(renderer, 1 * viewRect.w / maxX, 1 * viewRect.w / maxX);
     float prevX = 0;
     for (auto &ray : player->rays)
     {
@@ -37,6 +37,7 @@ void PlayerView::draw(SDL_Renderer *renderer)
         SDL_SetRenderDrawColor(renderer, brightness, brightness, brightness, 255);
         SDL_RenderFillRect(renderer, &rect);
     }
+    // SDL_RenderSetScale(renderer, 1, 1);
 }
 
 void PlayerView::setViewRect(SDL_Rect rect)

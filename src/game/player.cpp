@@ -52,7 +52,6 @@ void Player::update(Event &event)
     case Event::RIGHT_RELEASE:
         movingRight = false;
         break;
-
     case Event::ROTATE_LEFT:
         angle -= angleStep;
         break;

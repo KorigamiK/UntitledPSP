@@ -11,17 +11,24 @@ std::vector<Event> EventController::getEvents()
         case SDL_QUIT:
             events.push_back(Event::QUIT);
             break;
+        case SDL_MOUSEBUTTONDOWN:
+            rotating = true;
+            break;
+        case SDL_MOUSEBUTTONUP:
+            rotating = false;
+            break;
         case SDL_KEYDOWN:
             events.push_back(getEventFromKeyboard(event.key.keysym.sym));
             break;
-        // case SDL_MOUSEBUTTONDOWN:
-        //     events.push_back(getEventFromMouseButton(event.button.button));
-        //     break;
-        // case SDL_MOUSEBUTTONUP:
-        //     events.push_back(getEventFromMouseButtonUp(event.button.button));
-        //     break;
         case SDL_KEYUP:
             events.push_back(getReleaseEventFromKeyboard(event.key.keysym.sym));
+            break;
+        case SDL_MOUSEMOTION:
+            if (rotating)
+            {
+                auto mouseEvents = getEventFromMouseMotion(event.motion.xrel, event.motion.yrel);
+                events.insert(events.end(), mouseEvents.begin(), mouseEvents.end());
+            }
             break;
         case SDL_CONTROLLERBUTTONDOWN:
             events.push_back(getEventFromControllerButton(event.cbutton.button));
@@ -40,6 +47,21 @@ std::vector<Event> EventController::getEvents()
             break;
         }
     }
+    return events;
+}
+
+std::vector<Event> EventController::getEventFromMouseMotion(Sint32 xrel, Sint32 yrel)
+{
+    std::vector<Event> events;
+    Logger::Debug("Mouse motion: %d %d", xrel, yrel);
+    if (xrel > 0)
+        events.push_back(Event::ROTATE_RIGHT);
+    if (xrel < 0)
+        events.push_back(Event::ROTATE_LEFT);
+    if (yrel > 0)
+        events.push_back(Event::ROTATE_UP);
+    if (yrel < 0)
+        events.push_back(Event::ROTATE_DOWN);
     return events;
 }
 

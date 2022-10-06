@@ -22,7 +22,7 @@ public:
   PlayerView(Player *p, SDL_Rect view) : Entity(), player(p), viewRect(view) {}
 
   void setViewRect(SDL_Rect rect);
-  void draw(SDL_Renderer *renderer) override;
+  void draw(SDL_Renderer *renderer);
 
   ~PlayerView();
 };
