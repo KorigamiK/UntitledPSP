@@ -80,11 +80,11 @@ jobs:
             build/CHANGELOG.md
 
   Release:
-    needs: [Windows, PSP]
+    needs: [PSP]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build: [windows, psp]
+        build: [psp]
 
 
     steps:
