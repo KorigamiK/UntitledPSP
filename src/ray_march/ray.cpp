@@ -27,6 +27,7 @@ PointAndDistance Ray::march()
     auto closestPoint = getTarget();
 
     auto target = getTarget();
+    hitWallStartPoint = nullptr;
     for (auto &wall : map->walls)
     {
         float a1 = target.y - position.y;
@@ -55,12 +56,14 @@ PointAndDistance Ray::march()
                 auto distance = Functions::Distance(position, {x, y});
                 if (distance < closestDistance)
                 {
+                    hitWallStartPoint = &p1;
                     closestDistance = distance;
                     closestPoint = {x, y};
                 }
             }
         }
     }
+
     endPosition = closestPoint;
     distance = closestDistance;
 

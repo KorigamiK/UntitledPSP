@@ -4,6 +4,7 @@
 
 #include "utils/colors.hpp"
 #include "utils/logger.hpp"
+#include "utils/textureController.hpp"
 #include "game/entity.hpp"
 #include "game/player.hpp"
 

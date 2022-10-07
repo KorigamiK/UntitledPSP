@@ -16,8 +16,10 @@ void PlayerView::draw(SDL_Renderer *renderer)
     static float playerDistanceHeadOn = PLAYER_VIEW_DISTANCE * cos(.5f * PLAYER_FIELD_OF_VIEW * Constants::OneDegreeRadian);
 
     float floorLevel = 0.5f * viewRect.h * (1 + tan(player->verticalAngle) / tan(0.5f * PLAYER_VERTICAL_FIELD_OF_VIEW_DEG * Constants::OneDegreeRadian));
-    // SDL_RenderSetScale(renderer, 1 * viewRect.w / maxX, 1 * viewRect.w / maxX);
     float prevX = 0;
+
+    SDL_Texture *wallTexture = TextureController::getTexture("colorstone");
+
     for (auto &ray : player->rays)
     {
         float distanceFromCamera = distanceFromCameraPlane(ray.distance, player->angle, ray.angle);
@@ -26,18 +28,33 @@ void PlayerView::draw(SDL_Renderer *renderer)
         float rectX = 0.5f * maxX - playerDistanceHeadOn * tan(player->angle - ray.angle);
         float rectW = std::max(rectX - prevX, 4.0f);
 
-        SDL_Rect rect = {(int)rectX, (int)rectY, (int)rectW, (int)rectH};
-        prevX = rectX;
-
-        float brightness = 255 * std::max<float>(0, 2 * ray.distance / PLAYER_VIEW_DISTANCE - 1);
-
         if (rectX + rectW > viewRect.w + viewRect.x)
             continue;
 
-        SDL_SetRenderDrawColor(renderer, brightness, brightness, brightness, 255);
-        SDL_RenderFillRect(renderer, &rect);
+        prevX = rectX;
+        SDL_Rect destRect = {(int)rectX, (int)rectY, (int)rectW, (int)rectH};
+
+        if (ray.distance == PLAYER_VIEW_DISTANCE)
+        {
+            COLOR_WHITE(renderer)
+            auto absoluteCooridinates = getAbsoluteCoOrdinates({(int)rectX, (int)rectY});
+            destRect.x = absoluteCooridinates.x;
+            destRect.y = absoluteCooridinates.y;
+            SDL_RenderFillRect(renderer, &destRect);
+            continue;
+        }
+
+        float brightness = 255 * (1 - 0.5f * distanceFromCamera / PLAYER_VIEW_DISTANCE);
+
+        SDL_Rect srcRect = {(int)Functions::Distance(ray.endPosition, Functions::PointF(*ray.hitWallStartPoint)) % SPRITE_WIDTH, 0, (int)rectW, SPRITE_HEIGHT};
+
+        auto absoluteCooridinates = getAbsoluteCoOrdinates({(int)rectX, (int)rectY});
+        destRect.x = absoluteCooridinates.x;
+        destRect.y = absoluteCooridinates.y;
+
+        SDL_SetTextureColorMod(wallTexture, brightness, brightness, brightness);
+        SDL_RenderCopy(renderer, wallTexture, &srcRect, &destRect);
     }
-    // SDL_RenderSetScale(renderer, 1, 1);
 }
 
 void PlayerView::setViewRect(SDL_Rect rect)

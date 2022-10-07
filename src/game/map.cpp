@@ -61,6 +61,11 @@ void Map::drawCollisionPoints(SDL_Renderer *renderer)
   {
     SDL_Point absolutePoint = getAbsoluteCoOrdinates(ray.endPosition);
     filledCircleRGBA(renderer, absolutePoint.x, absolutePoint.y, 2, 0, 0, 0, 255);
+    if (ray.hitWallStartPoint != nullptr)
+    {
+      absolutePoint = getAbsoluteCoOrdinates(*ray.hitWallStartPoint);
+      filledCircleRGBA(renderer, absolutePoint.x, absolutePoint.y, 2, 255, 255, 255, 255);
+    }
   }
 }
 

@@ -136,10 +136,11 @@ App::~App()
 {
     Logger::Info("App Destructor");
     AudioController::close();
+    TextureController::closeAll();
     FontController::UnloadFont();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    TextureController::closeAll();
     IMG_Quit();
+    TTF_Quit();
     SDL_Quit();
 }

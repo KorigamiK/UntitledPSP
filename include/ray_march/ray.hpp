@@ -30,6 +30,7 @@ public:
     friend class PlayerView;
 
     Functions::PointF endPosition{0, 0};
+    SDL_Point *hitWallStartPoint = nullptr;
     float distance = 0;
 
     void draw(SDL_Renderer *renderer) override;

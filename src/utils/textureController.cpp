@@ -1,6 +1,6 @@
 #include "utils/textureController.hpp"
 
-std::map<const char *, SDL_Texture *> TextureController::textures;
+std::map<std::string, SDL_Texture *> TextureController::textures;
 SDL_Surface *TextureController::iconSurface;
 
 SDL_Texture *TextureController::load(SDL_Renderer *renderer, const char *file)
@@ -34,13 +34,14 @@ void TextureController::close(SDL_Texture *texture)
 
 void TextureController::init(SDL_Renderer *renderer)
 {
-    textures["icon"] = load(renderer, "./res/glitch.png");
+    textures.insert(std::make_pair("icon", load(renderer, "res/glitch.png")));
     iconSurface = getSurfaceFromFile("res/glitch.png");
+    loadSprites(renderer);
 }
 
 SDL_Texture *TextureController::getTexture(const char *name)
 {
-    return textures[name];
+    return textures.at(name);
 }
 
 SDL_Surface *TextureController::getSurfaceFromFile(const char *name)
@@ -51,9 +52,12 @@ SDL_Surface *TextureController::getSurfaceFromFile(const char *name)
 void TextureController::closeAll()
 {
     Logger::Info("Closing all textures");
-    if (textures["icon"] != NULL)
-    {
-        Logger::Info("Closing icon texture");
-        close(textures["icon"]);
-    }
+    for (auto &texture : textures)
+        close(texture.second);
+}
+
+void TextureController::loadSprites(SDL_Renderer *renderer)
+{
+    textures.insert({"eagle", load(renderer, "./res/sprites/eagle.png")});
+    textures.insert({"colorstone", load(renderer, "./res/sprites/colorstone.png")});
 }
