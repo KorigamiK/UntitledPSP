@@ -153,7 +153,7 @@ Player::~Player()
 
 void Player::updateRays()
 {
-    static float anglePerRay = PLAYER_FIELD_OF_VIEW * Constants::OneDegreeRadian / RAYS_CASTED;
+    static float anglePerRay = (float)PLAYER_FIELD_OF_VIEW * Constants::OneDegreeRadian / (float)RAYS_CASTED;
 
     int i = 0;
     for (int a = -RAYS_CASTED / 2; a < RAYS_CASTED / 2; a++)
