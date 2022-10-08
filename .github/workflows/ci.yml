@@ -42,7 +42,6 @@ jobs:
         uses: actions/checkout@v2
   
       - name: Compile
-        working-directory: src
         run: |
           mkdir build
           cd build
