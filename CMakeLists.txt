@@ -130,6 +130,7 @@ else()
         pkg_search_module(SDL2_MIXER REQUIRED SDL2_mixer)
         pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
         pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf)
+        pkg_search_module(SDL2_GFX REQUIRED SDL2_gfx)
         pkg_search_module(JSONCPP REQUIRED jsoncpp)
     
         target_include_directories(untitled_exe PRIVATE
@@ -137,6 +138,7 @@ else()
             ${SDL2_MIXER_INCLUDE_DIRS}
             ${SDL2_IMAGE_INCLUDE_DIRS}
             ${SDL2_TTF_INCLUDE_DIRS}
+            ${SDL2_GFX_INCLUDE_DIRS}
             ${JSONCPP_INCLUDE_DIRS}
         )
     else()
