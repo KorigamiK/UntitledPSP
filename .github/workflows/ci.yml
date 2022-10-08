@@ -43,11 +43,13 @@ jobs:
   
       - name: Compile
         run: |
+          VERSION=$(tail -n1 CHANGELOG.md | head -n1)
           mkdir build
           cd build
           cmake -DCI=ON ..
           cmake --build . --config Release -j 4 
           mkdir dist
+          cp ../../bin/untitled.desktop dist/
           cp untitled_exe dist/
           cd dist
           wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
