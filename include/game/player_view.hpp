@@ -16,6 +16,7 @@ private:
   SDL_Rect viewRect = {0, 0, 100, 100};
 
   SDL_Point getAbsoluteCoOrdinates(SDL_Point relativePos);
+  SDL_FPoint getAbsoluteCoOrdinates(SDL_FPoint relativePos);
   float distanceFromCameraPlane(float distanceFromPlayer, float playerAngle, float rayAngle);
   void drawFloor(SDL_Renderer *renderer);
 

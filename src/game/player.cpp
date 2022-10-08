@@ -1,5 +1,6 @@
 #include "game/player.hpp"
 
+#include <iostream>
 #include <SDL2/SDL2_gfxPrimitives.h>
 
 void Player::rayMarch()
@@ -10,6 +11,10 @@ void Player::rayMarch()
 
 bool Player::checkCollision(Functions::PointF point)
 {
+    SDL_Point positionSDL = map->getAbsoluteCoOrdinates(point);
+    if (!SDL_PointInRect(&positionSDL, &map->mapRect))
+        return true;
+
     for (auto &wall : map->walls)
     {
         wall.colliding = false;

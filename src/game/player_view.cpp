@@ -15,6 +15,11 @@ SDL_Point PlayerView::getAbsoluteCoOrdinates(SDL_Point relativePos)
     return std::move(SDL_Point{relativePos.x + viewRect.x, relativePos.y + viewRect.y});
 }
 
+SDL_FPoint PlayerView::getAbsoluteCoOrdinates(SDL_FPoint relativePos)
+{
+    return std::move(SDL_FPoint{relativePos.x + viewRect.x, relativePos.y + viewRect.y});
+}
+
 float PlayerView::distanceFromCameraPlane(float distanceFromPlayer, float playerAngle, float rayAngle)
 {
     return distanceFromPlayer * cos(rayAngle - playerAngle);
@@ -44,7 +49,7 @@ void PlayerView::draw(SDL_Renderer *renderer)
 
     float floorLevel = 0.5f * viewRect.h * (1 + tan(player->verticalAngle) / tan(0.5f * PLAYER_VERTICAL_FIELD_OF_VIEW_DEG * Constants::OneDegreeRadian));
 
-    SDL_Texture *wallTexture = TextureController::getTexture("colorstone");
+    SDL_Texture *wallTexture = TextureController::getTexture("eagle");
 
     float relativeAngle;
 
@@ -57,36 +62,36 @@ void PlayerView::draw(SDL_Renderer *renderer)
         // Destination rectangle
         float rectH = viewRect.h * wallHeight / distanceFromCamera;
         float rectY = floorLevel - 0.5f * rectH;
-        float rectX = 0.5f * maxX - cameraMaxDistance * tan(relativeAngle);
+        float rectX = 0.5f * maxX + cameraMaxDistance * tan(relativeAngle);
 
-        float rectW = cameraMaxDistance * (tan(relativeAngle) - tan(relativeAngle - angleBetweenRays));
+        float rectW = cameraMaxDistance * tan(relativeAngle) - cameraMaxDistance * tan(relativeAngle - angleBetweenRays);
 
         if (rectX + rectW > viewRect.w + viewRect.x)
-            continue;
+            break;
 
-        SDL_Rect destRect = {(int)rectX, (int)rectY, (int)std::max<float>(round(rectW), 4), (int)rectH};
+        SDL_FRect destRect = {rectX, rectY, std::max<float>(rectW, 2), rectH};
 
         if (ray.distance == PLAYER_VIEW_DISTANCE)
         {
             COLOR_WHITE(renderer)
-            auto absoluteCooridinates = getAbsoluteCoOrdinates({(int)rectX, (int)rectY});
+            auto absoluteCooridinates = getAbsoluteCoOrdinates(SDL_FPoint{rectX, rectY});
             destRect.x = absoluteCooridinates.x;
             destRect.y = absoluteCooridinates.y;
-            SDL_RenderFillRect(renderer, &destRect);
+            SDL_RenderFillRectF(renderer, &destRect);
             continue;
         }
 
         float brightness = 255 * (1 - distanceFromCamera / PLAYER_VIEW_DISTANCE);
 
         // Source rectangle
-        int textureX = (int)Functions::Distance(ray.endPosition, Functions::PointF(*ray.hitWallStartPoint)) % SPRITE_WIDTH;
-        SDL_Rect srcRect = {textureX, 0, (int)rectW, SPRITE_HEIGHT};
+        int textureX = (int)round(Functions::Distance(ray.endPosition, Functions::PointF(*ray.hitWallStartPoint))) % SPRITE_WIDTH;
+        SDL_Rect srcRect = {textureX, 0, (int)destRect.w, SPRITE_HEIGHT};
 
-        auto absoluteCooridinates = getAbsoluteCoOrdinates({(int)rectX, (int)rectY});
+        auto absoluteCooridinates = getAbsoluteCoOrdinates(SDL_FPoint{rectX, rectY});
         destRect.x = absoluteCooridinates.x;
         destRect.y = absoluteCooridinates.y;
 
         SDL_SetTextureColorMod(wallTexture, brightness, brightness, brightness);
-        SDL_RenderCopy(renderer, wallTexture, &srcRect, &destRect);
+        SDL_RenderCopyF(renderer, wallTexture, &srcRect, &destRect);
     }
 }

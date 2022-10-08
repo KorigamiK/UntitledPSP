@@ -7,8 +7,14 @@
 #include "game/state/menu.hpp"
 #include "game/state/not_implemented.hpp"
 
+#ifdef VERBOSE
+#define DEFAULT_STATE GameState
+#else
+#define DEFAULT_STATE MenuState
+#endif
+
 StateController::StateController(SDL_Renderer *renderer, bool &running)
-    : renderer(renderer), appRunning(running), currentState(new MenuState(renderer))
+    : renderer(renderer), appRunning(running), currentState(new DEFAULT_STATE(renderer))
 {
 }
 

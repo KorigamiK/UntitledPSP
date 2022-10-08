@@ -14,7 +14,7 @@ class Map;
 #define PLAYER_SIZE 5
 #define PLAYER_FIELD_OF_VIEW 90
 #define PLAYER_VERTICAL_FIELD_OF_VIEW_DEG 130
-#define RAYS_CASTED 100
+#define RAYS_CASTED 90
 
 class Player : public Entity
 {
