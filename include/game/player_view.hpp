@@ -19,6 +19,7 @@ private:
   SDL_FPoint getAbsoluteCoOrdinates(SDL_FPoint relativePos);
   float distanceFromCameraPlane(float distanceFromPlayer, float playerAngle, float rayAngle);
   void drawFloor(SDL_Renderer *renderer);
+  void drawSky(SDL_Renderer *renderer);
 
 public:
   PlayerView(Player *p, SDL_Rect view) : Entity(), player(p), viewRect(view) {}

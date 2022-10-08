@@ -56,16 +56,11 @@ void Map::drawWalls(SDL_Renderer *renderer)
 
 void Map::drawCollisionPoints(SDL_Renderer *renderer)
 {
-  COLOR_BLACK(renderer);
   for (auto &ray : player->rays)
   {
     SDL_Point absolutePoint = getAbsoluteCoOrdinates(ray.endPosition);
-    filledCircleRGBA(renderer, absolutePoint.x, absolutePoint.y, 2, 0, 0, 0, 255);
-    if (ray.hitWallStartPoint != nullptr)
-    {
-      absolutePoint = getAbsoluteCoOrdinates(*ray.hitWallStartPoint);
-      filledCircleRGBA(renderer, absolutePoint.x, absolutePoint.y, 2, 255, 255, 255, 255);
-    }
+    if (ray.distance != PLAYER_VIEW_DISTANCE)
+      filledCircleRGBA(renderer, absolutePoint.x, absolutePoint.y, 2, ACCENT, 0xff);
   }
 }
 
@@ -75,7 +70,8 @@ void Map::generateRandomWalls(unsigned int number)
   {
     SDL_Point p1 = {rand() % mapRect.w, rand() % mapRect.h};
     SDL_Point p2 = {rand() % mapRect.w, rand() % mapRect.h};
-    walls.push_back(Wall{"blue", "random", {p1, p2}});
+    SDL_Point p3 = {rand() % mapRect.w, rand() % mapRect.h};
+    walls.push_back(Wall{"blue", "random", {p1, p2, p3}});
   }
 }
 

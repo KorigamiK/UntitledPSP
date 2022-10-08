@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <SDL2/SDL2_gfxPrimitives.h>
+#include "utils/colors.hpp"
 
 void Player::rayMarch()
 {
@@ -123,11 +124,21 @@ void Player::draw(SDL_Renderer *renderer, float dt)
 {
     move(dt);
 
-    for (auto &ray : rays)
-        ray.draw(renderer);
+    SDL_Point playerAbsPosition = map->getAbsoluteCoOrdinates(position);
 
-    SDL_Point relativePos = map->getAbsoluteCoOrdinates(position);
-    filledCircleRGBA(renderer, relativePos.x, relativePos.y, PLAYER_SIZE, 0, 0, 255, 255);
+    static Sint16 pointsX[RAYS_CASTED + 1];
+    static Sint16 pointsY[RAYS_CASTED + 1];
+    pointsX[0] = playerAbsPosition.x;
+    pointsY[0] = playerAbsPosition.y;
+    for (int i = 0; i < RAYS_CASTED; i++)
+    {
+        SDL_Point absoluteEndPoint = map->getAbsoluteCoOrdinates(rays[i].endPosition);
+        pointsX[i + 1] = absoluteEndPoint.x;
+        pointsY[i + 1] = absoluteEndPoint.y;
+    }
+    filledPolygonRGBA(renderer, pointsX, pointsY, RAYS_CASTED + 1, PLAYER_VIEW_COLOR, 255);
+
+    filledCircleRGBA(renderer, playerAbsPosition.x, playerAbsPosition.y, PLAYER_SIZE, PLAYER_COLOR, 255);
 }
 
 void Player::init(std::shared_ptr<Map> map)

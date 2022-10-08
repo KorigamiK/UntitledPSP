@@ -27,14 +27,21 @@ float PlayerView::distanceFromCameraPlane(float distanceFromPlayer, float player
 
 void PlayerView::drawFloor(SDL_Renderer *renderer)
 {
-    COLOR_GREEN(renderer);
+    COLOR_FLOOR(renderer);
     float floorLevel = 0.5f * viewRect.h * (1 + tan(player->verticalAngle) / tan(0.5f * PLAYER_VERTICAL_FIELD_OF_VIEW_DEG * Constants::OneDegreeRadian));
     SDL_Rect rect = {viewRect.x, (int)floorLevel, viewRect.w, viewRect.h - (int)floorLevel};
     SDL_RenderFillRect(renderer, &rect);
 }
 
+void PlayerView::drawSky(SDL_Renderer *renderer)
+{
+    COLOR_SKY(renderer);
+    SDL_RenderFillRect(renderer, &viewRect);
+}
+
 void PlayerView::draw(SDL_Renderer *renderer)
 {
+    drawSky(renderer);
     drawFloor(renderer);
     COLOR_WHITE(renderer)
     SDL_RenderDrawRect(renderer, &viewRect);
@@ -66,14 +73,14 @@ void PlayerView::draw(SDL_Renderer *renderer)
 
         float rectW = cameraMaxDistance * tan(relativeAngle) - cameraMaxDistance * tan(relativeAngle - angleBetweenRays);
 
-        if (rectX + rectW > viewRect.w + viewRect.x)
+        if (rectX > viewRect.w + viewRect.x)
             break;
 
         SDL_FRect destRect = {rectX, rectY, std::max<float>(rectW, 2), rectH};
 
         if (ray.distance == PLAYER_VIEW_DISTANCE)
         {
-            COLOR_WHITE(renderer)
+            COLOR_HORIZON(renderer);
             auto absoluteCooridinates = getAbsoluteCoOrdinates(SDL_FPoint{rectX, rectY});
             destRect.x = absoluteCooridinates.x;
             destRect.y = absoluteCooridinates.y;

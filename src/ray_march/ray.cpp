@@ -9,9 +9,9 @@ void Ray::draw(SDL_Renderer *renderer)
         auto startAbsolutePos = map->getAbsoluteCoOrdinates(position);
         auto endAbsolutePos = map->getAbsoluteCoOrdinates(SDL_Point{(int)endPosition.x, (int)endPosition.y});
         if (distance != PLAYER_VIEW_DISTANCE)
-            COLOR_RED(renderer)
+            COLOR_RAY_PRIMARY(renderer);
         else
-            COLOR_GREEN(renderer)
+            COLOR_RAY_SECONDARY(renderer);
         SDL_RenderDrawLine(renderer, startAbsolutePos.x, startAbsolutePos.y, endAbsolutePos.x, endAbsolutePos.y);
     }
 }

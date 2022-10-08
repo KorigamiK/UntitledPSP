@@ -1,14 +1,15 @@
 #include "game/state/menu.hpp"
 
+#include "utils/colors.hpp"
 #include "utils/fontController.hpp"
 
 MenuState::MenuState(SDL_Renderer *renderer)
     : renderer(renderer)
 {
-    titleTexture = FontController::getTexture(renderer, "UNTITLED", SDL_Color{255, 255, 255, 255});
+    titleTexture = FontController::getTexture(renderer, "UNTITLED", SDL_Color{HEADING, 255});
 
     for (int i = 0; i < numOptions; i++)
-        optionTextures[i] = FontController::getTexture(renderer, Constants::StateToString.at(options[i]), SDL_Color{200, 200, 200, 255}, 500);
+        optionTextures[i] = FontController::getTexture(renderer, Constants::StateToString.at(options[i]), SDL_Color{TEXT, 255}, 500);
 }
 
 void MenuState::handleEvent(Event &event)

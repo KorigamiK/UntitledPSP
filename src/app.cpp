@@ -4,7 +4,7 @@ App App::_instance;
 
 void App::draw(float dt)
 {
-    SDL_SetRenderDrawColor(renderer, 41, 41, 41, 255);
+    SDL_SetRenderDrawColor(renderer, BACKGROUND, 255);
     SDL_RenderClear(renderer);
 
     SDL_GetWindowSize(window, &width, &height);
