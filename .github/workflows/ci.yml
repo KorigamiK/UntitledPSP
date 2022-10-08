@@ -61,20 +61,12 @@ jobs:
         with:
           name: untitled-linux
           path: |
-            build/dist/untitled*.AppImage
+            build/dist/*.AppImage
             build/res
             LICENSE
             README.md
             CHANGELOG.md
 
-      - name: Pack
-        working-directory: dist
-        run: tar -cvf untitled-linux.tar.gz ../src/untitled
-      - name: Upload as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: untitled
-          path: dist/untitled-linux.tar.gz
 
 
   Windows:
