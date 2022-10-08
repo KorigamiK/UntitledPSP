@@ -49,7 +49,7 @@ jobs:
           cmake -DCI=ON ..
           cmake --build . --config Release -j 4 
           mkdir dist
-          cp ../bin/untitled.desktop dist/
+          cp ../bin/* dist
           cp untitled_exe dist/
           cd dist
           wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
@@ -62,6 +62,7 @@ jobs:
           name: untitled-linux
           path: |
             build/dist/untitled*.AppImage
+            build/res
             LICENSE
             README.md
             CHANGELOG.md

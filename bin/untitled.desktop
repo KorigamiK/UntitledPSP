@@ -7,3 +7,4 @@ Name=Untitled
 Comment=A raycasting based Game
 StartupNotify=false
 Categories=Game;
+Icon=icon.png
