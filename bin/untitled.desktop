@@ -4,3 +4,6 @@ Version=1.0
 Type=Application
 Terminal=false
 Name=Untitled
+Comment=A raycasting based Game
+StartupNotify=false
+Categories=Game;
