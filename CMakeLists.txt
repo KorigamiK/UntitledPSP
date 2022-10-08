@@ -80,6 +80,7 @@ if (PLATFORM_PSP)
     set(PSP_LARGE_MEMORY ON)
     target_compile_definitions(untitled_exe PRIVATE PLATFORM_PSP PSP_LARGE_MEMORY)
     if (VERBOSE)
+        message("Verbose option enabled")
         target_compile_definitions(untitled_exe PRIVATE VERBOSE)
     endif()
     target_link_libraries(untitled_exe PRIVATE 
@@ -180,6 +181,12 @@ else()
      )
 
     endif()
-        target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC VERBOSE)
+
+    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC)
+    if (VERBOSE)
+        message(STATUS "Setting verbose flag")
+        target_compile_definitions(untitled_exe PRIVATE VERBOSE)
+    endif()
+
 endif()
 

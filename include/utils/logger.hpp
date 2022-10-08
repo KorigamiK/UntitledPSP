@@ -13,10 +13,12 @@ namespace Logger
     };
 
 #ifdef VERBOSE
-    template <typename... Targs>
-    inline void Log(Level level, const char *message, Targs... args)
+    inline void Log(Level level, const char *message, ...)
     {
-        SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, static_cast<SDL_LogPriority>(level), message, args...);
+        va_list args;
+        va_start(args, message);
+        SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, static_cast<SDL_LogPriority>(level), message, args);
+        va_end(args);
     }
 #else
     inline void Log(Level level, const char *message, ...)

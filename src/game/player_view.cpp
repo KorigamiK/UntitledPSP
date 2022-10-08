@@ -76,7 +76,7 @@ void PlayerView::draw(SDL_Renderer *renderer)
         if (rectX > viewRect.w + viewRect.x)
             break;
 
-        SDL_FRect destRect = {rectX, rectY, std::max<float>(rectW, 2), rectH};
+        SDL_FRect destRect = {rectX, rectY, std::max<float>(rectW, 3), rectH};
 
         if (ray.distance == PLAYER_VIEW_DISTANCE)
         {

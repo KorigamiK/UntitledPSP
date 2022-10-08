@@ -80,7 +80,9 @@ void Map::draw(SDL_Renderer *renderer)
   COLOR_WHITE(renderer);
   SDL_RenderDrawRect(renderer, &mapRect);
   drawWalls(renderer);
+#ifdef VERBOSE
   drawCollisionPoints(renderer);
+#endif
 }
 
 /* TODO: Json doesn't work with the PSP */

@@ -1,5 +1,8 @@
 {
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cmake.configureArgs": [
+        "-DVERBOSE=ON",
+    ],
     "files.associations": {
         "*.ejs": "html",
         "*.css": "css",

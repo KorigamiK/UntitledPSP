@@ -49,7 +49,12 @@
 - [0.2.0] - 2022-08-10
   - Better Colors
   - Bug Fixes
-  
+- [0.2.1] - 2022-09-10
+  - Added
+    - Linux CI/CD pipeline
+  - Fixed
+    - Fixed Bugs
+
 ### VERSION HISTORY:
 0.1.0
 0.1.1
@@ -60,4 +65,4 @@
 0.1.8
 0.1.9
 0.1.10
-0.2.0
+0.2.1

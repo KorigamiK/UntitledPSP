@@ -30,6 +30,50 @@ jobs:
           name: untitled-psp
           path: build/psp/dist
 
+  Linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget cmake libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libjsoncpp-dev
+  
+      - name: Checkout
+        uses: actions/checkout@v2
+  
+      - name: Compile
+        working-directory: src
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make install DESTDIR=AppDir
+          mkdir dist
+          cp untitled_exe dist/
+          cd dist
+          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          chmod +x linuxdeploy*.AppImage
+          ./linuxdeploy-x86_64.AppImage --appdir AppDir --output appimage
+
+      - name: Publish artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: untitled-linux
+          path: |
+            build/untitled*.AppImage
+            LICENSE
+            README.md
+            CHANGELOG.md
+
+      - name: Pack
+        working-directory: dist
+        run: tar -cvf untitled-linux.tar.gz ../src/untitled
+      - name: Upload as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: untitled
+          path: dist/untitled-linux.tar.gz
+
 
   Windows:
     if: ${{ false }}  # disable for now
@@ -80,11 +124,11 @@ jobs:
             build/CHANGELOG.md
 
   Release:
-    needs: [PSP]
+    needs: [PSP, Linux]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build: [psp]
+        build: [psp, linux]
 
 
     steps:

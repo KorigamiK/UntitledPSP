@@ -5,7 +5,7 @@
 PauseScreen::PauseScreen(SDL_Renderer *renderer, const char *title, const char *subtitle)
     : renderer(renderer),
       title(FontController::getTexture(renderer, title, {ACCENT, 255})),
-      subtitle(FontController::getTexture(renderer, subtitle, {ACCENT_ALT, 255}, 84))
+      subtitle(FontController::getTexture(renderer, subtitle, {ACCENT_ALT, 255}, 90))
 {
 }
 
