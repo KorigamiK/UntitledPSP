@@ -46,6 +46,9 @@
     - Fixed bugs
     - Fixed memory leaks
     - Fixed Texture destruction
+- [0.2.0] - 2022-08-10
+  - Better Colors
+  - Bug Fixes
   
 ### VERSION HISTORY:
 0.1.0
@@ -57,3 +60,4 @@
 0.1.8
 0.1.9
 0.1.10
+0.2.0

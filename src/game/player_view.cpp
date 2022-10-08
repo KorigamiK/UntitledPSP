@@ -56,7 +56,7 @@ void PlayerView::draw(SDL_Renderer *renderer)
 
     float floorLevel = 0.5f * viewRect.h * (1 + tan(player->verticalAngle) / tan(0.5f * PLAYER_VERTICAL_FIELD_OF_VIEW_DEG * Constants::OneDegreeRadian));
 
-    SDL_Texture *wallTexture = TextureController::getTexture("eagle");
+    SDL_Texture *wallTexture = TextureController::getTexture("colorstone");
 
     float relativeAngle;
 
