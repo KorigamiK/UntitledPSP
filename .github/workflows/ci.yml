@@ -45,7 +45,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ..
+          cmake -DCI=ON ..
           make install DESTDIR=AppDir
           mkdir dist
           cp untitled_exe dist/

@@ -123,18 +123,39 @@ if (PLATFORM_PSP)
     file(COPY "${CMAKE_SOURCE_DIR}/res/map.json" DESTINATION ${CMAKE_BINARY_DIR})
 
 else()
+    if (CI)
+        message("Compiling for CI")
+        include(FindPkgConfig)
+        pkg_search_module(SDL2 REQUIRED sdl2)
+        pkg_search_module(SDL2_MIXER REQUIRED SDL2_mixer)
+        pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
+        pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf)
+        pkg_search_module(JSONCPP REQUIRED jsoncpp)
+    
+        target_include_directories(untitled_exe PRIVATE
+            ${SDL2_INCLUDE_DIRS}
+            ${SDL2_MIXER_INCLUDE_DIRS}
+            ${SDL2_IMAGE_INCLUDE_DIRS}
+            ${SDL2_TTF_INCLUDE_DIRS}
+            ${JSONCPP_INCLUDE_DIRS}
+        )
+    else()
+
+    message("Compiling local debug. Use -DCI=ON for compiling with CI")
     find_package(SDL2 REQUIRED)
     find_package(SDL2_ttf REQUIRED)
     find_package(SDL2_mixer CONFIG REQUIRED)
     find_package(SDL2_image CONFIG REQUIRED)
+    
+    endif()
 
     if (NOT WIN32)
-        target_link_libraries(untitled_exe PRIVATE SDL2::SDL2main SDL2::SDL2 SDL2_mixer SDL2_ttf SDL2_image SDL2_gfx freetype jsoncpp)
+        target_link_libraries(untitled_exe PRIVATE SDL2 SDL2_mixer SDL2_ttf SDL2_image SDL2_gfx freetype jsoncpp)
         execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
         ${CMAKE_BINARY_DIR}/res)
     
     else()
-
+    target_link_libraries(untitled_exe SDL2::SDL2main)
     option(BUILD_STATIC "Build a static binary (Windows only)" OFF)
 
      target_link_libraries(untitled_exe PRIVATE
