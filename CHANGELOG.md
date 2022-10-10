@@ -1,6 +1,6 @@
 # Project Changelog
 
-### TDOO: 
+### TODO: 
 - [ ] Come up with a name for this project
 
 ## [Unreleased]
@@ -54,6 +54,11 @@
     - Linux CI/CD pipeline
   - Fixed
     - Fixed Bugs
+- [0.2.2] - 2022-10-10
+  - Added
+    - Windows CI/CD pipeline
+    - Rename executable to untitled from untitled_exe
+    - No longer have separate CI build path
 
 ### VERSION HISTORY:
 0.1.0
@@ -66,3 +71,4 @@
 0.1.9
 0.1.10
 0.2.1
+0.2.2

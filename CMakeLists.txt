@@ -8,16 +8,14 @@ project(
     LANGUAGES CXX
 )
 
-add_executable(untitled_exe src/main.cpp)
-add_executable(untitled::exe ALIAS untitled_exe)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set_target_properties(
-    untitled_exe PROPERTIES
-    OUTPUT_NAME untitled_exe
-    EXPORT_NAME exe
-)
-
-target_compile_features(untitled_exe PRIVATE cxx_std_17)
+SET(BUILD_STATIC_DEFAULT OFF)
+if(WIN32)
+    SET(BUILD_STATIC_DEFAULT ON)
+endif()
+option(BUILD_STATIC "Build a static binary" ${BUILD_STATIC_DEFAULT})
 
 # Header files (relative to "include" directory)
 set(HEADERS
@@ -73,17 +71,20 @@ set(SOURCES
 list(TRANSFORM HEADERS PREPEND "include/")
 list(TRANSFORM SOURCES PREPEND "src/")
 
-target_sources(untitled_exe PRIVATE ${HEADERS} ${SOURCES})
-target_include_directories(untitled_exe PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+if(WIN32)
+    add_executable(${PROJECT_NAME} WIN32 src/main.cpp ${SOURCES} ${HEADERS})
+else()
+    add_executable(${PROJECT_NAME} src/main.cpp ${SOURCES} ${HEADERS})
+endif()
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 if (PLATFORM_PSP)
-    set(PSP_LARGE_MEMORY ON)
-    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PSP PSP_LARGE_MEMORY)
     if (VERBOSE)
         message("Verbose option enabled")
-        target_compile_definitions(untitled_exe PRIVATE VERBOSE)
+        target_compile_definitions(${PROJECT_NAME} PRIVATE VERBOSE)
     endif()
-    target_link_libraries(untitled_exe PRIVATE 
+    target_link_libraries(${PROJECT_NAME} PRIVATE 
         stdc++
         SDL2_mixer
         SDL2_image
@@ -114,101 +115,63 @@ if (PLATFORM_PSP)
     )
 
     create_pbp_file(
-        TARGET untitled_exe
+        TARGET ${PROJECT_NAME}
         TITLE "${CMAKE_PROJECT_NAME}"
         ICON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/res/glitch.png"
         BUILD_PRX
     )
 
     file(COPY "${CMAKE_SOURCE_DIR}/res/map.json" DESTINATION ${CMAKE_BINARY_DIR})
-
 else()
-    if (CI)
-        message("Compiling for CI")
-        include(FindPkgConfig)
-        pkg_search_module(SDL2 REQUIRED sdl2)
-        pkg_search_module(SDL2_MIXER REQUIRED SDL2_mixer)
-        pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
-        pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf)
-        pkg_search_module(SDL2_GFX REQUIRED SDL2_gfx)
-        pkg_search_module(JSONCPP REQUIRED jsoncpp)
-    
-        target_include_directories(untitled_exe PRIVATE
-            ${SDL2_INCLUDE_DIRS}
-            ${SDL2_MIXER_INCLUDE_DIRS}
-            ${SDL2_IMAGE_INCLUDE_DIRS}
-            ${SDL2_TTF_INCLUDE_DIRS}
-            ${SDL2_GFX_INCLUDE_DIRS}
-            ${JSONCPP_INCLUDE_DIRS}
+    include(FindPkgConfig)
+    pkg_search_module(SDL2 REQUIRED sdl2)
+    pkg_search_module(SDL2_MIXER REQUIRED SDL2_mixer)
+    pkg_search_module(SDL2_IMAGE REQUIRED SDL2_image)
+    pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf)
+    pkg_search_module(SDL2_GFX REQUIRED SDL2_gfx)
+    pkg_search_module(JSONCPP REQUIRED jsoncpp)
+
+    target_include_directories(${PROJECT_NAME} PRIVATE
+        ${SDL2_INCLUDE_DIRS}
+        ${SDL2_MIXER_INCLUDE_DIRS}
+        ${SDL2_IMAGE_INCLUDE_DIRS}
+        ${SDL2_TTF_INCLUDE_DIRS}
+        ${SDL2_GFX_INCLUDE_DIRS}
+        ${JSONCPP_INCLUDE_DIRS}
+    )
+
+    if (BUILD_STATIC)
+        set(CMAKE_CXX_FLAGS "-static ${CMAKE_CXX_FLAGS}")
+        target_link_libraries(${PROJECT_NAME} PRIVATE
+            ${SDL2_STATIC_LIBRARIES}
+            ${SDL2_MIXER_STATIC_LIBRARIES}
+            ${SDL2_IMAGE_STATIC_LIBRARIES}
+            ${SDL2_TTF_STATIC_LIBRARIES}
+            ${SDL2_GFX_STATIC_LIBRARIES}
+            ${JSONCPP_STATIC_LIBRARIES}
         )
     else()
-
-    message("Compiling local debug. Use -DCI=ON for compiling with CI")
-    find_package(SDL2 REQUIRED)
-    find_package(SDL2_ttf REQUIRED)
-    find_package(SDL2_mixer CONFIG REQUIRED)
-    find_package(SDL2_image CONFIG REQUIRED)
+        target_link_libraries(${PROJECT_NAME} PRIVATE
+            ${SDL2_LIBRARIES}
+            ${SDL2_MIXER_LIBRARIES}
+            ${SDL2_IMAGE_LIBRARIES}
+            ${SDL2_TTF_LIBRARIES}
+            ${SDL2_GFX_LIBRARIES}
+            ${JSONCPP_LIBRARIES}
+        )
+    endif()
     
+    if (WIN32)
+        target_link_libraries(${PROJECT_NAME} PRIVATE SDL2main)
     endif()
 
     if (NOT WIN32)
-        target_link_libraries(untitled_exe PRIVATE SDL2 SDL2_mixer SDL2_ttf SDL2_image SDL2_gfx freetype jsoncpp)
         execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/res
-        ${CMAKE_BINARY_DIR}/res)
-    
-    else()
-    target_link_libraries(untitled_exe SDL2::SDL2main)
-    option(BUILD_STATIC "Build a static binary (Windows only)" OFF)
-
-     target_link_libraries(untitled_exe PRIVATE
-          SDL2::SDL2main
-          SDL2_image
-          SDL2_mixer
-          SDL2_ttf
-          jsoncpp_object
-          JsonCpp::JsonCpp
-     )
-
-     if(BUILD_STATIC)
-          if(MSVC)
-               set(CompilerFlags
-                    CMAKE_CXX_FLAGS
-                    CMAKE_CXX_FLAGS_DEBUG
-                    CMAKE_CXX_FLAGS_RELEASE
-                    CMAKE_CXX_FLAGS_MINSIZEREL
-                    CMAKE_CXX_FLAGS_RELWITHDEBINFO
-               )
-               foreach(CompilerFlag ${CompilerFlags})
-                    string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
-                    set(${CompilerFlag} "${${CompilerFlag}}" CACHE STRING "msvc compiler flags" FORCE)
-                    message("MSVC flags: ${CompilerFlag}:${${CompilerFlag}}")
-               endforeach()
-          endif()
-          target_link_libraries(untitled_exe PRIVATE
-               SDL2::SDL2-static
-               jsoncpp_static
-               Shlwapi
-          )
-     else()
-        target_link_libraries(untitled_exe PRIVATE
-                SDL2::SDL2
-        )
-     endif()
-
-     target_include_directories(untitled_exe PRIVATE
-          ${SDL2_INCLUDE_DIRS}
-          ${SDL2_IMAGE_INCLUDE_DIRS}
-          ${SDL2_TTF_INCLUDE_DIRS}
-          ${SDL2_MIXER_INCLUDE_DIRS}
-          ${JSONCPP_INCLUDE_DIRS}
-     )
-
+            ${CMAKE_BINARY_DIR}/res)
     endif()
-
-    target_compile_definitions(untitled_exe PRIVATE PLATFORM_PC)
     if (VERBOSE)
         message(STATUS "Setting verbose flag")
-        target_compile_definitions(untitled_exe PRIVATE VERBOSE)
+        target_compile_definitions(${PROJECT_NAME} PRIVATE VERBOSE)
     endif()
 
 endif()
