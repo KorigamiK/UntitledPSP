@@ -46,11 +46,11 @@ jobs:
           VERSION=$(tail -n1 CHANGELOG.md | head -n1)
           mkdir build
           cd build
-          cmake -DCI=ON ..
+          cmake ..
           cmake --build . --config Release -j 4 
           mkdir dist
           cp ../bin/* dist
-          cp untitled_exe dist/
+          cp untitled dist/
           cd dist
           wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy*.AppImage
@@ -70,7 +70,6 @@ jobs:
 
 
   Windows:
-    if: ${{ false }}  # disable for now
     runs-on: windows-latest
     defaults:
       run:
@@ -104,25 +103,25 @@ jobs:
           cp LICENSE build
           cp CHANGELOG.md build
           cp -r res build
-          strip --strip-unneeded build/untitled_exe.exe
+          strip --strip-unneeded build/untitled.exe
 
       - name: Publish artifacts
         uses: actions/upload-artifact@v2
         with:
           name: untitled-windows
           path: |
-            build/untitled_exe.exe
+            build/untitled.exe
             build/res
             build/LICENSE
             build/README.md
             build/CHANGELOG.md
 
   Release:
-    needs: [PSP, Linux]
+    needs: [PSP, Linux, Windows]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build: [psp, linux]
+        build: [psp, linux, windows]
 
 
     steps:
@@ -150,4 +149,3 @@ jobs:
          name: Untitled ${{ steps.tag.outputs.VERSION }}
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
