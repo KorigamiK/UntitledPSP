@@ -2,6 +2,7 @@
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "cmake.configureArgs": [
         "-DVERBOSE=ON",
+        "-DPKG_CONFIG_EXECUTABLE=C:/msys64/mingw64/bin/pkg-config",
     ],
     "files.associations": {
         "*.ejs": "html",
