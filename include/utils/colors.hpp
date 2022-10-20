@@ -18,6 +18,9 @@
 #define SKY 230, 250, 252
 #define HORIZON SKY
 
+#define TARGET_MISS 255, 0, 0
+#define TARGET_HIT 0, 255, 0
+
 #define COLOR_BACKGROUND(x) SDL_SetRenderDrawColor(x, BACKGROUND, 255)
 #define COLOR_HEADING(x) SDL_SetRenderDrawColor(x, HEADING, 255)
 #define COLOR_TEXT(x) SDL_SetRenderDrawColor(x, TEXT, 255)
@@ -31,8 +34,11 @@
 #define COLOR_SKY(x) SDL_SetRenderDrawColor(x, SKY, 255)
 #define COLOR_HORIZON(x) SDL_SetRenderDrawColor(x, HORIZON, 255)
 
-#define COLOR_WHITE(x) SDL_SetRenderDrawColor(x, 255, 255, 255, 255);
-#define COLOR_BLACK(x) SDL_SetRenderDrawColor(x, 0, 0, 0, 255);
-#define COLOR_RED(x) SDL_SetRenderDrawColor(x, 255, 0, 0, 255);
-#define COLOR_GREEN(x) SDL_SetRenderDrawColor(x, 0, 255, 0, 255);
-#define COLOR_BLUE(x) SDL_SetRenderDrawColor(x, 0, 0, 255, 255);
+#define COLOR_TARGET_HIT(x) SDL_SetRenderDrawColor(x, TARGET_HIT, 255)
+#define COLOR_TARGET_MISS(x) SDL_SetRenderDrawColor(x, TARGET_MISS, 255)
+
+#define COLOR_WHITE(x) SDL_SetRenderDrawColor(x, 255, 255, 255, 255)
+#define COLOR_BLACK(x) SDL_SetRenderDrawColor(x, 0, 0, 0, 255)
+#define COLOR_RED(x) SDL_SetRenderDrawColor(x, 255, 0, 0, 255)
+#define COLOR_GREEN(x) SDL_SetRenderDrawColor(x, 0, 255, 0, 255)
+#define COLOR_BLUE(x) SDL_SetRenderDrawColor(x, 0, 0, 255, 255)

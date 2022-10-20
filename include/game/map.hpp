@@ -30,10 +30,12 @@ private:
     const char *mapFile = "res/map.json";
 
     std::vector<Wall> walls;
+    std::vector<Target> targets;
 
     static SDL_Rect getPaddedRect(SDL_Rect rect, int padding);
 
     void generateRandomWalls(unsigned int number = 3);
+    void generateRandomTargets(unsigned int number = 3);
     void drawCollisionPoints(SDL_Renderer *renderer);
 
 public:
@@ -49,6 +51,7 @@ public:
 
     void draw(SDL_Renderer *renderer) override;
     void drawWalls(SDL_Renderer *renderer);
+    void drawTargets(SDL_Renderer *renderer);
 
     ~Map();
 };

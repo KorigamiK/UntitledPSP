@@ -43,7 +43,7 @@ void PlayerView::draw(SDL_Renderer *renderer)
 {
     drawSky(renderer);
     drawFloor(renderer);
-    COLOR_WHITE(renderer)
+    COLOR_WHITE(renderer);
     SDL_RenderDrawRect(renderer, &viewRect);
 
     static float angleBetweenRays = Constants::OneDegreeRadian * PLAYER_FIELD_OF_VIEW / (float)RAYS_CASTED;
