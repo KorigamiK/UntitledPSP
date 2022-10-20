@@ -59,6 +59,9 @@
     - Windows CI/CD pipeline
     - Rename executable to untitled from untitled_exe
     - No longer have separate CI build path
+- [0.2.21] - 2022-11-10
+  - Added
+    - Targets
 
 ### VERSION HISTORY:
 0.1.0
@@ -72,3 +75,4 @@
 0.1.10
 0.2.1
 0.2.2
+0.2.21

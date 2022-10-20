@@ -31,7 +31,7 @@ private:
     bool movingLeft = false, movingRight = false, movingUp = false, movingDown = false;
 
     float angleStep = 0.1;
-    float angle = 0;
+    float angle = -M_PI_2;
     float verticalAngle = 0;
     Ray rays[RAYS_CASTED];
 
