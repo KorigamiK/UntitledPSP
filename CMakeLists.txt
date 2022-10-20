@@ -80,10 +80,14 @@ endif()
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 if (PLATFORM_PSP)
+
+    set(PSP_LARGE_MEMORY ON)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_PSP PSP_LARGE_MEMORY)
     if (VERBOSE)
         message("Verbose option enabled")
         target_compile_definitions(${PROJECT_NAME} PRIVATE VERBOSE)
     endif()
+
     target_link_libraries(${PROJECT_NAME} PRIVATE 
         stdc++
         SDL2_mixer
