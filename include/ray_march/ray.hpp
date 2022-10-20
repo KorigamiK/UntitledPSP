@@ -31,6 +31,7 @@ public:
 
     Functions::PointF endPosition{0, 0};
     SDL_Point *hitWallStartPoint = nullptr;
+    int hitWallIndex = -1;
     float distance = 0;
 
     void draw(SDL_Renderer *renderer) override;

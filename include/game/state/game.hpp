@@ -24,6 +24,7 @@ public:
     GameState(SDL_Renderer *renderer);
     void handleEvent(Event &event) override;
     void draw(float dt, int width, int height) override;
+    bool isDone() override;
     State getNextState() override;
     ~GameState();
 };

@@ -48,7 +48,10 @@ void Map::drawWalls(SDL_Renderer *renderer)
     SDL_Point absolutePoints[wall.points.size()];
     COLOR_WHITE(renderer);
     if (wall.colliding)
-      COLOR_RED(renderer);
+      if (wall.isTarget)
+        COLOR_GREEN(renderer);
+      else
+        COLOR_RED(renderer);
     for (int i = 0; i < wall.points.size(); i++)
       absolutePoints[i] = getAbsoluteCoOrdinates(wall.points[i]);
     SDL_RenderDrawLines(renderer, absolutePoints, wall.points.size());
@@ -81,22 +84,8 @@ void Map::generateRandomTargets(unsigned int number)
   for (int i = 0; i < number; i++)
   {
     SDL_Point p1 = {rand() % mapRect.w, rand() % mapRect.h};
-    targets.push_back(Target{"red", p1, 10, 10});
-  }
-}
-
-void Map::drawTargets(SDL_Renderer *renderer)
-{
-  static SDL_Rect rect;
-  for (auto &target : targets)
-  {
-    SDL_Point absolutePoint = getAbsoluteCoOrdinates(target.position);
-    rect.x = absolutePoint.x;
-    rect.y = absolutePoint.y;
-    rect.w = target.width;
-    rect.h = target.height;
-    target.collided ? COLOR_TARGET_HIT(renderer) : COLOR_TARGET_MISS(renderer);
-    SDL_RenderFillRect(renderer, &rect);
+    SDL_Point p2 = {rand() % mapRect.w, rand() % mapRect.h};
+    walls.push_back(Wall{"red", "target", {p1, p2}, false, true});
   }
 }
 
@@ -105,7 +94,6 @@ void Map::draw(SDL_Renderer *renderer)
   COLOR_WHITE(renderer);
   SDL_RenderDrawRect(renderer, &mapRect);
   drawWalls(renderer);
-  drawTargets(renderer);
 #ifdef VERBOSE
   drawCollisionPoints(renderer);
 #endif

@@ -10,6 +10,11 @@ void Player::rayMarch()
         ray.march();
 }
 
+bool Player::won() const
+{
+    return targetsHit >= map->levelTargets;
+}
+
 bool Player::checkCollision(Functions::PointF point)
 {
     SDL_Point positionSDL = map->getAbsoluteCoOrdinates(point);
@@ -18,13 +23,28 @@ bool Player::checkCollision(Functions::PointF point)
 
     for (auto &wall : map->walls)
     {
-        wall.colliding = false;
-        for (int i = 0; i < wall.points.size() - 1; i++)
-            if (Functions::LineCircleIntersection(point, PLAYER_SIZE, wall.points[i], wall.points[i + 1]))
-            {
-                wall.colliding = true;
-                return true;
-            }
+        if (wall.isTarget)
+        {
+            if (!wall.colliding)
+                for (int i = 0; i < wall.points.size() - 1; i++)
+                    if (Functions::LineCircleIntersection(point, PLAYER_SIZE, wall.points[i], wall.points[i + 1]))
+                    {
+                        wall.colliding = true;
+                        Logger::Debug("Player::checkCollision() - Target Hit at %d", targetsHit);
+                        targetsHit++;
+                        return false;
+                    }
+        }
+        else
+        {
+            wall.colliding = false;
+            for (int i = 0; i < wall.points.size() - 1; i++)
+                if (Functions::LineCircleIntersection(point, PLAYER_SIZE, wall.points[i], wall.points[i + 1]))
+                {
+                    wall.colliding = true;
+                    return true;
+                }
+        }
     }
     return false;
 }

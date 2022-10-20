@@ -30,17 +30,19 @@ private:
     const char *mapFile = "res/map.json";
 
     std::vector<Wall> walls;
-    std::vector<Target> targets;
 
     static SDL_Rect getPaddedRect(SDL_Rect rect, int padding);
 
     void generateRandomWalls(unsigned int number = 3);
-    void generateRandomTargets(unsigned int number = 3);
+    void generateRandomTargets(unsigned int number = 1);
     void drawCollisionPoints(SDL_Renderer *renderer);
 
 public:
+    int const levelTargets = 1;
+
     Map(const char *mapFile);
-    Map(SDL_Rect mapRectAndPosition, int padding = 10) : mapRect(Map::getPaddedRect(mapRectAndPosition, padding)){};
+    Map(SDL_Rect mapRectAndPosition, int padding = 10, int levelTargets = 1)
+        : mapRect(Map::getPaddedRect(mapRectAndPosition, padding)), levelTargets(levelTargets){};
     Map(){};
 
     void init(Player *p);
@@ -51,7 +53,6 @@ public:
 
     void draw(SDL_Renderer *renderer) override;
     void drawWalls(SDL_Renderer *renderer);
-    void drawTargets(SDL_Renderer *renderer);
 
     ~Map();
 };

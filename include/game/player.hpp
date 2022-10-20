@@ -25,6 +25,7 @@ private:
 
     Functions::PointF position{0, 0};
 
+    int targetsHit = 0;
     float xGoal = 0, yGoal = 0;
 
     int moveStep = 1;
@@ -46,6 +47,7 @@ public:
 
     void update(Event &event) override;
     void draw(SDL_Renderer *renderer, float dt) override;
+    bool won() const;
 
     Player();
     Player(float x, float y);

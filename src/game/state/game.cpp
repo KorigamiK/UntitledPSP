@@ -42,6 +42,13 @@ State GameState::getNextState()
     return State::Menu;
 }
 
+bool GameState::isDone()
+{
+    if (player->won())
+        return true;
+    return done;
+}
+
 GameState::~GameState()
 {
     Logger::Info("GameState::~GameState");
