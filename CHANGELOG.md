@@ -59,9 +59,15 @@
     - Windows CI/CD pipeline
     - Rename executable to untitled from untitled_exe
     - No longer have separate CI build path
-- [0.2.21] - 2022-11-10
+- [0.2.21] - 2022-11-20
   - Added
     - Targets
+
+- [0.2.5] - 2022-11-21
+  - better randomness
+  - add score view
+  - gameplay sort of
+  - smoother rotation
 
 ### VERSION HISTORY:
 0.1.0
@@ -76,3 +82,4 @@
 0.2.1
 0.2.2
 0.2.22
+0.2.5

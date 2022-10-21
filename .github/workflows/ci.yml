@@ -116,13 +116,13 @@ jobs:
             build/README.md
             build/CHANGELOG.md
 
+  # TODO: fix psp release build errors
   Release:
-    needs: [PSP, Linux, Windows]
+    needs: [Linux, Windows]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build: [psp, linux, windows]
-
+        build: [linux, windows]
 
     steps:
       - name: Checkout
