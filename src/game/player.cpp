@@ -79,9 +79,21 @@ void Player::update(Event &event)
         movingRight = false;
         break;
     case Event::ROTATE_LEFT:
-        angle -= angleStep;
+        rotatingLeft = true;
         break;
     case Event::ROTATE_RIGHT:
+        rotatingRight = true;
+        break;
+    case Event::ROTATE_LEFT_RELEASE:
+        rotatingLeft = false;
+        break;
+    case Event::ROTATE_RIGHT_RELEASE:
+        rotatingRight = false;
+        break;
+    case Event::ROTATE_LEFT_MOUSE:
+        angle -= angleStep;
+        break;
+    case Event::ROTATE_RIGHT_MOUSE:
         angle += angleStep;
         break;
     case Event::ROTATE_UP:
@@ -121,6 +133,12 @@ void Player::move(float dt)
         xGoal -= moveStep * cos(angle) * dt;
         yGoal -= moveStep * sin(angle) * dt;
     }
+
+    if (rotatingLeft)
+        angle -= angleStep * dt;
+
+    if (rotatingRight)
+        angle += angleStep * dt;
 
     if (checkCollision({xGoal, yGoal}))
     {
