@@ -2,6 +2,7 @@
 
 #include "utils/colors.hpp"
 #include "utils/fontController.hpp"
+#include "game/state/game.hpp"
 
 MenuState::MenuState(SDL_Renderer *renderer)
     : renderer(renderer)
@@ -62,6 +63,8 @@ void MenuState::draw(float dt, int w, int h)
 
 State MenuState::getNextState()
 {
+    if (options[selected] == State::Game) // reset score
+        GameState::score = 1;
     return options[selected];
 }
 

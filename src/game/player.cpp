@@ -10,6 +10,16 @@ void Player::rayMarch()
         ray.march();
 }
 
+bool Player::won() const
+{
+    return targetsHit >= map->levelTargets;
+}
+
+void Player::checkWin()
+{
+    didWin = won();
+}
+
 bool Player::checkCollision(Functions::PointF point)
 {
     SDL_Point positionSDL = map->getAbsoluteCoOrdinates(point);
@@ -18,13 +28,28 @@ bool Player::checkCollision(Functions::PointF point)
 
     for (auto &wall : map->walls)
     {
-        wall.colliding = false;
-        for (int i = 0; i < wall.points.size() - 1; i++)
-            if (Functions::LineCircleIntersection(point, PLAYER_SIZE, wall.points[i], wall.points[i + 1]))
-            {
-                wall.colliding = true;
-                return true;
-            }
+        if (wall.isTarget)
+        {
+            if (!wall.colliding)
+                for (int i = 0; i < wall.points.size() - 1; i++)
+                    if (Functions::LineCircleIntersection(point, PLAYER_SIZE, wall.points[i], wall.points[i + 1]))
+                    {
+                        wall.colliding = true;
+                        Logger::Debug("Player::checkCollision() - Target Hit at %d", targetsHit);
+                        targetsHit++;
+                        return false;
+                    }
+        }
+        else
+        {
+            wall.colliding = false;
+            for (int i = 0; i < wall.points.size() - 1; i++)
+                if (Functions::LineCircleIntersection(point, PLAYER_SIZE, wall.points[i], wall.points[i + 1]))
+                {
+                    wall.colliding = true;
+                    return true;
+                }
+        }
     }
     return false;
 }
@@ -59,10 +84,22 @@ void Player::update(Event &event)
         movingRight = false;
         break;
     case Event::ROTATE_LEFT:
-        angle -= angleStep;
+        rotatingLeft = true;
         break;
     case Event::ROTATE_RIGHT:
-        angle += angleStep;
+        rotatingRight = true;
+        break;
+    case Event::ROTATE_LEFT_RELEASE:
+        rotatingLeft = false;
+        break;
+    case Event::ROTATE_RIGHT_RELEASE:
+        rotatingRight = false;
+        break;
+    case Event::ROTATE_LEFT_MOUSE:
+        angle -= angleStep * 5;
+        break;
+    case Event::ROTATE_RIGHT_MOUSE:
+        angle += angleStep * 5;
         break;
     case Event::ROTATE_UP:
         verticalAngle += angleStep;
@@ -102,6 +139,12 @@ void Player::move(float dt)
         yGoal -= moveStep * sin(angle) * dt;
     }
 
+    if (rotatingLeft)
+        angle -= angleStep * dt;
+
+    if (rotatingRight)
+        angle += angleStep * dt;
+
     if (checkCollision({xGoal, yGoal}))
     {
         xGoal = position.x;
@@ -122,6 +165,7 @@ void Player::move(float dt)
 
 void Player::draw(SDL_Renderer *renderer, float dt)
 {
+    checkWin();
     move(dt);
 
     SDL_Point playerAbsPosition = map->getAbsoluteCoOrdinates(position);

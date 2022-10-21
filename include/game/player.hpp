@@ -14,7 +14,7 @@ class Map;
 #define PLAYER_SIZE 5
 #define PLAYER_FIELD_OF_VIEW 90
 #define PLAYER_VERTICAL_FIELD_OF_VIEW_DEG 130
-#define RAYS_CASTED 90
+#define RAYS_CASTED 96
 
 class Player : public Entity
 {
@@ -25,27 +25,33 @@ private:
 
     Functions::PointF position{0, 0};
 
+    int targetsHit = 0;
     float xGoal = 0, yGoal = 0;
 
     int moveStep = 1;
     bool movingLeft = false, movingRight = false, movingUp = false, movingDown = false;
+    bool rotatingLeft = false, rotatingRight = false;
 
-    float angleStep = 0.1;
-    float angle = 0;
+    float angleStep = 0.02;
+    float angle = -M_PI_2;
     float verticalAngle = 0;
     Ray rays[RAYS_CASTED];
 
     void rayMarch();
     bool checkCollision(Functions::PointF position);
     void updateRays();
+    void checkWin();
     void move(float dt);
 
 public:
     friend class PlayerView;
     friend class Map;
 
+    bool didWin = false;
+
     void update(Event &event) override;
     void draw(SDL_Renderer *renderer, float dt) override;
+    bool won() const;
 
     Player();
     Player(float x, float y);

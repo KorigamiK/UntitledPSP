@@ -9,7 +9,7 @@ class Map;
 #include "utils/functions.hpp"
 #include "game/entity.hpp"
 
-#define PLAYER_VIEW_DISTANCE 200
+#define PLAYER_VIEW_DISTANCE 230
 
 typedef struct
 {
@@ -31,6 +31,7 @@ public:
 
     Functions::PointF endPosition{0, 0};
     SDL_Point *hitWallStartPoint = nullptr;
+    int hitWallIndex = -1;
     float distance = 0;
 
     void draw(SDL_Renderer *renderer) override;

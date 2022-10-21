@@ -41,7 +41,9 @@ set(HEADERS
     game/state/controller.hpp
     game/state/menu.hpp
     game/state/game.hpp
+    game/state/gameScreen.hpp
     game/state/pauseScreen.hpp
+    game/state/winScreen.hpp
     game/state/not_implemented.hpp
 )
 
@@ -65,6 +67,7 @@ set(SOURCES
     game/state/controller.cpp
     game/state/game.cpp
     game/state/pauseScreen.cpp
+    game/state/winScreen.cpp
     game/state/not_implemented.cpp
 )
 
@@ -80,10 +83,14 @@ endif()
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 if (PLATFORM_PSP)
+
+    set(PSP_LARGE_MEMORY ON)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_PSP PSP_LARGE_MEMORY)
     if (VERBOSE)
         message("Verbose option enabled")
         target_compile_definitions(${PROJECT_NAME} PRIVATE VERBOSE)
     endif()
+
     target_link_libraries(${PROJECT_NAME} PRIVATE 
         stdc++
         SDL2_mixer

@@ -18,6 +18,8 @@ namespace Functions
 
     extern double Distance(PointF p1, PointF p2);
 
+    extern int randomInt(int min, int max);
+
     // Check if a point t is on a line segment p1-p2
     bool PointOnLine(PointF p1, PointF p2, PointF t);
 

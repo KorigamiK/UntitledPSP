@@ -43,7 +43,7 @@ void PlayerView::draw(SDL_Renderer *renderer)
 {
     drawSky(renderer);
     drawFloor(renderer);
-    COLOR_WHITE(renderer)
+    COLOR_WHITE(renderer);
     SDL_RenderDrawRect(renderer, &viewRect);
 
     static float angleBetweenRays = Constants::OneDegreeRadian * PLAYER_FIELD_OF_VIEW / (float)RAYS_CASTED;
@@ -57,6 +57,7 @@ void PlayerView::draw(SDL_Renderer *renderer)
     float floorLevel = 0.5f * viewRect.h * (1 + tan(player->verticalAngle) / tan(0.5f * PLAYER_VERTICAL_FIELD_OF_VIEW_DEG * Constants::OneDegreeRadian));
 
     SDL_Texture *wallTexture = TextureController::getTexture("colorstone");
+    SDL_Texture *wallTexture2 = TextureController::getTexture("eagle");
 
     float relativeAngle;
 
@@ -76,7 +77,7 @@ void PlayerView::draw(SDL_Renderer *renderer)
         if (rectX > viewRect.w + viewRect.x)
             break;
 
-        SDL_FRect destRect = {rectX, rectY, std::max<float>(rectW, 3), rectH};
+        SDL_FRect destRect = {rectX, rectY, std::max<float>(rectW, 4.5), rectH};
 
         if (ray.distance == PLAYER_VIEW_DISTANCE)
         {
@@ -98,7 +99,15 @@ void PlayerView::draw(SDL_Renderer *renderer)
         destRect.x = absoluteCooridinates.x;
         destRect.y = absoluteCooridinates.y;
 
-        SDL_SetTextureColorMod(wallTexture, brightness, brightness, brightness);
-        SDL_RenderCopyF(renderer, wallTexture, &srcRect, &destRect);
+        if (player->map->walls[ray.hitWallIndex].isTarget)
+        {
+            SDL_SetTextureColorMod(wallTexture2, brightness, brightness, brightness);
+            SDL_RenderCopyF(renderer, wallTexture2, &srcRect, &destRect);
+        }
+        else
+        {
+            SDL_SetTextureColorMod(wallTexture, brightness, brightness, brightness);
+            SDL_RenderCopyF(renderer, wallTexture, &srcRect, &destRect);
+        }
     }
 }

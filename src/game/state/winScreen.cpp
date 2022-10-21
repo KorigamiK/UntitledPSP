@@ -1,24 +1,19 @@
-#include "game/state/pauseScreen.hpp"
+#include "game/state/winScreen.hpp"
 
 #include "utils/colors.hpp"
+#include "utils/fontController.hpp"
 
-PauseScreen::PauseScreen(SDL_Renderer *renderer, const char *title, const char *subtitle)
+WinScreen::WinScreen(SDL_Renderer *renderer, const char *title, const char *subtitle)
     : GameScreen(renderer),
-      title(FontController::getTexture(renderer, title, {ACCENT, 255})),
-      subtitle(FontController::getTexture(renderer, subtitle, {ACCENT_ALT, 255}, 120))
+      title(FontController::getTexture(renderer, title, {ACCENT, 255}, 150)),
+      subtitle(FontController::getTexture(renderer, subtitle, {ACCENT_ALT, 255}, 190))
 {
 }
 
-PauseScreen::~PauseScreen()
-{
-    SDL_DestroyTexture(title);
-    SDL_DestroyTexture(subtitle);
-}
-
-void PauseScreen::draw(int w, int h)
+void WinScreen::draw(int w, int h)
 {
     // Draw small background rect
-    SDL_Rect rect = {w / 2 - 150, h / 2 - 50, 300, 120};
+    SDL_Rect rect = {w / 2 - 200, h / 2 - 50, 400, 80};
     SDL_SetRenderDrawColor(renderer, FOREGROUND, 20);
     SDL_RenderFillRect(renderer, &rect);
 
@@ -37,13 +32,14 @@ void PauseScreen::draw(int w, int h)
     SDL_RenderCopy(renderer, subtitle, NULL, &rect_subtitle);
 }
 
-void PauseScreen::update(Event &event)
+void WinScreen::update(Event &event)
 {
     if (event == Event::CONFIRM)
         exit = true;
-    else if (event == Event::DOWN)
-    {
-        skipLevel = true;
-        exit = true;
-    }
+}
+
+WinScreen::~WinScreen()
+{
+    SDL_DestroyTexture(title);
+    SDL_DestroyTexture(subtitle);
 }

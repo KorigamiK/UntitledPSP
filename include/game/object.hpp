@@ -13,4 +13,5 @@ struct Wall : Object
     std::string name;
     std::vector<SDL_Point> points;
     bool colliding = false;
+    bool isTarget = false;
 };

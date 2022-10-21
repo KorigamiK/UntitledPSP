@@ -55,9 +55,9 @@ std::vector<Event> EventController::getEventFromMouseMotion(Sint32 xrel, Sint32 
     std::vector<Event> events;
     Logger::Debug("Mouse motion: %d %d", xrel, yrel);
     if (xrel > 0)
-        events.push_back(Event::ROTATE_RIGHT);
+        events.push_back(Event::ROTATE_RIGHT_MOUSE);
     if (xrel < 0)
-        events.push_back(Event::ROTATE_LEFT);
+        events.push_back(Event::ROTATE_LEFT_MOUSE);
     if (yrel > 0)
         events.push_back(Event::ROTATE_UP);
     if (yrel < 0)
@@ -81,6 +81,10 @@ Event EventController::getReleaseEventFromKeyboard(SDL_Keycode key)
     case SDLK_DOWN:
     case SDLK_s:
         return Event::DOWN_RELEASE;
+    case SDLK_q:
+        return Event::ROTATE_LEFT_RELEASE;
+    case SDLK_e:
+        return Event::ROTATE_RIGHT_RELEASE;
     default:
         return Event::OTHER;
     }
@@ -98,6 +102,10 @@ Event EventController::getReleaseEventFromControllerButton(Uint32 button)
         return Event::UP_RELEASE;
     case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
         return Event::DOWN_RELEASE;
+    case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+        return Event::ROTATE_LEFT_RELEASE;
+    case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+        return Event::ROTATE_RIGHT_RELEASE;
     default:
         return Event::OTHER;
     }
@@ -218,9 +226,9 @@ Event EventController::getEventFromControllerAxis(Uint32 axis, Sint16 value)
     {
     case SDL_CONTROLLER_AXIS_LEFTX:
         if (value < -deadZone)
-            event = Event::ROTATE_LEFT;
+            event = Event::ROTATE_LEFT_MOUSE;
         else if (value > deadZone)
-            event = Event::ROTATE_RIGHT;
+            event = Event::ROTATE_RIGHT_MOUSE;
         break;
     case SDL_CONTROLLER_AXIS_LEFTY:
         if (value < -deadZone)
