@@ -14,7 +14,7 @@ void Map::init(Player *p)
 #else
   loadMap();
 #endif
-  generateRandomTargets();
+  generateRandomTargets(levelTargets);
 }
 
 void Map::setMapRect(SDL_Rect mapRectAndPosition, int padding)
@@ -48,10 +48,12 @@ void Map::drawWalls(SDL_Renderer *renderer)
     SDL_Point absolutePoints[wall.points.size()];
     COLOR_WHITE(renderer);
     if (wall.colliding)
+    {
       if (wall.isTarget)
         COLOR_GREEN(renderer);
       else
         COLOR_RED(renderer);
+    }
     for (int i = 0; i < wall.points.size(); i++)
       absolutePoints[i] = getAbsoluteCoOrdinates(wall.points[i]);
     SDL_RenderDrawLines(renderer, absolutePoints, wall.points.size());

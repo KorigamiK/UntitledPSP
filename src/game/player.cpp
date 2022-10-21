@@ -17,8 +17,7 @@ bool Player::won() const
 
 void Player::checkWin()
 {
-    if (didWin = won())
-        Logger::Debug("Player Won!");
+    didWin = won();
 }
 
 bool Player::checkCollision(Functions::PointF point)
