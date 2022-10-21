@@ -1,7 +1,7 @@
 #include "game/state/game.hpp"
 
 GameState::GameState(SDL_Renderer *renderer)
-    : renderer(renderer), pauseScreen(renderer)
+    : renderer(renderer), pauseScreen(renderer), winScreen(renderer)
 {
     map = std::make_shared<Map>(SDL_Rect{width / 2, 0, width / 2, height});
     player = new Player(map->mapRect.w / 2, map->mapRect.h / 2);
@@ -19,6 +19,12 @@ void GameState::draw(float dt, int width, int height)
     map->draw(renderer);
     playerView->draw(renderer);
 
+    if (player->didWin)
+    {
+        winScreen.draw(width, height);
+        return;
+    }
+
     if (paused)
         pauseScreen.draw(width, height);
 }
@@ -28,7 +34,16 @@ void GameState::handleEvent(Event &event)
     if (event == Event::MENU)
         paused = !paused;
     else if (!paused)
-        player->update(event);
+    {
+        if (player->didWin)
+        {
+            winScreen.update(event);
+            if (winScreen.exit)
+                this->done = true;
+        }
+        else
+            player->update(event);
+    }
     else
     {
         pauseScreen.update(event);
@@ -39,13 +54,13 @@ void GameState::handleEvent(Event &event)
 
 State GameState::getNextState()
 {
+    if (winScreen.exit)
+        return State::Game;
     return State::Menu;
 }
 
 bool GameState::isDone()
 {
-    if (player->won())
-        return true;
     return done;
 }
 

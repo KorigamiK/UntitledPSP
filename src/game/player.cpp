@@ -15,6 +15,12 @@ bool Player::won() const
     return targetsHit >= map->levelTargets;
 }
 
+void Player::checkWin()
+{
+    if (didWin = won())
+        Logger::Debug("Player Won!");
+}
+
 bool Player::checkCollision(Functions::PointF point)
 {
     SDL_Point positionSDL = map->getAbsoluteCoOrdinates(point);
@@ -160,6 +166,7 @@ void Player::move(float dt)
 
 void Player::draw(SDL_Renderer *renderer, float dt)
 {
+    checkWin();
     move(dt);
 
     SDL_Point playerAbsPosition = map->getAbsoluteCoOrdinates(position);

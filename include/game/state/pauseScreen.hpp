@@ -2,23 +2,21 @@
 
 #include <SDL2/SDL.h>
 
+#include "game/state/gameScreen.hpp"
 #include "utils/fontController.hpp"
 #include "utils/events.hpp"
 
-class PauseScreen
+class PauseScreen : public GameScreen
 {
 private:
-    SDL_Renderer *renderer = nullptr;
     SDL_Texture *title = nullptr;
     SDL_Texture *subtitle = nullptr;
 
 public:
-    bool exit = false;
-
     PauseScreen(SDL_Renderer *renderer, const char *title = "Paused", const char *subtitle = "Press ESC\nto resume");
 
-    void draw(int w, int h);
-    void update(Event &event);
+    void draw(int w, int h) override;
+    void update(Event &event) override;
 
     ~PauseScreen();
 };

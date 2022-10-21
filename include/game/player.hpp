@@ -40,11 +40,14 @@ private:
     void rayMarch();
     bool checkCollision(Functions::PointF position);
     void updateRays();
+    void checkWin();
     void move(float dt);
 
 public:
     friend class PlayerView;
     friend class Map;
+
+    bool didWin = false;
 
     void update(Event &event) override;
     void draw(SDL_Renderer *renderer, float dt) override;
