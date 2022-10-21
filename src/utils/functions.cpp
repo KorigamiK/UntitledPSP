@@ -13,6 +13,11 @@ bool Functions::PointOnLine(PointF p1, PointF p2, PointF t)
     return false;
 }
 
+int Functions::randomInt(int min, int max)
+{
+    return rand() % (max - min + 1) + min;
+}
+
 double Functions::Distance(PointF p1, PointF p2)
 {
     return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));

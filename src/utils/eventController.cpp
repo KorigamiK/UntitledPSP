@@ -226,9 +226,9 @@ Event EventController::getEventFromControllerAxis(Uint32 axis, Sint16 value)
     {
     case SDL_CONTROLLER_AXIS_LEFTX:
         if (value < -deadZone)
-            event = Event::ROTATE_LEFT;
+            event = Event::ROTATE_LEFT_MOUSE;
         else if (value > deadZone)
-            event = Event::ROTATE_RIGHT;
+            event = Event::ROTATE_RIGHT_MOUSE;
         break;
     case SDL_CONTROLLER_AXIS_LEFTY:
         if (value < -deadZone)

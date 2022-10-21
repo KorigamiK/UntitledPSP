@@ -38,12 +38,12 @@ void GameState::drawScore(int width, int height)
 
 void GameState::draw(float dt, int width, int height)
 {
-    map->setMapRect(std::move(SDL_Rect{width / 2, 0, width / 2, height}), 10);
-    playerView->setViewRect(std::move(SDL_Rect{0, 0, width / 2, height}));
+    map->setMapRect(std::move(SDL_Rect{2 * width / 3, 0, width / 3, height}), 10);
+    playerView->setViewRect(std::move(SDL_Rect{0, 0, 2 * width / 3, height}));
 
     player->draw(renderer, dt);
-    map->draw(renderer);
     playerView->draw(renderer);
+    map->draw(renderer);
 
     drawScore(width, height);
 
@@ -86,7 +86,7 @@ void GameState::handleEvent(Event &event)
 
 State GameState::getNextState()
 {
-    if (winScreen.exit)
+    if (winScreen.exit || pauseScreen.skipLevel)
         return State::Game;
     return State::Menu;
 }

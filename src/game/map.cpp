@@ -60,6 +60,29 @@ void Map::drawWalls(SDL_Renderer *renderer)
   }
 }
 
+PointPair Map::getRandomPoints(int maxDistance, int minDistance)
+{
+  PointPair points;
+  points.point1 = SDL_Point{Functions::randomInt(0, mapRect.w - 80), Functions::randomInt(0, mapRect.h - 80)};
+
+  points.point2 = SDL_Point{Functions::randomInt(0, mapRect.w - 80), Functions::randomInt(0, mapRect.h - 80)};
+
+  int distance = Functions::Distance(points.point1, points.point2);
+  if (distance > maxDistance || distance < minDistance)
+    return getRandomPoints(maxDistance, minDistance);
+  return std::move(points);
+}
+
+SDL_Point Map::getRandomPointFrom(SDL_Point point, int maxDistance, int minDistance)
+{
+  SDL_Point newPoint = SDL_Point{Functions::randomInt(0, mapRect.w - 80), Functions::randomInt(0, mapRect.h - 80)};
+
+  int distance = Functions::Distance(point, newPoint);
+  if (distance > maxDistance || distance < minDistance)
+    return getRandomPointFrom(point, maxDistance, minDistance);
+  return std::move(newPoint);
+}
+
 void Map::drawCollisionPoints(SDL_Renderer *renderer)
 {
   for (auto &ray : player->rays)
@@ -74,10 +97,9 @@ void Map::generateRandomWalls(unsigned int number)
 {
   for (int i = 0; i < number; i++)
   {
-    SDL_Point p1 = {rand() % mapRect.w, rand() % mapRect.h};
-    SDL_Point p2 = {rand() % mapRect.w, rand() % mapRect.h};
-    SDL_Point p3 = {rand() % mapRect.w, rand() % mapRect.h};
-    walls.push_back(Wall{"blue", "random", {p1, p2, p3}});
+    PointPair points = getRandomPoints(100, 60);
+    SDL_Point p3 = getRandomPointFrom(points.point2, 100, 60);
+    walls.push_back(Wall{"blue", "random", {points.point1, points.point2, p3}});
   }
 }
 
@@ -85,9 +107,9 @@ void Map::generateRandomTargets(unsigned int number)
 {
   for (int i = 0; i < number; i++)
   {
-    SDL_Point p1 = {rand() % mapRect.w, rand() % mapRect.h};
-    SDL_Point p2 = {rand() % mapRect.w, rand() % mapRect.h};
-    walls.push_back(Wall{"red", "target", {p1, p2}, false, true});
+    PointPair points = getRandomPoints(100, 60);
+    Logger::Debug("Target Points: %d, %d, %d, %d", points.point1.x, points.point1.y, points.point2.x, points.point2.y);
+    walls.push_back(Wall{"red", "target", {points.point1, points.point2}, false, true});
   }
 }
 

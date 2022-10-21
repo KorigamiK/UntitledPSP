@@ -13,8 +13,9 @@ private:
     SDL_Texture *subtitle = nullptr;
 
 public:
-    PauseScreen(SDL_Renderer *renderer, const char *title = "Paused", const char *subtitle = "Press ESC\nto resume");
+    PauseScreen(SDL_Renderer *renderer, const char *title = "Paused", const char *subtitle = "  Press ESC\n  to resume\n       &\nDown to skip");
 
+    bool skipLevel = false;
     void draw(int w, int h) override;
     void update(Event &event) override;
 

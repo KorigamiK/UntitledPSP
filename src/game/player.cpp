@@ -96,10 +96,10 @@ void Player::update(Event &event)
         rotatingRight = false;
         break;
     case Event::ROTATE_LEFT_MOUSE:
-        angle -= angleStep;
+        angle -= angleStep * 5;
         break;
     case Event::ROTATE_RIGHT_MOUSE:
-        angle += angleStep;
+        angle += angleStep * 5;
         break;
     case Event::ROTATE_UP:
         verticalAngle += angleStep;

@@ -16,6 +16,12 @@
 
 class Player;
 
+struct PointPair
+{
+    SDL_Point point1;
+    SDL_Point point2;
+};
+
 class Map : public Entity
 {
 private:
@@ -36,6 +42,8 @@ private:
     void generateRandomWalls(unsigned int number = 3);
     void generateRandomTargets(unsigned int number = 1);
     void drawCollisionPoints(SDL_Renderer *renderer);
+    PointPair getRandomPoints(int maxDistance = 100, int minDistance = 50);
+    SDL_Point getRandomPointFrom(SDL_Point point, int maxDistance = 100, int minDistance = 50);
 
 public:
     int const levelTargets = 1;

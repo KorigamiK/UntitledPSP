@@ -5,7 +5,7 @@
 PauseScreen::PauseScreen(SDL_Renderer *renderer, const char *title, const char *subtitle)
     : GameScreen(renderer),
       title(FontController::getTexture(renderer, title, {ACCENT, 255})),
-      subtitle(FontController::getTexture(renderer, subtitle, {ACCENT_ALT, 255}, 90))
+      subtitle(FontController::getTexture(renderer, subtitle, {ACCENT_ALT, 255}, 120))
 {
 }
 
@@ -18,7 +18,7 @@ PauseScreen::~PauseScreen()
 void PauseScreen::draw(int w, int h)
 {
     // Draw small background rect
-    SDL_Rect rect = {w / 2 - 150, h / 2 - 50, 300, 100};
+    SDL_Rect rect = {w / 2 - 150, h / 2 - 50, 300, 120};
     SDL_SetRenderDrawColor(renderer, FOREGROUND, 20);
     SDL_RenderFillRect(renderer, &rect);
 
@@ -41,4 +41,9 @@ void PauseScreen::update(Event &event)
 {
     if (event == Event::CONFIRM)
         exit = true;
+    else if (event == Event::DOWN)
+    {
+        skipLevel = true;
+        exit = true;
+    }
 }

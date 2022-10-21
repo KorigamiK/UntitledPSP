@@ -9,7 +9,7 @@ class Map;
 #include "utils/functions.hpp"
 #include "game/entity.hpp"
 
-#define PLAYER_VIEW_DISTANCE 200
+#define PLAYER_VIEW_DISTANCE 230
 
 typedef struct
 {
